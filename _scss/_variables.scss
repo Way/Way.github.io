@@ -18,7 +18,9 @@ $white: #fff;
 $helvetica: Helvetica, Arial, sans-serif;
 $helveticaNeue: "Helvetica Neue", Helvetica, Arial, sans-serif;
 $georgia: Georgia, serif;
-$varelaRound: 'Varela Round', sans-serif;
+
+$headerFont: 'Montserrat', "Helvetica Neue", Helvetica, Arial, sans-serif;
+$bodyFont: $helveticaNeue;
 
 // Mobile breakpoints
 @mixin mobile {
