@@ -21,7 +21,9 @@ html {
 
 body {
   background: $white;
-  font: 16px/1.4 $bodyFont;
+  font-family: $bodyFont;
+  font-size: 14px;
+  line-height: 1.42857143;
   color: $darkGray;
 }
 
