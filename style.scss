@@ -214,7 +214,7 @@ img {
 nav {
   float: right;
   margin-top: 23px; // @TODO: Vertically middle align
-  font-family: $bodyFont; 
+  font-family: $headerFont; 
   font-size: 18px;
   
   @include mobile {
