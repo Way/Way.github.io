@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Test Post from Mac"
-published: true
+published: false
 ---
 
 It's just a Test!
