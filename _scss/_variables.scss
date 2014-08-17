@@ -21,7 +21,7 @@ $georgia: Georgia, serif;
 $varelaRound: 'Varela Round';
 
 $headerFont: $varelaRound, $helveticaNeue;
-$bodyFont: helveticaNeue;
+$bodyFont: $helveticaNeue;
 
 // Mobile breakpoints
 @mixin mobile {
