@@ -22,7 +22,7 @@ $varelaRound: 'Varela Round';
 $roboto: 'Roboto';
 
 $headerFont: 'Roboto', "Helvetica Neue", Helvetica, Arial, sans-serif;
-$bodyFont: $helveticaNeue;
+$bodyFont: $headerFont;
 
 // Mobile breakpoints
 @mixin mobile {
