@@ -12,8 +12,8 @@ Web Developer & Front-End Operations Engineer.
 
 ### Web
 
-[@dailyway](https://twitter.com/dailyway)
-[GitHub](https://github.com/way)
+- [@dailyway](https://twitter.com/dailyway)
+- [GitHub](https://github.com/way)
 
 ### Contact me
 
