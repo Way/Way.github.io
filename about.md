@@ -4,12 +4,17 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+Some information about me.
 
-### More Information
+### Alexander Vey
 
-A place to include any other types of information that you'd like to include about yourself. 
+Web Developer & Front-End Operations Engineer.
+
+### Web
+
+[@dailyway](https://twitter.com/dailyway)
+[GitHub](https://github.com/way)
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[alex@alexvey.com](mailto:alex@alexvey.com)
