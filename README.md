@@ -1,7 +1,6 @@
 # [Alexander Vey](http://alexvey.com)
 Web Developer & Front-End Operations Engineer.
-
-## [alexvey.com](http://alexvey.com)
+**[alexvey.com](http://alexvey.com)**
 
 ## Credits
 
