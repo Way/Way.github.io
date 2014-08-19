@@ -1,6 +1,4 @@
 safe: true
-lsi: false
-pygments: true
 
 relative_source: ../Way.github.io/
 destination: ../Way.github.io-pages/
