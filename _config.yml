@@ -87,7 +87,12 @@ gems:
 
 # Exclude these files from your production _site
 exclude:
-    - Gemfile
-    - Gemfile.lock
     - LICENSE
     - README.md
+    - changelog.md
+    - Rakefile
+    - Gemfile
+    - Gemfile.lock
+    - vendor
+    - .travis.yml
+    - "*.Rmd"
