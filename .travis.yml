@@ -3,4 +3,4 @@ install: bundle install
 script: bundle exec rake site:deploy --quiet
 env:
   global:
-    secure: n6H+QLi7saoolKOzST4iYASf8iGetHIgaZ9awqPZ8ULhsDFp+QjfJ8GuMQp2Zf8IhNs8riUtv194MZceLzUX1F5ZWdXAzJBW4AGzhcKIMTEYG77IPocT1+f/ouMljQ2sbsx7jI66yY0r/Vkn1yClNX1J+vKiYnQLmla9spqM3pg=
+    secure: DnL+Jp6j8hKqN4w2Kp+kc7KNYIBsC9KZCBndI53D9LTtjr3qfw6wXpdMrxoc/NFhbuaIwt1AjRhYbCMnqp61ZObiG9XRQ7Gt9pw4d/Y0bsGTuV+1ycyDuCTulXeGQyZOtozCCjnlDP6gd4F3SYosEmaMxjYvKkxfg/S4xb8E9o=
