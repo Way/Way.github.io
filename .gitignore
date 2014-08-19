@@ -5,6 +5,7 @@
 .bundle
 .config
 .sass-cache
+_site
 node_modules
 lib/bundler/man
 pkg
