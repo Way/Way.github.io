@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
 
 gem "rake", "~> 10.1.1"
-gem "github-pages", "~> 15"
-gem "jekyll-sass"
+gem "github-pages", "~> 22"
