@@ -7,3 +7,4 @@ PLATFORMS
 DEPENDENCIES
   github-pages (~> 22)
   rake (~> 10.1.1)
+  gemoji (~> 2.1.0)
