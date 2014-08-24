@@ -1,20 +1,10 @@
 language: ruby
-
-# Install Jekyll and dependencies
 install: bundle install
-
 script: bundle exec rake site:deploy --quiet
-
-# Branch whitelist
 branches:
   only:
   - source
-
-# Generate your secure token with the travis gem:
-# get Github token from your Travis CI profile page
-# gem install travis
-# travis encrypt 'GIT_NAME="YOUR_USERNAME" GIT_EMAIL="YOUR_EMAIL" GH_TOKEN=YOUR_TOKEN'
 env:
   global:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-  - secure: piXbwnq9dSgiEXJ6mGkFFQKsS7DShvruYoUJUMDMQBYdeJRj8+oZelbgHJXul3Ewr8SqBGf11n3SPoyjNRXalqn+i5BTkLSyW7Xp2zAB92pIQQ1wtGwVXlfF2w1j8t93T5m8IW09G/ItLwQPrMPe5nqKsQ/FugLiZroUzt1fSL8=
+  - secure: LsPr4GY9ZYJSlFutZBfOlHcEP/B9Y5tDFp/3s8rdPbzt0bU18nb3qQMkRShi2QhhsFErX/ereHyy0HXHRfqde5X1H70vYP+z+kBioTGI7GS83vr/gSF5KVhHO7ePqpCL7HLJ1B+oBQFlUILZ4Tg5LPJyRWj7AUwggjGhNmcnIVo=
