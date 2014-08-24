@@ -7,4 +7,4 @@ branches:
 env:
   global:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-  - secure: LsPr4GY9ZYJSlFutZBfOlHcEP/B9Y5tDFp/3s8rdPbzt0bU18nb3qQMkRShi2QhhsFErX/ereHyy0HXHRfqde5X1H70vYP+z+kBioTGI7GS83vr/gSF5KVhHO7ePqpCL7HLJ1B+oBQFlUILZ4Tg5LPJyRWj7AUwggjGhNmcnIVo=
+  - secure: dZ16EJxwJFx20j5hBi8cc0LJtB/4x8Avrhfj+UjamyLuZStdcDTWD7a3VMOwUHRP+JTg3M6sHEuSrmEOQYZl3Mbg+rDt6dx8ndbGhzkKBY/nCs2uRL+QCZxwMd1cN00BnkFE4CGK510+/Bq39rD2q+UeUtKfeoNsETfO4kumzXI=
