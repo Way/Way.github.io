@@ -1,0 +1,21 @@
+---
+interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+---
+
+<div class="chat-intro">
+  <p>{content}</p>
+</div>
+
+<style>
+  .chat-intro {
+    background-color: #f0f0f5; /* Subtle background color */
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+</style>
