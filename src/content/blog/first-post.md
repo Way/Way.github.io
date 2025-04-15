@@ -3,7 +3,7 @@ title: 'KI, Ideen und die Zukunft der Geschäftsmodelle'
 description: 'Lorem ipsum dolor sit amet'
 pubDate: 'April 14 2025'
 heroImage: '/blog-placeholder-3.jpg'
-prompt: 'Analysiere: KI macht die technische Umsetzung von Apps zur Nebensache, wodurch Ideen, Originalität/Geschwindigkeit und Marketing entscheidend werden. Bedenken sind Langlebigkeit und der Fokus auf Generierung statt echtem Bedarf (z.B. der x-te Trip-Planner). Welche Geschäftsmodelle funktionieren für "Vibe-Apps", die Nutzer potenziell selbst generieren können?'
+prompt: 'KI macht die technische Umsetzung von Apps zur Nebensache, wodurch Ideen, Originalität/Geschwindigkeit und Marketing entscheidend werden. Bedenken sind Langlebigkeit und der Fokus auf Generierung statt echtem Bedarf - wie viele Trip-Planner braucht es? Welche Geschäftsmodelle funktionieren für "Vibe-Apps", die Nutzer potenziell selbst generieren können?'
 ---
 
 Künstliche Intelligenz senkt die Hürde der technischen Umsetzung dramatisch. Das Coden und Entwickeln, einst ein wesentlicher Flaschenhals, wird zunehmend zur Commodity. Dadurch verschiebt sich der Fokus unweigerlich: weg von der reinen Machbarkeit, hin zur Qualität der Idee – ihrer Originalität, ihrem Timing, ihrer Nische –massiv hin zur Vermarktung und Distribution. Wenn jeder potenziell eine App oder ein SaaS-Produkt per Prompt generieren kann, wird die Fähigkeit, Aufmerksamkeit zu erregen, eine Community aufzubauen und das Produkt sichtbar zu machen, zum entscheidenden Wettbewerbsfaktor. Geschwindigkeit und Agilität in der Umsetzung sind dabei wichtige Werkzeuge, aber nicht mehr das alleinige Differenzierungsmerkmal.
