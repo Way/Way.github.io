@@ -104,6 +104,9 @@ p {
   text-align: center;
   line-height: 1;
 }
+.date {
+  text-align: center;
+}
 textarea {
   width: 100%;
   font-size: 16px;
