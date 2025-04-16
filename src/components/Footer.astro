@@ -24,6 +24,10 @@ const today = new Date();
 			>
 		</a>
 	</div>
+	
+	<div class="footer-links">
+		<a href="/impressum">Impressum</a>
+	</div>
 </footer>
 <style>
 	footer {
@@ -32,17 +36,28 @@ const today = new Date();
 		color: rgb(var(--gray));
 		text-align: center;
 	}
+	.footer-links {
+		display: flex;
+		justify-content: center;
+		gap: 1em;
+		margin-top: 0.5em;
+	}
+	.footer-links a {
+		color: rgb(var(--gray));
+		font-size: 0.8em;
+		text-decoration: none;
+	}
 	.social-links {
 		display: flex;
 		justify-content: center;
 		gap: 1em;
-		margin-top: 1em;
+		margin-top: 0.5em;
 	}
 	.social-links a {
 		text-decoration: none;
 		color: rgb(var(--gray));
 	}
 	.social-links a:hover {
-		color: rgb(var(--gray-dark));
+		color: rgb(var(--accent));
 	}
 </style>
