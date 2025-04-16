@@ -1,65 +1,95 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
 ---
 
 <!doctype html>
 <html lang="de">
-<head>
-    <BaseHead title={`Impressum - ${SITE_TITLE}`} description="Impressum dieser Webseite" />
+  <head>
+    <BaseHead
+      title={`Impressum - ${SITE_TITLE}`}
+      description="Impressum dieser Webseite"
+    />
     <style>
-        main {
-            width: 960px;
-            margin: auto;
-            padding: 1em;
-            line-height: 1.6;
-        }
-        h1, h2 {
-            margin-bottom: 0.5em;
-        }
-        address {
-            font-style: normal;
-            margin-bottom: 1em;
-        }
+      main {
+        width: 960px;
+        margin: auto;
+        padding: 1em;
+        line-height: 1.6;
+      }
+      h2,
+      h3 {
+        margin-top: 1.5em;
+      }
+      address {
+        font-style: normal;
+        margin-bottom: 1em;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <Header />
     <main>
-        <h1>Impressum</h1>
+      <h2>Impressum</h2>
 
-        <h2>Angaben gemäß § 5 TMG</h2>
-        <address>
-            Alexander Vey<br />
-            Kanzelweg 24<br />
-            34128 Kassel<br />
-        </address>
+      <h3>Angaben gemäß § 5 TMG</h3>
+      <address>
+        Alexander Vey<br />
+        Kanzelweg 24<br />
+        34128 Kassel<br />
+      </address>
 
-        <h2>Kontakt</h2>
-        <p>
-            E-Mail: alex@alexvey.com
-        </p>
+      <h3>Kontakt</h3>
+      <p>E-Mail: alex@alexvey.com</p>
 
-        <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
-        <address>
-            Alexander Vey<br />
-            Kanzelweg 24<br />
-            34128 Kassel<br />
-        </address>
+      <h3>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h3>
+      <address>
+        Alexander Vey<br />
+        Kanzelweg 24<br />
+        34128 Kassel<br />
+      </address>
 
-        <h2>Hosting</h2>
-        <p>Diese Webseite wird über GitHub Pages gehostet. Anbieter ist die GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA. Weitere Informationen zum Datenschutz von GitHub finden Sie unter: <a href="https://docs.github.com/de/site-policy/privacy-policies/github-privacy-statement" target="_blank">https://docs.github.com/de/site-policy/privacy-policies/github-privacy-statement</a></p>
+      <h3>Hosting</h3>
+      <p>
+        Diese Webseite wird über GitHub Pages gehostet. Anbieter ist die GitHub,
+        Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA. Weitere
+        Informationen zum Datenschutz von GitHub finden Sie unter: <a
+          href="https://docs.github.com/de/site-policy/privacy-policies/github-privacy-statement"
+          target="_blank"
+          >https://docs.github.com/de/site-policy/privacy-policies/github-privacy-statement</a
+        >
+      </p>
 
-        <h2>Haftungsausschluss</h2>
-        <p>Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
-        <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+      <h3>Haftungsausschluss</h3>
+      <p>
+        Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für die
+        Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann ich jedoch
+        keine Gewähr übernehmen. Als Diensteanbieter bin ich gemäß § 7 Abs.1 TMG
+        für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen
+        verantwortlich. Nach §§ 8 bis 10 TMG bin ich als Diensteanbieter jedoch
+        nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen
+        zu überwachen oder nach Umständen zu forschen, die auf eine
+        rechtswidrige Tätigkeit hinweisen.
+      </p>
+      <p>
+        Dieses Angebot enthält Links zu externen Websites Dritter, auf deren
+        Inhalte ich keinen Einfluss habe. Deshalb kann ich für diese fremden
+        Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten
+        Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten
+        verantwortlich.
+      </p>
 
-        <h2>Urheberrecht</h2>
-        <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
-
+      <h3>Urheberrecht</h3>
+      <p>
+        Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen
+        Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung,
+        Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der
+        Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des
+        jeweiligen Autors bzw. Erstellers.
+      </p>
     </main>
     <Footer />
-</body>
+  </body>
 </html>
