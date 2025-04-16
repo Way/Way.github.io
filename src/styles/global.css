@@ -5,10 +5,11 @@
  */
 
 @import "tailwindcss";
+@plugin '@tailwindcss/typography';
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
+	--accent: #8e72e1;
+	--accent-dark: #2a0e7d;
 	--black: 15, 18, 25;
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;

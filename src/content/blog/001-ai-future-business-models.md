@@ -1,6 +1,6 @@
 ---
 title: 'KI, Ideen und die Zukunft der Geschäftsmodelle'
-description: 'Lorem ipsum dolor sit amet'
+description: 'KI macht die technische Umsetzung von Apps zur Nebensache, wodurch Ideen, Originalität/Geschwindigkeit und Marketing entscheidend werden. Bedenken sind Langlebigkeit und der Fokus auf Generierung statt echtem Bedarf - wie viele Trip-Planner braucht es? Welche Geschäftsmodelle funktionieren für "Vibe-Apps", die Nutzer potenziell selbst generieren können?'
 pubDate: 'April 14 2025'
 heroImage: '/blog-placeholder-3.jpg'
 prompt: 'KI macht die technische Umsetzung von Apps zur Nebensache, wodurch Ideen, Originalität/Geschwindigkeit und Marketing entscheidend werden. Bedenken sind Langlebigkeit und der Fokus auf Generierung statt echtem Bedarf - wie viele Trip-Planner braucht es? Welche Geschäftsmodelle funktionieren für "Vibe-Apps", die Nutzer potenziell selbst generieren können?'
@@ -21,6 +21,6 @@ Wie können also die Geschäftsmodelle der Zukunft aussehen, gerade für diese l
 4. Das “Meta-Spiel”: Plattformen und Tools: Statt die x-te App anzubieten, könnte das Geschäftsmodell darin liegen, bessere Tools, Plattformen oder Infrastrukturen bereitzustellen, mit denen andere ihre Ideen (auch die einfachen) effizienter umsetzen und vermarkten können.
 5. Service-Komponente: Die KI-generierte App ist nur ein Teil eines größeren Serviceangebots, das menschliche Expertise, Beratung oder Support beinhaltet.
 
-### Fazit
+#### Fazit
 
 Die Ära, in der allein die technische Umsetzung einer Idee ein dauerhaftes Geschäftsmodell trug, geht zu Ende. Der Wert verschiebt sich hin zur strategischen Positionierung, zur Schaffung von Ökosystemen, zur cleveren Vermarktung und zur Etablierung von Mehrwert, der über die reine, leicht replizierbare Funktionalität hinausgeht. Es geht weniger darum, was man per KI bauen kann, sondern warum und für wen – und wie man daraus nachhaltigen Wert schöpft, den Nutzer nicht im Handumdrehen selbst generieren können.
