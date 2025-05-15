@@ -89,15 +89,18 @@ a:hover {
 p {
   margin-bottom: 1em;
 }
-.prose p {
-  margin-bottom: 2em;
-}
 .prose {
   width: 720px;
   max-width: calc(100% - 2em);
   margin: auto;
   padding: 1em;
   color: rgb(var(--gray-dark));
+}
+.prose strong {
+  color: rgb(var(--black));
+}
+.prose h2 {
+  margin-top: 1.5em;
 }
 .title {
   padding: 1em 0;
