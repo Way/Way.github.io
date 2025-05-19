@@ -1,9 +1,11 @@
 ---
 title: 'AI – Wege in ein neues Internet'
+language: de
 description: ''
 pubDate: '2025-05-15'
 heroImage: '/blog-placeholder-4.jpg'
 prompt: 'AI transformiert das Internet, indem zentrale Dienste und dezentrale Innovationen miteinander verknüpft werden zu einem föderierten, dezentralisierten Netzwerk.'
+tags: ['AI', 'Internet', 'Innovation', 'Zukunft']
 ---
 
 Die rasante Entwicklung von Künstlicher Intelligenz (AI) hat das Potenzial, nicht nur unsere Arbeitsweisen, sondern auch die Struktur des Internets grundlegend zu verändern. In diesem Artikel werfen wir einen Blick auf die Zukunft eines vernetzten, intelligenten und dezentralen Internets, in dem AI als Kernkomponente agiert.
