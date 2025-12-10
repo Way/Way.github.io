@@ -29,6 +29,7 @@ const posts = (await getCollection('blog')).sort(
       }
       ul li {
         width: calc(50% - 1rem);
+        position: relative;
       }
       ul li * {
         text-decoration: none;
@@ -39,25 +40,64 @@ const posts = (await getCollection('blog')).sort(
         margin-bottom: 1rem;
         text-align: center;
       }
-      ul li:first-child img {
+      ul li:first-child .image-container img {
         width: 100%;
+        max-height: 300px;
+        object-fit: cover;
       }
       ul li:first-child .title {
         font-size: 2.369rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        width: 90%;
+      }
+      ul li .image-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        margin-bottom: 0.5rem;
       }
       ul li img {
-        margin-bottom: 0.5rem;
+        display: block;
+        width: 100%;
+        max-height: 180px;
+        object-fit: cover;
         border-radius: 12px;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.2s ease;
       }
       ul li a {
         display: block;
       }
-      ul li a:hover h4,
+      .title {
+        margin: 0;
+        line-height: 1;
+        position: absolute;
+        bottom: 1rem;
+        left: 1rem;
+        right: 1rem;
+        color: white;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        font-size: 1.2rem;
+      }
+      .date {
+        margin: 0.5rem 0 0;
+        color: rgb(var(--gray));
+      }
+      ul li a:hover .title {
+        color: rgb(var(--accent));
+      }
       ul li a:hover .date {
         color: rgb(var(--accent));
       }
-      ul a:hover img {
+      ul li a:hover .image-container img {
         box-shadow: var(--box-shadow);
+        transform: scale(1.05);
       }
       @media (max-width: 720px) {
         ul {
@@ -73,16 +113,12 @@ const posts = (await getCollection('blog')).sort(
         ul li:first-child .title {
           font-size: 1.563em;
         }
-      }
-      .title {
-        margin: 0;
-        color: rgb(var(--black));
-        line-height: 1;
-        padding-bottom: 0;
-      }
-      .date {
-        margin: 0;
-        color: rgb(var(--gray));
+        ul li .title {
+          font-size: 1rem;
+          bottom: 0.5rem;
+          left: 0.5rem;
+          right: 0.5rem;
+        }
       }
     </style>
   </head>
@@ -92,16 +128,18 @@ const posts = (await getCollection('blog')).sort(
       <section>
         <ul>
           {
-            posts.map((post) => (
+            posts.map((post, index) => (
               <li>
                 <a href={`/blog/${post.id}/`}>
-                  <img
-                    width={720}
-                    height={360}
-                    src={post.data.heroImage}
-                    alt=""
-                  />
-                  <h4 class="title">{post.data.title}</h4>
+                  <div class="image-container">
+                    <img
+                      width={720}
+                      height={index === 0 ? 300 : 180}
+                      src={post.data.heroImage}
+                      alt=""
+                    />
+                    <h4 class="title">{post.data.title}</h4>
+                  </div>
                   <p class="date">
                     <FormattedDate date={post.data.pubDate} />
                   </p>

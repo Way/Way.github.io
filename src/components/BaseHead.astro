@@ -5,9 +5,9 @@ import '../styles/global.css';
 import { SITE_TITLE } from '../consts';
 
 interface Props {
-	title: string;
-	description: string;
-	image?: string;
+  title: string;
+  description: string;
+  image?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -21,16 +21,28 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
-	rel="alternate"
-	type="application/rss+xml"
-	title={SITE_TITLE}
-	href={new URL('rss.xml', Astro.site)}
+  rel="alternate"
+  type="application/rss+xml"
+  title={SITE_TITLE}
+  href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font preloads -->
-<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
-<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
+<link
+  rel="preload"
+  href="/fonts/atkinson-regular.woff"
+  as="font"
+  type="font/woff"
+  crossorigin
+/>
+<link
+  rel="preload"
+  href="/fonts/atkinson-bold.woff"
+  as="font"
+  type="font/woff"
+  crossorigin
+/>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
@@ -48,11 +60,15 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta property="og:image" content={new URL(image, Astro.url)} />
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@dailyway" />
+<meta name="twitter:url" content={Astro.url} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(image, Astro.url)} />
 
 <!-- Analytics -->
-<script defer src="https://cloud.umami.is/script.js" data-website-id="c4eb87f8-2bf5-43fe-988d-12152008821f"></script>
+<script
+  defer
+  src="https://cloud.umami.is/script.js"
+  data-website-id="c4eb87f8-2bf5-43fe-988d-12152008821f"></script>
