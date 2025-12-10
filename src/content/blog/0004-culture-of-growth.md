@@ -1,33 +1,33 @@
 ---
-title: 'Culture of Growth'
-language: en
-description: 'In this thoughtful post, I reflect on the core values and cultural principles that define my companies organizational DNA. Emphasizing empowerment, intrinsic motivation, and the importance of human connection, I try to outline key habits that foster growth, innovation, and teamwork. Ultimately, the message highlights the belief that true success and differentiation come from people, their mindset, and their potential—rather than solely from technology or AI.'
+title: 'Kultur des Wachstums'
+language: de
+description: 'In diesem nachdenklichen Beitrag reflektiere ich über die Kernwerte und kulturellen Prinzipien, die die organisatorische DNA meines Unternehmens ausmachen. Mit Betonung auf Eigenverantwortung, intrinsischer Motivation und der Bedeutung menschlicher Verbindungen skizziere ich wichtige Gewohnheiten, die Wachstum, Innovation und Teamarbeit fördern. Letztendlich unterstreicht die Botschaft die Überzeugung, dass wahrer Erfolg und Differenzierung von Menschen, ihrer Denkweise und ihrem Potenzial ausgehen – und nicht allein von Technologie oder KI.'
 pubDate: '2025-05-19'
 heroImage: '/blog-placeholder-5.jpg'
-prompt: 'I’m especially curious how you’re fostering that “collaborative and fun” culture at fino — always great to hear what’s working from someone who’s been in the trenches. Are there any habits or rituals your team swears by?'
-tags: ['Culture', 'Growth', 'Teamwork']
+prompt: 'Ich bin besonders neugierig, wie ihr bei fino diese „kollaborative und spaßige" Kultur fördert – es ist immer großartig zu hören, was bei jemandem funktioniert, der mittendrin steckt. Gibt es Gewohnheiten oder Rituale, auf die euer Team schwört?'
+tags: ['Kultur', 'Wachstum', 'Teamarbeit']
 ---
 
-At fino, culture has always been a topic of particular importance. From the very beginning, our priority has been to empower individuals to take responsibility for themselves. This empowerment is closely tied to mindset, self-confidence, and intrinsic motivation.
+Bei fino war Kultur schon immer ein Thema von besonderer Bedeutung. Von Anfang an war es unsere Priorität, Einzelpersonen zu befähigen, Verantwortung für sich selbst zu übernehmen. Diese Befähigung ist eng mit der Denkweise, dem Selbstvertrauen und der intrinsischen Motivation verbunden.
 
-Even today, I value determination in candidates and employees more highly than their raw skillset or experience. I believe in learning and discovering together, rather than merely motivating and delegating.
+Auch heute noch schätze ich Entschlossenheit bei Kandidaten und Mitarbeitern höher als ihre reinen Fähigkeiten oder Erfahrungen. Ich glaube an gemeinsames Lernen und Entdecken, anstatt nur zu motivieren und zu delegieren.
 
-## The "Family" Metaphor
+## Die „Familien"-Metapher
 
-I often hear the phrase "we're a family" in the context of company culture. While I understand the sentiment, I find it somewhat misleading. A family is often defined by blood ties, which can lead to a sense of obligation and dependency. In contrast, I prefer to think of our culture as a "community"—a group of individuals who choose to work together, share ideas, and support one another.
+Ich höre oft den Satz „wir sind eine Familie" im Kontext der Unternehmenskultur. Obwohl ich die Absicht verstehe, finde ich ihn etwas irreführend. Eine Familie wird oft durch Blutsbande definiert, was zu einem Gefühl der Verpflichtung und Abhängigkeit führen kann. Im Gegensatz dazu betrachte ich unsere Kultur lieber als eine „Gemeinschaft" – eine Gruppe von Individuen, die sich entscheiden, zusammenzuarbeiten, Ideen auszutauschen und einander zu unterstützen.
 
-## The Importance of Culture
+## Die Bedeutung von Kultur
 
-I believe that a strong culture is built on shared values and principles, rather than just a set of rules or policies. At fino, we have a few key principles that guide our work and interactions:
+Ich glaube, dass eine starke Kultur auf gemeinsamen Werten und Prinzipien aufgebaut ist, nicht nur auf einer Reihe von Regeln oder Richtlinien. Bei fino haben wir einige Schlüsselprinzipien, die unsere Arbeit und Interaktionen leiten:
 
-1. **Involve people early and bring them along on the journey.** Collaboratively visualize ideas and processes on a whiteboard to foster shared understanding and ownership.
+1. **Menschen frühzeitig einbeziehen und auf der Reise mitnehmen.** Ideen und Prozesse gemeinsam auf einem Whiteboard visualisieren, um gemeinsames Verständnis und Ownership zu fördern.
 
-2. **Challenge and encourage individuals—not only to help them improve but also to enable them to surpass you.** Often, our own mental barriers and hierarchical thinking prevent others from realizing their full potential.
+2. **Einzelpersonen herausfordern und ermutigen – nicht nur, um ihnen bei der Verbesserung zu helfen, sondern auch, um sie zu befähigen, über sich hinauszuwachsen.** Oft verhindern unsere eigenen mentalen Barrieren und hierarchisches Denken, dass andere ihr volles Potenzial entfalten können.
 
-3. **Mistakes are not only allowed—they are essential.** However, they shouldn't be excessively costly. No one should fear making mistakes, as fear inhibits initiative and independent action. Courage and a strong sense of teamwork fuel individual curiosity and drive.
+3. **Fehler sind nicht nur erlaubt – sie sind essenziell.** Allerdings sollten sie nicht übermäßig kostspielig sein. Niemand sollte Angst vor Fehlern haben, da Angst Initiative und eigenständiges Handeln hemmt. Mut und ein starkes Teamgefühl fördern individuelle Neugier und Antrieb.
 
-4. **Recognize that everyone is a human being with their own story, motivations, concerns, and unique traits.** We often focus heavily on technical aspects and overlook the human dimension. Everyone deserves recognition, even if not everyone thrives in the spotlight. It's crucial to identify where each person feels most comfortable, as this significantly influences their growth and performance.
+4. **Erkennen, dass jeder ein Mensch mit seiner eigenen Geschichte, Motivationen, Sorgen und einzigartigen Eigenschaften ist.** Wir konzentrieren uns oft stark auf technische Aspekte und übersehen die menschliche Dimension. Jeder verdient Anerkennung, auch wenn nicht jeder im Rampenlicht aufblüht. Es ist entscheidend zu erkennen, wo sich jede Person am wohlsten fühlt, da dies ihr Wachstum und ihre Leistung erheblich beeinflusst.
 
-## The Role of Technology
+## Die Rolle der Technologie
 
-Perhaps my philosophical inclination is particularly evident in this last point. But as someone who deeply values people, I firmly believe that today—more than ever—the true difference lies in individuals, not in technology or AI.
+Vielleicht zeigt sich meine philosophische Neigung besonders in diesem letzten Punkt. Aber als jemand, der Menschen zutiefst schätzt, glaube ich fest daran, dass heute – mehr denn je – der wahre Unterschied in den Menschen liegt, nicht in der Technologie oder KI.
