@@ -5,7 +5,7 @@ description: 'AI-Agenten erledigen Aufgaben in Minuten, doch der neue Engpass is
 pubDate: '2026-02-01'
 heroImage: '/blog-placeholder-2.jpg'
 visualTheme: 'roundtable'
-prompt: 'Wie verändert Agentic Coding die Rolle von Entwickler:innen und die Kommunikation in Softwareteams? Welche neuen Prozesse und Tools brauchen wir, wenn Agenten als gleichberechtigte Akteure im Entwicklungsprozess auftreten?'
+prompt: 'Wie verändert Agentic Coding die Rolle von Entwickler und die Kommunikation in Softwareteams? Welche neuen Prozesse und Tools brauchen wir, wenn Agenten als gleichberechtigte Akteure im Entwicklungsprozess auftreten?'
 tags:
   [
     'AI',
@@ -16,13 +16,13 @@ tags:
   ]
 ---
 
-Die letzten Monate fühlen sich für viele Entwickler:innen gleich an:
+Die letzten Monate fühlen sich für viele Entwickler gleich an:
 AI-Agenten erledigen Aufgaben in Minuten, aber wir verbringen danach 10–20 Minuten damit, Tickets zu aktualisieren, Zusammenfassungen zu schreiben und dem Team zu erklären, was eigentlich passiert ist.
 
 Wir haben die Ausführung beschleunigt – aber nicht die Kommunikation darüber.
 
 Genau hier setzt der Wandel an:
-Wir bewegen uns von klassischem „Builder-Work" hin zu einem Modus, in dem Entwickler:innen zunehmend zu Übersetzer:innen werden – zwischen Menschen, Systemen und jetzt auch Agenten.
+Wir bewegen uns von klassischem „Builder-Work" hin zu einem Modus, in dem Entwickler zunehmend zu Übersetzer werden – zwischen Menschen, Systemen und jetzt auch Agenten.
 
 In diesem Artikel möchte ich drei Dinge beleuchten:
 
@@ -213,7 +213,7 @@ Statt Wiki-Seiten, die niemand liest, denken wir Wissen als API:
 
 - „Frag das System" statt „Frag die richtige Person"
 - Architektur-Wissen, Produktentscheidungen und Business-Regeln sind so gespeichert, dass Agenten sie direkt nutzen können
-- Entwickler:innen interagieren über eine gemeinsame Schicht – Menschen und Agenten fragen dieselben „Knowledge-Endpunkte" an
+- Entwickler interagieren über eine gemeinsame Schicht – Menschen und Agenten fragen dieselben „Knowledge-Endpunkte" an
 
 Damit wird Wissenspflege nicht nur „nice to have", sondern produktivitätskritisch.
 
@@ -253,7 +253,7 @@ Stark vereinfacht könnte ein solcher Prozess so aussehen:
    Einige Tasks sind agent-geeignet (klar, repetitiv, gut beschreibbar), andere bleiben bewusst menschlich (Unsicherheit, Produktentscheidungen, UX-Trade-offs).
 
 3. **Agenten orchestrieren, nicht nur auslösen**
-   Entwickler:innen planen, welche Agenten welche Teile übernehmen, wie sie zusammenspielen und wo menschliche Reviews eingebaut werden.
+   Entwickler planen, welche Agenten welche Teile übernehmen, wie sie zusammenspielen und wo menschliche Reviews eingebaut werden.
 
 4. **Ausführung + automatische Dokumentation**
    Agenten führen Tasks aus, generieren automatisch technische und fachliche Zusammenfassungen, verlinken Kontext.
@@ -269,7 +269,7 @@ Stark vereinfacht könnte ein solcher Prozess so aussehen:
 
 ---
 
-## 7. Was bedeutet das für die Rolle von Entwickler:innen?
+## 7. Was bedeutet das für die Rolle von Entwickler?
 
 Die Rolle verschiebt sich von:
 
@@ -299,7 +299,7 @@ Wenn Agenten mit uns am gleichen Tisch sitzen, reicht es nicht, sie als „schne
 
 - Agent-native Tools, in denen sie First-Class-Citizens sind
 - Entwicklungsprozesse, die Kommunikation und Kontext als zentrales Element behandeln
-- Eine Entwickler:innen-Rolle, die weniger Tipparbeit und mehr Systemdenken ist
+- Eine Entwickler-Rolle, die weniger Tipparbeit und mehr Systemdenken ist
 
 AI-Agenten shippen in Minuten.
 Der neue Engpass ist, zu erklären, **was** passiert ist und **warum** – gegenüber Team, Stakeholdern und bald auch anderen Agenten.

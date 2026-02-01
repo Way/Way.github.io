@@ -1,5 +1,6 @@
 ---
 import HeaderLink from './HeaderLink.astro';
+import ThemeToggle from './ThemeToggle.astro';
 import { SITE_TITLE } from '../consts';
 ---
 
@@ -10,7 +11,9 @@ import { SITE_TITLE } from '../consts';
       <HeaderLink href="/">Home</HeaderLink>
       <HeaderLink href="/about">About</HeaderLink>
     </div>
-    <div class="social-links">
+    <div class="nav-right">
+      <ThemeToggle />
+      <div class="social-links">
       <a href="https://x.com/dailyway" target="_blank">
         <span class="sr-only">Follow Alex Vey on X</span>
         <svg viewBox="0 0 24 24" aria-hidden="true" width="32" height="32"
@@ -29,6 +32,7 @@ import { SITE_TITLE } from '../consts';
           ></path></svg
         >
       </a>
+      </div>
     </div>
   </nav>
 </header>
@@ -36,8 +40,13 @@ import { SITE_TITLE } from '../consts';
   header {
     margin: 0;
     padding: 0 1em;
-    background: white;
+    background: rgb(var(--gray-light));
     box-shadow: 0 2px 8px rgba(var(--black), 5%);
+    border-bottom: 1px solid transparent;
+  }
+  :global(.dark) header {
+    background: rgb(24, 27, 37);
+    border-bottom-color: rgba(255, 255, 255, 8%);
   }
   h2 {
     margin: 0;
@@ -55,13 +64,18 @@ import { SITE_TITLE } from '../consts';
   }
   nav a {
     padding: 1em 0.5em;
-    color: var(--black);
+    color: rgb(var(--black));
     border-bottom: 4px solid transparent;
     text-decoration: none;
   }
   nav a.active {
     text-decoration: none;
     border-bottom-color: var(--accent);
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
   }
   .social-links,
   .social-links a {
