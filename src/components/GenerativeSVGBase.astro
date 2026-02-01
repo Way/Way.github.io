@@ -1,0 +1,119 @@
+---
+import type { VisualParams } from '../lib/visual-hash';
+import { generateShapePositions } from '../lib/visual-hash';
+
+interface Props {
+  params: VisualParams;
+  width: number;
+  height: number;
+}
+
+const { params, width, height } = Astro.props;
+const { seed, hue1, hue2, shapeCount, patternType, opacity, rotation } = params;
+
+const shapes = generateShapePositions(seed, shapeCount, width, height);
+
+// Blend hashed hues toward the site's accent purple (270°) for cohesion
+const blendedHue1 = Math.round((hue1 + 270) / 2);
+const blendedHue2 = Math.round((hue2 + 260) / 2);
+
+// Generate wave path data
+function wavePath(yBase: number, amplitude: number, frequency: number, phase: number): string {
+  const points: string[] = [];
+  for (let x = 0; x <= width; x += 10) {
+    const y = yBase + Math.sin((x * frequency) / width * Math.PI * 2 + phase) * amplitude;
+    points.push(`${x},${y.toFixed(1)}`);
+  }
+  return `M0,${height} L${points.join(' L')} L${width},${height} Z`;
+}
+
+// Generate polygon points (hexagon)
+function hexPoints(cx: number, cy: number, r: number, rot: number): string {
+  const pts: string[] = [];
+  for (let i = 0; i < 6; i++) {
+    const angle = (Math.PI / 3) * i + (rot * Math.PI) / 180;
+    pts.push(`${(cx + r * Math.cos(angle)).toFixed(1)},${(cy + r * Math.sin(angle)).toFixed(1)}`);
+  }
+  return pts.join(' ');
+}
+
+// Generate grid lines
+function gridLines(count: number): Array<{ x1: number; y1: number; x2: number; y2: number }> {
+  const lines: Array<{ x1: number; y1: number; x2: number; y2: number }> = [];
+  const step = Math.max(width, height) / count;
+  for (let i = 0; i < count; i++) {
+    const offset = step * i;
+    lines.push({ x1: offset, y1: 0, x2: offset, y2: height });
+    lines.push({ x1: 0, y1: offset, x2: width, y2: offset });
+  }
+  return lines;
+}
+---
+
+<svg
+  viewBox={`0 0 ${width} ${height}`}
+  preserveAspectRatio="xMidYMid slice"
+  xmlns="http://www.w3.org/2000/svg"
+  class="generative-base"
+>
+  <defs>
+    <linearGradient id={`bg-${seed}`} x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color={`hsl(${blendedHue1}, 55%, 18%)`} />
+      <stop offset="50%" stop-color={`hsl(${Math.round((blendedHue1 + blendedHue2) / 2)}, 45%, 12%)`} />
+      <stop offset="100%" stop-color={`hsl(${blendedHue2}, 50%, 10%)`} />
+    </linearGradient>
+    <radialGradient id={`glow-${seed}`} cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color={`hsl(${blendedHue1}, 60%, 30%)`} stop-opacity="0.3" />
+      <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Base gradient -->
+  <rect width="100%" height="100%" fill={`url(#bg-${seed})`} />
+
+  <!-- Subtle radial glow -->
+  <rect width="100%" height="100%" fill={`url(#glow-${seed})`} />
+
+  <!-- Pattern layer -->
+  <g opacity={String(opacity)} transform={`rotate(${rotation % 15}, ${width / 2}, ${height / 2})`}>
+    {patternType === 'circles' && shapes.map((s, i) => (
+      <circle
+        cx={s.cx.toFixed(1)}
+        cy={s.cy.toFixed(1)}
+        r={s.r.toFixed(1)}
+        fill={`hsl(${(blendedHue1 + i * 20) % 360}, 50%, ${35 + (i % 3) * 10}%)`}
+        opacity={String(0.15 + (i % 4) * 0.1)}
+      />
+    ))}
+
+    {patternType === 'polygons' && shapes.map((s, i) => (
+      <polygon
+        points={hexPoints(s.cx, s.cy, s.r * 0.8, rotation + i * 30)}
+        fill="none"
+        stroke={`hsl(${(blendedHue1 + i * 25) % 360}, 50%, 45%)`}
+        stroke-width="1.5"
+        opacity={String(0.2 + (i % 3) * 0.1)}
+      />
+    ))}
+
+    {patternType === 'waves' && [0.3, 0.5, 0.7].map((yFrac, i) => (
+      <path
+        d={wavePath(height * yFrac, 20 + i * 10, 2 + i, seed % 6)}
+        fill={`hsl(${(blendedHue1 + i * 30) % 360}, 40%, 25%)`}
+        opacity={String(0.12 + i * 0.06)}
+      />
+    ))}
+
+    {patternType === 'grid' && gridLines(8).map((line, i) => (
+      <line
+        x1={line.x1}
+        y1={line.y1}
+        x2={line.x2}
+        y2={line.y2}
+        stroke={`hsl(${blendedHue1}, 40%, 35%)`}
+        stroke-width="0.5"
+        opacity={String(0.1 + (i % 3) * 0.05)}
+      />
+    ))}
+  </g>
+</svg>

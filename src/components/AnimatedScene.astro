@@ -1,0 +1,742 @@
+---
+interface Props {
+  theme: 'neural-network' | 'mesh' | 'towers' | 'growth' | 'vertical-stack' | 'roundtable';
+  seed: number;
+  width: number;
+  height: number;
+}
+
+const { theme, seed, width, height } = Astro.props;
+
+/** Deterministic pseudo-random 0..1 */
+function srand(s: number, i: number): number {
+  const x = Math.sin(s * 9301 + i * 49297) * 49979;
+  return x - Math.floor(x);
+}
+
+// --- Neural Network nodes + connections ---
+const nodeCount = 10;
+const nodes = Array.from({ length: nodeCount }, (_, i) => ({
+  cx: 40 + srand(seed, i * 5) * (width - 80),
+  cy: 20 + srand(seed, i * 5 + 1) * (height - 40),
+  r: 3 + srand(seed, i * 5 + 2) * 4,
+  delay: (srand(seed, i * 5 + 3) * 4).toFixed(1),
+  drift: 6 + srand(seed, i * 5 + 4) * 8,
+}));
+
+// Connect nearby nodes
+const connections: Array<{ x1: number; y1: number; x2: number; y2: number; delay: string }> = [];
+for (let i = 0; i < nodes.length; i++) {
+  for (let j = i + 1; j < nodes.length; j++) {
+    const dx = nodes[i].cx - nodes[j].cx;
+    const dy = nodes[i].cy - nodes[j].cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < Math.min(width, height) * 0.4) {
+      connections.push({
+        x1: nodes[i].cx,
+        y1: nodes[i].cy,
+        x2: nodes[j].cx,
+        y2: nodes[j].cy,
+        delay: ((i + j) * 0.3).toFixed(1),
+      });
+    }
+  }
+}
+
+// --- Mesh points + connections ---
+const meshCount = 14;
+const meshPoints = Array.from({ length: meshCount }, (_, i) => ({
+  cx: 30 + srand(seed + 100, i * 4) * (width - 60),
+  cy: 15 + srand(seed + 100, i * 4 + 1) * (height - 30),
+  delay: (srand(seed + 100, i * 4 + 2) * 5).toFixed(1),
+  driftX: -10 + srand(seed + 100, i * 4 + 3) * 20,
+  driftY: -8 + srand(seed + 100, i * 4 + 2) * 16,
+}));
+
+const meshLines: Array<{ x1: number; y1: number; x2: number; y2: number; delay: string }> = [];
+for (let i = 0; i < meshPoints.length; i++) {
+  for (let j = i + 1; j < meshPoints.length; j++) {
+    const dx = meshPoints[i].cx - meshPoints[j].cx;
+    const dy = meshPoints[i].cy - meshPoints[j].cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < Math.min(width, height) * 0.5) {
+      meshLines.push({
+        x1: meshPoints[i].cx,
+        y1: meshPoints[i].cy,
+        x2: meshPoints[j].cx,
+        y2: meshPoints[j].cy,
+        delay: (srand(seed + 200, i + j) * 6).toFixed(1),
+      });
+    }
+  }
+}
+
+// --- Towers ---
+const towerCount = 7;
+const towers = Array.from({ length: towerCount }, (_, i) => {
+  const tw = width / (towerCount + 2);
+  const maxH = height * 0.85;
+  const h = maxH * (0.3 + srand(seed + 300, i) * 0.7);
+  return {
+    x: tw * (i + 1) - tw * 0.35,
+    y: height - h,
+    w: tw * 0.7,
+    h: h,
+    delay: (i * 0.2).toFixed(1),
+    hue: Math.round(260 + srand(seed + 300, i + 10) * 40),
+    lightness: Math.round(25 + srand(seed + 300, i + 20) * 20),
+  };
+});
+// --- Growth: organic branching paths ---
+const branchCount = 6;
+const startX = width * 0.15;
+const startY = height * 0.6;
+const branches = Array.from({ length: branchCount }, (_, i) => {
+  const angle = -30 + srand(seed + 400, i * 3) * -120; // upward spread
+  const len = 40 + srand(seed + 400, i * 3 + 1) * (Math.min(width, height) * 0.5);
+  const rad = (angle * Math.PI) / 180;
+  const endX = startX + Math.cos(rad) * len;
+  const endY = startY + Math.sin(rad) * len;
+  // Control point for curve
+  const cpX = startX + Math.cos(rad) * len * 0.5 + (srand(seed + 400, i * 3 + 2) - 0.5) * 60;
+  const cpY = startY + Math.sin(rad) * len * 0.5 + (srand(seed + 400, i * 3 + 2) - 0.5) * 40;
+  const pathLen = Math.round(len * 1.3);
+  return {
+    d: `M${startX.toFixed(1)},${startY.toFixed(1)} Q${cpX.toFixed(1)},${cpY.toFixed(1)} ${endX.toFixed(1)},${endY.toFixed(1)}`,
+    endX,
+    endY,
+    delay: (i * 0.4).toFixed(1),
+    dashLen: pathLen,
+    leafR: 4 + srand(seed + 400, i + 20) * 5,
+    hue: Math.round(140 + srand(seed + 400, i + 30) * 80), // green to teal
+  };
+});
+
+// --- Vertical Stack: horizontal layers ---
+const layerCount = 5;
+const layerGap = height / (layerCount + 1);
+const layers = Array.from({ length: layerCount }, (_, i) => {
+  const lw = width * (0.35 + srand(seed + 500, i) * 0.45);
+  const lx = (width - lw) / 2;
+  const ly = layerGap * (i + 0.5);
+  return {
+    x: lx,
+    y: ly,
+    w: lw,
+    h: layerGap * 0.45,
+    delay: (i * 0.25).toFixed(1),
+    hue: Math.round(260 + i * 12),
+    lightness: Math.round(22 + i * 7),
+  };
+});
+
+// Arrows connecting layers
+const layerArrows = layers.slice(0, -1).map((l, i) => {
+  const next = layers[i + 1];
+  const cx = width / 2;
+  const y1 = l.y + l.h;
+  const y2 = next.y;
+  return { cx, y1, y2, delay: ((i + 1) * 0.3).toFixed(1) };
+});
+
+// --- Roundtable: seats arranged in an ellipse ---
+const seatCount = 8;
+const tableCx = width / 2;
+const tableCy = height / 2;
+const tableRx = width * 0.34;
+const tableRy = height * 0.32;
+const seats = Array.from({ length: seatCount }, (_, i) => {
+  const angle = (Math.PI * 2 * i) / seatCount - Math.PI / 2;
+  const isAgent = i % 2 === 1; // alternate human / agent
+  return {
+    cx: tableCx + Math.cos(angle) * tableRx,
+    cy: tableCy + Math.sin(angle) * tableRy,
+    r: 5 + srand(seed + 600, i) * 3,
+    isAgent,
+    delay: (i * 0.15).toFixed(1),
+    drift: 3 + srand(seed + 600, i + 20) * 4,
+    hue: isAgent ? Math.round(250 + srand(seed + 600, i + 10) * 30) : Math.round(30 + srand(seed + 600, i + 10) * 20),
+  };
+});
+
+// Connect each seat to its neighbors + cross-table pairs
+const seatLines: Array<{ x1: number; y1: number; x2: number; y2: number; delay: string; isActive: boolean }> = [];
+for (let i = 0; i < seatCount; i++) {
+  // Neighbor connection
+  const next = (i + 1) % seatCount;
+  seatLines.push({
+    x1: seats[i].cx, y1: seats[i].cy,
+    x2: seats[next].cx, y2: seats[next].cy,
+    delay: (i * 0.2).toFixed(1),
+    isActive: false,
+  });
+  // Cross-table connection (every other)
+  if (i < seatCount / 2) {
+    const opposite = (i + Math.floor(seatCount / 2)) % seatCount;
+    seatLines.push({
+      x1: seats[i].cx, y1: seats[i].cy,
+      x2: seats[opposite].cx, y2: seats[opposite].cy,
+      delay: (i * 0.3 + 0.5).toFixed(1),
+      isActive: seats[i].isAgent !== seats[opposite].isAgent,
+    });
+  }
+}
+---
+
+<svg
+  viewBox={`0 0 ${width} ${height}`}
+  preserveAspectRatio="xMidYMid slice"
+  xmlns="http://www.w3.org/2000/svg"
+  class="animated-scene"
+>
+  {theme === 'neural-network' && (
+    <g class="nn-scene">
+      {/* Connection lines */}
+      {connections.map((c) => (
+        <line
+          x1={c.x1.toFixed(1)}
+          y1={c.y1.toFixed(1)}
+          x2={c.x2.toFixed(1)}
+          y2={c.y2.toFixed(1)}
+          stroke="rgba(180, 160, 255, 0.25)"
+          stroke-width="1"
+          class="nn-line"
+          style={`animation-delay: ${c.delay}s`}
+        />
+      ))}
+      {/* Nodes */}
+      {nodes.map((n) => (
+        <g class="nn-node" style={`animation-delay: ${n.delay}s; --drift: ${n.drift}px`}>
+          {/* Glow ring */}
+          <circle
+            cx={n.cx.toFixed(1)}
+            cy={n.cy.toFixed(1)}
+            r={(n.r * 2.5).toFixed(1)}
+            fill="none"
+            stroke="rgba(142, 114, 225, 0.15)"
+            stroke-width="1"
+            class="nn-glow"
+            style={`animation-delay: ${n.delay}s`}
+          />
+          {/* Core */}
+          <circle
+            cx={n.cx.toFixed(1)}
+            cy={n.cy.toFixed(1)}
+            r={n.r.toFixed(1)}
+            fill="rgba(200, 180, 255, 0.7)"
+            class="nn-pulse"
+            style={`animation-delay: ${n.delay}s`}
+          />
+        </g>
+      ))}
+    </g>
+  )}
+
+  {theme === 'mesh' && (
+    <g class="mesh-scene">
+      {/* Mesh lines with data-flow animation */}
+      {meshLines.map((l) => (
+        <line
+          x1={l.x1.toFixed(1)}
+          y1={l.y1.toFixed(1)}
+          x2={l.x2.toFixed(1)}
+          y2={l.y2.toFixed(1)}
+          stroke="rgba(140, 220, 255, 0.2)"
+          stroke-width="0.8"
+          class="mesh-line"
+          style={`animation-delay: ${l.delay}s`}
+        />
+      ))}
+      {/* Mesh points */}
+      {meshPoints.map((p) => (
+        <g class="mesh-point" style={`animation-delay: ${p.delay}s; --dx: ${p.driftX.toFixed(1)}px; --dy: ${p.driftY.toFixed(1)}px`}>
+          <circle
+            cx={p.cx.toFixed(1)}
+            cy={p.cy.toFixed(1)}
+            r="3"
+            fill="rgba(160, 230, 255, 0.6)"
+          />
+          <circle
+            cx={p.cx.toFixed(1)}
+            cy={p.cy.toFixed(1)}
+            r="8"
+            fill="none"
+            stroke="rgba(160, 230, 255, 0.12)"
+            stroke-width="1"
+            class="mesh-ring"
+            style={`animation-delay: ${p.delay}s`}
+          />
+        </g>
+      ))}
+    </g>
+  )}
+
+  {theme === 'towers' && (
+    <g class="towers-scene">
+      {towers.map((t) => (
+        <g class="tower" style={`animation-delay: ${t.delay}s; transform-origin: ${(t.x + t.w / 2).toFixed(1)}px ${height}px`}>
+          <rect
+            x={t.x.toFixed(1)}
+            y={t.y.toFixed(1)}
+            width={t.w.toFixed(1)}
+            height={t.h.toFixed(1)}
+            rx="4"
+            fill={`hsl(${t.hue}, 45%, ${t.lightness}%)`}
+            opacity="0.5"
+            class="tower-bar"
+            style={`animation-delay: ${t.delay}s`}
+          />
+          {/* Top cap glow */}
+          <rect
+            x={t.x.toFixed(1)}
+            y={t.y.toFixed(1)}
+            width={t.w.toFixed(1)}
+            height="3"
+            rx="1.5"
+            fill={`hsl(${t.hue}, 60%, 55%)`}
+            opacity="0.7"
+            class="tower-cap"
+            style={`animation-delay: ${t.delay}s`}
+          />
+        </g>
+      ))}
+    </g>
+  )}
+
+  {theme === 'growth' && (
+    <g class="growth-scene">
+      {branches.map((b) => (
+        <g>
+          {/* Branch path */}
+          <path
+            d={b.d}
+            fill="none"
+            stroke={`hsl(${b.hue}, 45%, 40%)`}
+            stroke-width="2"
+            stroke-linecap="round"
+            class="growth-branch"
+            style={`animation-delay: ${b.delay}s; --dash: ${b.dashLen}`}
+            stroke-dasharray={b.dashLen}
+            stroke-dashoffset={b.dashLen}
+          />
+          {/* Leaf at branch tip */}
+          <circle
+            cx={b.endX.toFixed(1)}
+            cy={b.endY.toFixed(1)}
+            r={b.leafR.toFixed(1)}
+            fill={`hsl(${b.hue}, 55%, 45%)`}
+            opacity="0"
+            class="growth-leaf"
+            style={`animation-delay: ${(parseFloat(b.delay) + 1.0).toFixed(1)}s`}
+          />
+          {/* Glow around leaf */}
+          <circle
+            cx={b.endX.toFixed(1)}
+            cy={b.endY.toFixed(1)}
+            r={(b.leafR * 2.2).toFixed(1)}
+            fill="none"
+            stroke={`hsl(${b.hue}, 40%, 50%)`}
+            stroke-width="0.8"
+            opacity="0"
+            class="growth-leaf-glow"
+            style={`animation-delay: ${(parseFloat(b.delay) + 1.2).toFixed(1)}s`}
+          />
+        </g>
+      ))}
+      {/* Root node */}
+      <circle
+        cx={startX.toFixed(1)}
+        cy={startY.toFixed(1)}
+        r="6"
+        fill="rgba(160, 230, 180, 0.6)"
+        class="growth-root"
+      />
+    </g>
+  )}
+
+  {theme === 'vertical-stack' && (
+    <g class="vstack-scene">
+      {layers.map((l) => (
+        <g class="vstack-layer" style={`animation-delay: ${l.delay}s`}>
+          <rect
+            x={l.x.toFixed(1)}
+            y={l.y.toFixed(1)}
+            width={l.w.toFixed(1)}
+            height={l.h.toFixed(1)}
+            rx="6"
+            fill={`hsl(${l.hue}, 45%, ${l.lightness}%)`}
+            opacity="0.5"
+            class="vstack-bar"
+            style={`animation-delay: ${l.delay}s`}
+          />
+          {/* Edge highlight */}
+          <rect
+            x={l.x.toFixed(1)}
+            y={l.y.toFixed(1)}
+            width="3"
+            height={l.h.toFixed(1)}
+            rx="1.5"
+            fill={`hsl(${l.hue}, 60%, 50%)`}
+            opacity="0.7"
+            class="vstack-edge"
+            style={`animation-delay: ${l.delay}s`}
+          />
+        </g>
+      ))}
+      {/* Connecting arrows between layers */}
+      {layerArrows.map((a) => (
+        <g class="vstack-arrow" style={`animation-delay: ${a.delay}s`}>
+          <line
+            x1={a.cx}
+            y1={a.y1.toFixed(1)}
+            x2={a.cx}
+            y2={a.y2.toFixed(1)}
+            stroke="rgba(180, 160, 255, 0.3)"
+            stroke-width="1.5"
+            stroke-dasharray="4 3"
+          />
+          {/* Arrow head */}
+          <polygon
+            points={`${a.cx - 4},${(a.y2 - 2).toFixed(1)} ${a.cx + 4},${(a.y2 - 2).toFixed(1)} ${a.cx},${(a.y2 + 2).toFixed(1)}`}
+            fill="rgba(180, 160, 255, 0.4)"
+          />
+        </g>
+      ))}
+    </g>
+  )}
+
+  {theme === 'roundtable' && (
+    <g class="rt-scene">
+      {/* Table ellipse */}
+      <ellipse
+        cx={tableCx.toFixed(1)}
+        cy={tableCy.toFixed(1)}
+        rx={tableRx.toFixed(1)}
+        ry={tableRy.toFixed(1)}
+        fill="none"
+        stroke="rgba(180, 170, 220, 0.12)"
+        stroke-width="1.5"
+        stroke-dasharray="6 4"
+        class="rt-table"
+      />
+      {/* Inner glow ellipse */}
+      <ellipse
+        cx={tableCx.toFixed(1)}
+        cy={tableCy.toFixed(1)}
+        rx={(tableRx * 0.6).toFixed(1)}
+        ry={(tableRy * 0.6).toFixed(1)}
+        fill="none"
+        stroke="rgba(180, 170, 220, 0.06)"
+        stroke-width="1"
+        class="rt-table-inner"
+      />
+      {/* Connection lines */}
+      {seatLines.map((l) => (
+        <line
+          x1={l.x1.toFixed(1)}
+          y1={l.y1.toFixed(1)}
+          x2={l.x2.toFixed(1)}
+          y2={l.y2.toFixed(1)}
+          stroke={l.isActive ? 'rgba(200, 170, 255, 0.3)' : 'rgba(160, 155, 200, 0.15)'}
+          stroke-width={l.isActive ? '1.2' : '0.8'}
+          stroke-dasharray={l.isActive ? 'none' : '3 3'}
+          class={l.isActive ? 'rt-line-active' : 'rt-line'}
+          style={`animation-delay: ${l.delay}s`}
+        />
+      ))}
+      {/* Seat nodes */}
+      {seats.map((s) => (
+        <g class="rt-seat" style={`animation-delay: ${s.delay}s; --drift: ${s.drift}px`}>
+          {/* Outer ring */}
+          <circle
+            cx={s.cx.toFixed(1)}
+            cy={s.cy.toFixed(1)}
+            r={(s.r * 2.5).toFixed(1)}
+            fill="none"
+            stroke={s.isAgent ? `hsla(${s.hue}, 55%, 60%, 0.15)` : `hsla(${s.hue}, 50%, 60%, 0.12)`}
+            stroke-width="1"
+            class="rt-ring"
+            style={`animation-delay: ${s.delay}s`}
+          />
+          {/* Core node */}
+          <circle
+            cx={s.cx.toFixed(1)}
+            cy={s.cy.toFixed(1)}
+            r={s.r.toFixed(1)}
+            fill={s.isAgent ? `hsla(${s.hue}, 55%, 55%, 0.7)` : `hsla(${s.hue}, 45%, 60%, 0.7)`}
+            class="rt-core"
+            style={`animation-delay: ${s.delay}s`}
+          />
+          {/* Agent indicator: small inner diamond */}
+          {s.isAgent && (
+            <rect
+              x={(s.cx - 2).toFixed(1)}
+              y={(s.cy - 2).toFixed(1)}
+              width="4"
+              height="4"
+              fill={`hsla(${s.hue}, 70%, 75%, 0.9)`}
+              transform={`rotate(45 ${s.cx.toFixed(1)} ${s.cy.toFixed(1)})`}
+              class="rt-agent-mark"
+              style={`animation-delay: ${s.delay}s`}
+            />
+          )}
+        </g>
+      ))}
+    </g>
+  )}
+</svg>
+
+<style>
+  /* ── Neural Network ── */
+  .nn-node {
+    animation: nn-float 5s ease-in-out infinite;
+  }
+  @keyframes nn-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(calc(var(--drift, 8px) * -1)); }
+  }
+
+  .nn-pulse {
+    animation: nn-pulse 3s ease-in-out infinite;
+  }
+  @keyframes nn-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
+  .nn-glow {
+    animation: nn-glow-pulse 4s ease-in-out infinite;
+  }
+  @keyframes nn-glow-pulse {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(1.3); }
+  }
+
+  .nn-line {
+    animation: nn-line-fade 6s ease-in-out infinite;
+  }
+  @keyframes nn-line-fade {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 0.5; }
+  }
+
+  /* ── Mesh ── */
+  .mesh-point {
+    animation: mesh-drift 7s ease-in-out infinite;
+  }
+  @keyframes mesh-drift {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(var(--dx, 5px), var(--dy, 3px)); }
+  }
+
+  .mesh-line {
+    animation: mesh-flow 5s ease-in-out infinite;
+  }
+  @keyframes mesh-flow {
+    0%, 100% { opacity: 0.2; }
+    30% { opacity: 0.45; }
+    70% { opacity: 0.1; }
+  }
+
+  .mesh-ring {
+    animation: mesh-ring-pulse 4s ease-in-out infinite;
+  }
+  @keyframes mesh-ring-pulse {
+    0%, 100% { opacity: 0.12; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.5); }
+  }
+
+  /* ── Towers ── */
+  .tower {
+    animation: tower-rise 1.2s ease-out both;
+  }
+  @keyframes tower-rise {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+
+  .tower-bar {
+    animation: tower-breathe 4s ease-in-out infinite;
+    animation-delay: inherit;
+  }
+  @keyframes tower-breathe {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 0.65; }
+  }
+
+  .tower-cap {
+    animation: tower-cap-glow 3s ease-in-out infinite;
+    animation-delay: inherit;
+  }
+  @keyframes tower-cap-glow {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  /* ── Growth ── */
+  .growth-branch {
+    animation: growth-draw 1.8s ease-out both;
+  }
+  @keyframes growth-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .growth-leaf {
+    animation: growth-leaf-appear 0.8s ease-out both, growth-leaf-breathe 4s ease-in-out 1.8s infinite;
+  }
+  @keyframes growth-leaf-appear {
+    from { opacity: 0; transform: scale(0); }
+    to { opacity: 0.7; transform: scale(1); }
+  }
+  @keyframes growth-leaf-breathe {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.85; }
+  }
+
+  .growth-leaf-glow {
+    animation: growth-glow-appear 0.6s ease-out both, growth-glow-pulse 5s ease-in-out 2s infinite;
+  }
+  @keyframes growth-glow-appear {
+    from { opacity: 0; }
+    to { opacity: 0.2; }
+  }
+  @keyframes growth-glow-pulse {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.3); }
+  }
+
+  .growth-root {
+    animation: growth-root-pulse 3s ease-in-out infinite;
+  }
+  @keyframes growth-root-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  /* ── Vertical Stack ── */
+  .vstack-layer {
+    animation: vstack-slide 0.8s ease-out both;
+  }
+  @keyframes vstack-slide {
+    from { transform: translateX(-40px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .vstack-bar {
+    animation: vstack-breathe 4.5s ease-in-out infinite;
+    animation-delay: inherit;
+  }
+  @keyframes vstack-breathe {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 0.65; }
+  }
+
+  .vstack-edge {
+    animation: vstack-edge-glow 3s ease-in-out infinite;
+    animation-delay: inherit;
+  }
+  @keyframes vstack-edge-glow {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .vstack-arrow {
+    animation: vstack-arrow-fade 1s ease-out both;
+  }
+  @keyframes vstack-arrow-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ── Roundtable ── */
+  .rt-table {
+    animation: rt-table-pulse 6s ease-in-out infinite;
+  }
+  @keyframes rt-table-pulse {
+    0%, 100% { opacity: 0.12; }
+    50% { opacity: 0.22; }
+  }
+
+  .rt-table-inner {
+    animation: rt-inner-pulse 6s ease-in-out 1s infinite;
+  }
+  @keyframes rt-inner-pulse {
+    0%, 100% { opacity: 0.06; }
+    50% { opacity: 0.14; }
+  }
+
+  .rt-seat {
+    animation: rt-float 5s ease-in-out infinite;
+  }
+  @keyframes rt-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(calc(var(--drift, 4px) * -1)); }
+  }
+
+  .rt-core {
+    animation: rt-core-pulse 3.5s ease-in-out infinite;
+  }
+  @keyframes rt-core-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
+  .rt-ring {
+    animation: rt-ring-expand 4.5s ease-in-out infinite;
+  }
+  @keyframes rt-ring-expand {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.25); }
+  }
+
+  .rt-agent-mark {
+    animation: rt-mark-spin 8s linear infinite;
+  }
+  @keyframes rt-mark-spin {
+    0% { opacity: 0.9; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.9; }
+  }
+
+  .rt-line {
+    animation: rt-line-fade 5s ease-in-out infinite;
+  }
+  @keyframes rt-line-fade {
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.3; }
+  }
+
+  .rt-line-active {
+    animation: rt-line-flow 3s ease-in-out infinite;
+  }
+  @keyframes rt-line-flow {
+    0%, 100% { opacity: 0.3; stroke-width: 1.2; }
+    50% { opacity: 0.55; stroke-width: 1.8; }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .nn-node, .nn-pulse, .nn-glow, .nn-line,
+    .mesh-point, .mesh-line, .mesh-ring,
+    .tower, .tower-bar, .tower-cap,
+    .growth-branch, .growth-leaf, .growth-leaf-glow, .growth-root,
+    .vstack-layer, .vstack-bar, .vstack-edge, .vstack-arrow,
+    .rt-table, .rt-table-inner, .rt-seat, .rt-core, .rt-ring,
+    .rt-agent-mark, .rt-line, .rt-line-active {
+      animation: none !important;
+    }
+    .tower {
+      transform: scaleY(1) !important;
+    }
+    .growth-branch {
+      stroke-dashoffset: 0 !important;
+    }
+    .growth-leaf, .growth-leaf-glow {
+      opacity: 0.7 !important;
+    }
+    .vstack-layer {
+      transform: translateX(0) !important;
+      opacity: 1 !important;
+    }
+  }
+</style>

@@ -5,47 +5,42 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import BlogPostIntro from '../components/BlogPostIntro.astro';
+import HeroVisual from '../components/HeroVisual.astro';
 import '../styles/global.css'; // Keep global styles
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage, prompt } = Astro.props;
+const { title, description, pubDate, updatedDate, prompt, visualTheme } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="de">
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
 			.hero-container {
-				position: relative; /* Needed for absolute positioning of title */
+				position: relative;
 				width: 100%;
-				overflow: hidden; /* Hide overflow */
-				margin-bottom: 1.5rem; /* Add some space below the image */
-			}
-			.hero-container img {
-				display: block; /* Remove extra space below image */
-				width: 100%;
-				max-height: 400px; /* Reduce image height */
-				object-fit: cover; /* Ensure image covers container */
-				border-radius: 12px; /* Optional: add rounded corners */
+				overflow: hidden;
+				margin-bottom: 1.5rem;
 			}
 			.title-overlay {
-				position: absolute; /* Position text absolutely */
+				position: absolute;
 				bottom: 5%;
-				left: 50%; /* Center horizontally */
+				left: 50%;
 				transform: translate(-50%, 0);
-				text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8); /* Add text shadow for better readability */
+				text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
 				text-align: center;
-				width: 90%; /* Limit text width */
+				width: 90%;
+				z-index: 1;
 			}
 			.title-overlay h1 {
 				margin: 0;
-				color: white; /* Set text color to white */
-				font-size: 3em; /* Adjust title font size if needed */
+				color: white;
+				font-size: 3em;
 				line-height: 1.1;
 			}
 			.date-container {
-				text-align: center; /* Center date below image */
+				text-align: center;
 				margin-bottom: 1rem;
 			}
 			.date {
@@ -61,9 +56,6 @@ const { title, description, pubDate, updatedDate, heroImage, prompt } = Astro.pr
 				.title-overlay h1 {
 					font-size: 2em;
 				}
-				.hero-container img {
-					max-height: 300px;
-				}
 			}
 		</style>
 	</head>
@@ -73,12 +65,16 @@ const { title, description, pubDate, updatedDate, heroImage, prompt } = Astro.pr
 		<main>
 			<article>
 				<div class="hero-container">
-					{heroImage && <img src={heroImage} alt="" />}
+					<HeroVisual
+						title={title}
+						pubDate={pubDate}
+						visualTheme={visualTheme}
+						variant="detail"
+					/>
 					<div class="title-overlay">
 						<h1>{title}</h1>
 					</div>
 				</div>
-				{/* Optional: Keep the prompt overlayed at the bottom */} 
 				{prompt && <BlogPostIntro content={prompt} />}
 				<div class="date-container">
 					<div class="date">

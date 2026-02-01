@@ -1,0 +1,78 @@
+---
+import { deriveVisualParams } from '../lib/visual-hash';
+import GenerativeSVGBase from './GenerativeSVGBase.astro';
+import AnimatedScene from './AnimatedScene.astro';
+
+interface Props {
+  title: string;
+  pubDate: Date;
+  visualTheme?: 'neural-network' | 'mesh' | 'towers' | 'growth' | 'vertical-stack';
+  variant: 'featured' | 'card' | 'detail';
+}
+
+const { title, pubDate, visualTheme, variant } = Astro.props;
+
+const params = deriveVisualParams(title, pubDate.toISOString());
+
+const dimensions: Record<string, { width: number; height: number }> = {
+  featured: { width: 960, height: 300 },
+  card: { width: 720, height: 180 },
+  detail: { width: 960, height: 400 },
+};
+const { width, height } = dimensions[variant];
+---
+
+<div class={`hero-visual hero-visual--${variant}`} role="img" aria-label={title}>
+  <GenerativeSVGBase params={params} width={width} height={height} />
+  {visualTheme && (
+    <div class="hero-visual__scene">
+      <AnimatedScene theme={visualTheme} seed={params.seed} width={width} height={height} />
+    </div>
+  )}
+  <div class="hero-visual__overlay"></div>
+</div>
+
+<style>
+  .hero-visual {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .hero-visual :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .hero-visual--featured {
+    max-height: 300px;
+  }
+  .hero-visual--card {
+    max-height: 180px;
+  }
+  .hero-visual--detail {
+    max-height: 400px;
+  }
+
+  .hero-visual__scene {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .hero-visual__scene :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-visual__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0.15) 40%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+</style>
