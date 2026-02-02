@@ -3,7 +3,6 @@ title: 'Vertical AI: Wenn Maschinen mitentscheiden'
 language: de
 description: 'Vertical AI und Embedded Decisioning versprechen tiefgreifende Branchenexpertise statt generischer Lösungen. Doch wenn KI zunehmend in Entscheidungsprozesse eingebettet wird, stellt sich eine fundamentale Frage: Wo endet die Effizienz und wo beginnt der Verlust kreativer Entscheidungsgewalt?'
 pubDate: '2025-12-10'
-heroImage: '/blog-placeholder-2.jpg'
 visualTheme: 'vertical-stack'
 prompt: 'Wie verändert Vertical AI mit Embedded Decisioning die kreative Entscheidungsgewalt in Unternehmen? Welche Chancen und Risiken birgt die zunehmende Einbettung von KI in branchenspezifische Entscheidungsprozesse?'
 tags: ['AI', 'Vertical AI', 'Entscheidungsfindung', 'Innovation']

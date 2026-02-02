@@ -2,7 +2,6 @@
 title: 'KI, Ideen und die Zukunft der Geschäftsmodelle'
 description: 'KI macht die technische Umsetzung von Apps zur Nebensache, wodurch Ideen, Originalität/Geschwindigkeit und Marketing entscheidend werden. Bedenken sind Langlebigkeit und der Fokus auf Generierung statt echtem Bedarf - wie viele Trip-Planner braucht es? Welche Geschäftsmodelle funktionieren für "Vibe-Apps", die Nutzer potenziell selbst generieren können?'
 pubDate: 'April 14 2025'
-heroImage: '/blog-placeholder-2.jpg'
 visualTheme: 'towers'
 prompt: 'KI macht die technische Umsetzung von Apps zur Nebensache, wodurch Ideen, Originalität/Geschwindigkeit und Marketing entscheidend werden. Bedenken sind Langlebigkeit und der Fokus auf Generierung statt echtem Bedarf - wie viele Trip-Planner braucht es? Welche Geschäftsmodelle funktionieren für "Vibe-Apps", die Nutzer potenziell selbst generieren können?'
 ---
