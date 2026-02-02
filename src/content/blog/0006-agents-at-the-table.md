@@ -1,5 +1,5 @@
 ---
-title: 'Agents sitzen mit am Tisch: Agentic Development im Zeitalter der „Vertical Integration of Development"'
+title: 'Agentic Development: Agents sitzen mit am Tisch'
 language: de
 description: 'AI-Agenten erledigen Aufgaben in Minuten, doch der neue Engpass ist die Kommunikation. Wie sieht ein Entwicklungsprozess aus, in dem Menschen und Agenten als Partner am gleichen Tisch sitzen – und Agenten gleichzeitig als Integration Layer über Code, Logs, Infra und Tickets agieren?'
 pubDate: '2026-02-01'
