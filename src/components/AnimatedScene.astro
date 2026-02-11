@@ -112,6 +112,103 @@ const branches = Array.from({ length: branchCount }, (_, i) => {
   };
 });
 
+// --- Growth: main trunk (central stem) ---
+const trunkTopY = height * 0.08;
+const trunkMid1Y = startY * 0.7;
+const trunkMid2Y = startY * 0.35;
+const trunkSway1 = (srand(seed + 410, 0) - 0.5) * 30;
+const trunkSway2 = (srand(seed + 410, 1) - 0.5) * 20;
+const trunk = {
+  d: `M${startX.toFixed(1)},${startY.toFixed(1)} C${(startX + trunkSway1).toFixed(1)},${trunkMid1Y.toFixed(1)} ${(startX - trunkSway2).toFixed(1)},${trunkMid2Y.toFixed(1)} ${(startX + trunkSway1 * 0.3).toFixed(1)},${trunkTopY.toFixed(1)}`,
+  dashLen: Math.round((startY - trunkTopY) * 1.4),
+  hue: 145,
+};
+
+// --- Growth: sub-branches forking from main branches ---
+const subBranches = branches.flatMap((b, i) => {
+  if (srand(seed + 420, i * 10) < 0.3) return [];
+  const forkT = 0.4 + srand(seed + 420, i * 10 + 1) * 0.2;
+  const forkX = startX + (b.endX - startX) * forkT;
+  const forkY = startY + (b.endY - startY) * forkT;
+  const parentAngle = Math.atan2(b.endY - startY, b.endX - startX);
+  const branchAngle = parentAngle + (srand(seed + 420, i * 10 + 2) > 0.5 ? 1 : -1)
+    * (0.5 + srand(seed + 420, i * 10 + 3) * 0.8);
+  const subLen = 15 + srand(seed + 420, i * 10 + 4) * 25;
+  const tipX = forkX + Math.cos(branchAngle) * subLen;
+  const tipY = forkY + Math.sin(branchAngle) * subLen;
+  const scpX = forkX + Math.cos(branchAngle) * subLen * 0.5
+    + (srand(seed + 420, i * 10 + 5) - 0.5) * 10;
+  const scpY = forkY + Math.sin(branchAngle) * subLen * 0.5
+    + (srand(seed + 420, i * 10 + 5) - 0.5) * 8;
+  return [{
+    d: `M${forkX.toFixed(1)},${forkY.toFixed(1)} Q${scpX.toFixed(1)},${scpY.toFixed(1)} ${tipX.toFixed(1)},${tipY.toFixed(1)}`,
+    tipX,
+    tipY,
+    dashLen: Math.round(subLen * 1.3),
+    delay: (parseFloat(b.delay) + 0.8).toFixed(1),
+    budR: 2 + srand(seed + 420, i * 10 + 6) * 1.5,
+    hue: b.hue + Math.round((srand(seed + 420, i * 10 + 7) - 0.5) * 20),
+  }];
+});
+
+// --- Growth: floating spores/particles ---
+const sporeCount = 8 + Math.floor(srand(seed + 430, 0) * 5);
+const spores = Array.from({ length: sporeCount }, (_, i) => ({
+  cx: 20 + srand(seed + 430, i * 4) * (width - 40),
+  cy: height * 0.15 + srand(seed + 430, i * 4 + 1) * (height * 0.7),
+  r: 1 + srand(seed + 430, i * 4 + 2) * 1.5,
+  opacity: 0.08 + srand(seed + 430, i * 4 + 3) * 0.17,
+  duration: (12 + srand(seed + 430, i * 4 + 2) * 10).toFixed(1),
+  delay: (srand(seed + 430, i * 4 + 3) * 6).toFixed(1),
+  drift: (15 + srand(seed + 430, i * 4 + 1) * 20).toFixed(1),
+  hue: Math.round(140 + srand(seed + 430, i * 4) * 60),
+}));
+
+// --- Growth: ground roots ---
+const rootCount = 3 + Math.floor(srand(seed + 440, 0) * 2);
+const groundRoots = Array.from({ length: rootCount }, (_, i) => {
+  const angle = 10 + srand(seed + 440, i * 3) * 50;
+  const side = (i % 2 === 0) ? 1 : -1;
+  const len = 25 + srand(seed + 440, i * 3 + 1) * 40;
+  const rad = (angle * Math.PI) / 180;
+  const endX = startX + side * Math.cos(rad) * len;
+  const endY = startY + Math.sin(rad) * len;
+  const cpX = startX + side * Math.cos(rad) * len * 0.5
+    + (srand(seed + 440, i * 3 + 2) - 0.5) * 15;
+  const cpY = startY + Math.sin(rad) * len * 0.5
+    + srand(seed + 440, i * 3 + 2) * 10;
+  const pathLen = Math.round(len * 1.2);
+  return {
+    d: `M${startX.toFixed(1)},${startY.toFixed(1)} Q${cpX.toFixed(1)},${cpY.toFixed(1)} ${endX.toFixed(1)},${endY.toFixed(1)}`,
+    dashLen: pathLen,
+    delay: (0.3 + i * 0.3).toFixed(1),
+    hue: Math.round(130 + srand(seed + 440, i + 10) * 30),
+  };
+});
+
+// --- Growth: bloom cluster data for branch tips ---
+const bloomData = branches.map((b, i) => {
+  const hasBloom = srand(seed + 450, i) > 0.45;
+  if (!hasBloom) return null;
+  const petalCount = 3 + Math.floor(srand(seed + 450, i * 5 + 1) * 3);
+  const petals = Array.from({ length: petalCount }, (_, p) => {
+    const angle = (Math.PI * 2 * p) / petalCount
+      + srand(seed + 450, i * 5 + p + 2) * 0.3;
+    const dist = b.leafR * 0.55;
+    const petalR = b.leafR * (0.4 + srand(seed + 450, i * 5 + p + 10) * 0.15);
+    return {
+      cx: b.endX + Math.cos(angle) * dist,
+      cy: b.endY + Math.sin(angle) * dist,
+      r: petalR,
+    };
+  });
+  return {
+    petals,
+    centerR: b.leafR * 0.3,
+    hue: b.hue + 15,
+  };
+});
+
 // --- Vertical Stack: horizontal layers ---
 const layerCount = 5;
 const layerGap = height / (layerCount + 1);
@@ -305,9 +402,47 @@ for (let i = 0; i < seatCount; i++) {
 
   {theme === 'growth' && (
     <g class="growth-scene">
-      {branches.map((b) => (
+      {/* Ground roots (behind everything) */}
+      {groundRoots.map((r) => (
+        <path
+          d={r.d}
+          fill="none"
+          stroke={`hsl(${r.hue}, 30%, 35%)`}
+          stroke-width="1.2"
+          stroke-linecap="round"
+          opacity="0.35"
+          class="growth-ground-root"
+          style={`animation-delay: ${r.delay}s`}
+          stroke-dasharray={r.dashLen}
+          stroke-dashoffset={r.dashLen}
+        />
+      ))}
+      {/* Floating spores (background atmosphere) */}
+      {spores.map((sp) => (
+        <circle
+          cx={sp.cx.toFixed(1)}
+          cy={sp.cy.toFixed(1)}
+          r={sp.r.toFixed(1)}
+          fill={`hsl(${sp.hue}, 40%, 55%)`}
+          opacity={sp.opacity.toFixed(2)}
+          class="growth-spore"
+          style={`animation-delay: ${sp.delay}s; --spore-drift: ${sp.drift}px; --spore-duration: ${sp.duration}s`}
+        />
+      ))}
+      {/* Main trunk */}
+      <path
+        d={trunk.d}
+        fill="none"
+        stroke={`hsl(${trunk.hue}, 35%, 35%)`}
+        stroke-width="3.5"
+        stroke-linecap="round"
+        class="growth-trunk"
+        stroke-dasharray={trunk.dashLen}
+        stroke-dashoffset={trunk.dashLen}
+      />
+      {/* Main branches with conditional bloom/leaf */}
+      {branches.map((b, i) => (
         <g>
-          {/* Branch path */}
           <path
             d={b.d}
             fill="none"
@@ -319,17 +454,41 @@ for (let i = 0; i < seatCount; i++) {
             stroke-dasharray={b.dashLen}
             stroke-dashoffset={b.dashLen}
           />
-          {/* Leaf at branch tip */}
-          <circle
-            cx={b.endX.toFixed(1)}
-            cy={b.endY.toFixed(1)}
-            r={b.leafR.toFixed(1)}
-            fill={`hsl(${b.hue}, 55%, 45%)`}
-            opacity="0"
-            class="growth-leaf"
-            style={`animation-delay: ${(parseFloat(b.delay) + 1.0).toFixed(1)}s`}
-          />
-          {/* Glow around leaf */}
+          {bloomData[i] ? (
+            <g class="growth-bloom"
+               style={`animation-delay: ${(parseFloat(b.delay) + 1.0).toFixed(1)}s`}>
+              {bloomData[i]!.petals.map((petal, p) => (
+                <circle
+                  cx={petal.cx.toFixed(1)}
+                  cy={petal.cy.toFixed(1)}
+                  r={petal.r.toFixed(1)}
+                  fill={`hsl(${bloomData[i]!.hue}, 50%, 50%)`}
+                  opacity="0"
+                  class="growth-petal"
+                  style={`animation-delay: ${(parseFloat(b.delay) + 1.0 + p * 0.08).toFixed(2)}s`}
+                />
+              ))}
+              <circle
+                cx={b.endX.toFixed(1)}
+                cy={b.endY.toFixed(1)}
+                r={bloomData[i]!.centerR.toFixed(1)}
+                fill={`hsl(${b.hue}, 60%, 55%)`}
+                opacity="0"
+                class="growth-petal"
+                style={`animation-delay: ${(parseFloat(b.delay) + 1.3).toFixed(1)}s`}
+              />
+            </g>
+          ) : (
+            <circle
+              cx={b.endX.toFixed(1)}
+              cy={b.endY.toFixed(1)}
+              r={b.leafR.toFixed(1)}
+              fill={`hsl(${b.hue}, 55%, 45%)`}
+              opacity="0"
+              class="growth-leaf"
+              style={`animation-delay: ${(parseFloat(b.delay) + 1.0).toFixed(1)}s`}
+            />
+          )}
           <circle
             cx={b.endX.toFixed(1)}
             cy={b.endY.toFixed(1)}
@@ -340,6 +499,31 @@ for (let i = 0; i < seatCount; i++) {
             opacity="0"
             class="growth-leaf-glow"
             style={`animation-delay: ${(parseFloat(b.delay) + 1.2).toFixed(1)}s`}
+          />
+        </g>
+      ))}
+      {/* Sub-branches with buds */}
+      {subBranches.map((sb) => (
+        <g>
+          <path
+            d={sb.d}
+            fill="none"
+            stroke={`hsl(${sb.hue}, 40%, 42%)`}
+            stroke-width="1"
+            stroke-linecap="round"
+            class="growth-sub-branch"
+            style={`animation-delay: ${sb.delay}s`}
+            stroke-dasharray={sb.dashLen}
+            stroke-dashoffset={sb.dashLen}
+          />
+          <circle
+            cx={sb.tipX.toFixed(1)}
+            cy={sb.tipY.toFixed(1)}
+            r={sb.budR.toFixed(1)}
+            fill={`hsl(${sb.hue}, 50%, 48%)`}
+            opacity="0"
+            class="growth-bud"
+            style={`animation-delay: ${(parseFloat(sb.delay) + 0.6).toFixed(1)}s`}
           />
         </g>
       ))}
@@ -613,6 +797,55 @@ for (let i = 0; i < seatCount; i++) {
     50% { opacity: 1; }
   }
 
+  .growth-trunk {
+    animation: growth-trunk-draw 2.2s ease-out both;
+  }
+  @keyframes growth-trunk-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .growth-ground-root {
+    animation: growth-draw 1.5s ease-out both;
+  }
+
+  .growth-sub-branch {
+    animation: growth-draw 1.2s ease-out both;
+  }
+
+  .growth-bud {
+    animation: growth-bud-appear 0.5s ease-out both, growth-leaf-breathe 5s ease-in-out 2.5s infinite;
+  }
+  @keyframes growth-bud-appear {
+    from { opacity: 0; transform: scale(0); }
+    to { opacity: 0.55; transform: scale(1); }
+  }
+
+  .growth-petal {
+    animation: growth-petal-appear 0.6s ease-out both, growth-leaf-breathe 4.5s ease-in-out 2s infinite;
+  }
+  @keyframes growth-petal-appear {
+    from { opacity: 0; transform: scale(0.3); }
+    to { opacity: 0.65; transform: scale(1); }
+  }
+
+  .growth-spore {
+    animation: growth-spore-float var(--spore-duration, 15s) ease-in-out infinite;
+  }
+  @keyframes growth-spore-float {
+    0%, 100% {
+      transform: translateY(0) translateX(0);
+    }
+    30% {
+      transform: translateY(calc(var(--spore-drift, 20px) * -0.5)) translateX(3px);
+    }
+    50% {
+      transform: translateY(calc(var(--spore-drift, 20px) * -1)) translateX(-1px);
+    }
+    70% {
+      transform: translateY(calc(var(--spore-drift, 20px) * -0.6)) translateX(-3px);
+    }
+  }
+
   /* ── Vertical Stack ── */
   .vstack-layer {
     animation: vstack-slide 0.8s ease-out both;
@@ -719,7 +952,9 @@ for (let i = 0; i < seatCount; i++) {
     .nn-node, .nn-pulse, .nn-glow, .nn-line,
     .mesh-point, .mesh-line, .mesh-ring,
     .tower, .tower-bar, .tower-cap,
-    .growth-branch, .growth-leaf, .growth-leaf-glow, .growth-root,
+    .growth-trunk, .growth-branch, .growth-sub-branch,
+    .growth-ground-root, .growth-leaf, .growth-leaf-glow,
+    .growth-root, .growth-spore, .growth-petal, .growth-bud,
     .vstack-layer, .vstack-bar, .vstack-edge, .vstack-arrow,
     .rt-table, .rt-table-inner, .rt-seat, .rt-core, .rt-ring,
     .rt-agent-mark, .rt-line, .rt-line-active {
@@ -728,11 +963,17 @@ for (let i = 0; i < seatCount; i++) {
     .tower {
       transform: scaleY(1) !important;
     }
-    .growth-branch {
+    .growth-branch, .growth-sub-branch, .growth-ground-root, .growth-trunk {
       stroke-dashoffset: 0 !important;
     }
     .growth-leaf, .growth-leaf-glow {
       opacity: 0.7 !important;
+    }
+    .growth-petal {
+      opacity: 0.65 !important;
+    }
+    .growth-bud {
+      opacity: 0.55 !important;
     }
     .vstack-layer {
       transform: translateX(0) !important;

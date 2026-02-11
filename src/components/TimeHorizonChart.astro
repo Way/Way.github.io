@@ -1,0 +1,324 @@
+---
+interface DataPoint {
+  date: string;
+  minutes: number;
+  label: string;
+  projected?: boolean;
+}
+
+// Data points based on METR measurements + projection
+const data: DataPoint[] = [
+  { date: '2024-01', minutes: 2,    label: '' },
+  { date: '2024-08', minutes: 5,    label: '' },
+  { date: '2025-01', minutes: 10,   label: '~10 Min' },
+  { date: '2025-06', minutes: 60,   label: '~1 Std' },
+  { date: '2025-12', minutes: 300,  label: '~5 Std' },
+  { date: '2026-02', minutes: 720,  label: '~12 Std',  projected: true },
+  { date: '2026-08', minutes: 2880, label: '~2 Tage', projected: true },
+];
+
+// --- Layout constants ---
+const W = 720;
+const H = 400;
+const pad = { top: 30, right: 40, bottom: 55, left: 80 };
+const chartW = W - pad.left - pad.right;
+const chartH = H - pad.top - pad.bottom;
+
+// --- Y-axis: logarithmic ---
+const yMin = 1;      // 1 minute
+const yMax = 10080;  // 1 week in minutes
+const logMin = Math.log10(yMin);
+const logMax = Math.log10(yMax);
+
+function toY(minutes: number): number {
+  const logVal = Math.log10(Math.max(minutes, yMin));
+  return pad.top + (1 - (logVal - logMin) / (logMax - logMin)) * chartH;
+}
+
+const yTicks = [
+  { minutes: 1,     label: '1 Min' },
+  { minutes: 10,    label: '10 Min' },
+  { minutes: 60,    label: '1 Std' },
+  { minutes: 480,   label: '8 Std' },
+  { minutes: 1440,  label: '1 Tag' },
+  { minutes: 10080, label: '1 Woche' },
+];
+
+// --- X-axis: linear by month ---
+const refYear = 2024;
+const refMonth = 0; // January
+
+function dateToMonths(dateStr: string): number {
+  const [y, m] = dateStr.split('-').map(Number);
+  return (y - refYear) * 12 + (m - 1 - refMonth);
+}
+
+const allMonths = data.map(d => dateToMonths(d.date));
+const xMinMonth = allMonths[0];
+const xMaxMonth = allMonths[allMonths.length - 1];
+
+function toX(months: number): number {
+  return pad.left + ((months - xMinMonth) / (xMaxMonth - xMinMonth)) * chartW;
+}
+
+// X-axis labels: every 6 months
+const xTicks = [
+  { date: '2024-01', label: 'Jan 24' },
+  { date: '2024-07', label: 'Jul 24' },
+  { date: '2025-01', label: 'Jan 25' },
+  { date: '2025-07', label: 'Jul 25' },
+  { date: '2026-01', label: 'Jan 26' },
+  { date: '2026-07', label: 'Jul 26' },
+];
+
+// --- Convert data to pixel coordinates ---
+const points = data.map(d => ({
+  x: toX(dateToMonths(d.date)),
+  y: toY(d.minutes),
+  label: d.label,
+  projected: d.projected ?? false,
+}));
+
+// --- Smooth curve: Catmull-Rom to cubic Bezier ---
+function buildPath(pts: { x: number; y: number }[]): string {
+  if (pts.length < 2) return '';
+  if (pts.length === 2) {
+    return `M${pts[0].x.toFixed(1)},${pts[0].y.toFixed(1)} L${pts[1].x.toFixed(1)},${pts[1].y.toFixed(1)}`;
+  }
+
+  let d = `M${pts[0].x.toFixed(1)},${pts[0].y.toFixed(1)}`;
+
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[Math.max(i - 1, 0)];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[Math.min(i + 2, pts.length - 1)];
+
+    const t = 6;
+    const cp1x = p1.x + (p2.x - p0.x) / t;
+    const cp1y = p1.y + (p2.y - p0.y) / t;
+    const cp2x = p2.x - (p3.x - p1.x) / t;
+    const cp2y = p2.y - (p3.y - p1.y) / t;
+
+    d += ` C${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${p2.x.toFixed(1)},${p2.y.toFixed(1)}`;
+  }
+
+  return d;
+}
+
+const measured = points.filter(p => !p.projected);
+const projected = points.filter(p => p.projected);
+const measuredPath = buildPath(measured);
+const projectedPath = buildPath([measured[measured.length - 1], ...projected]);
+---
+
+<figure class="time-horizon-chart">
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="Diagramm: AI-Fähigkeit zur autonomen Aufgabenlösung im Zeitverlauf"
+    width="100%"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title>AI-Fähigkeit zur autonomen Aufgabenlösung im Zeitverlauf</title>
+    <desc>Logarithmische Darstellung der Aufgabendauer, die AI-Modelle autonom bewältigen können. Von circa 2 Minuten Anfang 2024 bis geschätzt 2 Tagen Mitte 2026.</desc>
+
+    {/* Grid lines (horizontal) */}
+    <g class="chart-grid">
+      {yTicks.map(tick => (
+        <line
+          x1={pad.left}
+          y1={toY(tick.minutes)}
+          x2={W - pad.right}
+          y2={toY(tick.minutes)}
+        />
+      ))}
+    </g>
+
+    {/* Axes */}
+    <line
+      class="chart-axis"
+      x1={pad.left}
+      y1={pad.top}
+      x2={pad.left}
+      y2={H - pad.bottom}
+    />
+    <line
+      class="chart-axis"
+      x1={pad.left}
+      y1={H - pad.bottom}
+      x2={W - pad.right}
+      y2={H - pad.bottom}
+    />
+
+    {/* Y-axis labels */}
+    <g class="chart-labels-y">
+      {yTicks.map(tick => (
+        <text
+          x={pad.left - 10}
+          y={toY(tick.minutes) + 4}
+          text-anchor="end"
+        >
+          {tick.label}
+        </text>
+      ))}
+    </g>
+
+    {/* X-axis labels */}
+    <g class="chart-labels-x">
+      {xTicks.map(tick => (
+        <text
+          x={toX(dateToMonths(tick.date))}
+          y={H - pad.bottom + 22}
+          text-anchor="middle"
+        >
+          {tick.label}
+        </text>
+      ))}
+    </g>
+
+    {/* Measured curve */}
+    <path class="chart-curve" d={measuredPath} />
+
+    {/* Projected curve */}
+    <path class="chart-curve-projected" d={projectedPath} />
+
+    {/* Measured data points */}
+    {measured.map(p => (
+      <circle class="chart-point" cx={p.x} cy={p.y} r="5" />
+    ))}
+
+    {/* Projected data points */}
+    {projected.map(p => (
+      <circle class="chart-point-projected" cx={p.x} cy={p.y} r="5" />
+    ))}
+
+    {/* Data point labels */}
+    {points.filter(p => p.label).map(p => (
+      <text
+        class="chart-point-label"
+        x={p.x}
+        y={p.y - 14}
+        text-anchor="middle"
+      >
+        {p.label}
+      </text>
+    ))}
+
+    {/* "Projektion" annotation */}
+    <text
+      class="chart-annotation"
+      x={projected[projected.length - 1]?.x ?? 0}
+      y={projected[projected.length - 1]?.y - 30 ?? 0}
+      text-anchor="middle"
+    >
+      (Projektion)
+    </text>
+  </svg>
+  <figcaption class="chart-caption">
+    Autonome Aufgabendauer von AI-Modellen im Zeitverlauf (log. Skala). Quelle: <a href="https://metr.org" target="_blank" rel="noopener">METR.org</a>, eigene Darstellung. Gestrichelt: geschätzte Projektion.
+  </figcaption>
+</figure>
+
+<style>
+  .time-horizon-chart {
+    margin: 2.5em 0;
+    padding: 0;
+  }
+
+  .time-horizon-chart svg {
+    display: block;
+  }
+
+  /* Grid */
+  .chart-grid line {
+    stroke: rgb(var(--gray-light));
+    stroke-width: 0.5;
+  }
+
+  :where(.dark, .dark *) .chart-grid line {
+    stroke: rgba(148, 155, 175, 0.15);
+  }
+
+  /* Axes */
+  .chart-axis {
+    stroke: rgb(var(--gray));
+    stroke-width: 1;
+    fill: none;
+  }
+
+  /* Labels */
+  .chart-labels-y text,
+  .chart-labels-x text {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 12px;
+  }
+
+  /* Measured curve */
+  .chart-curve {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Projected curve */
+  .chart-curve-projected {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-dasharray: 8 5;
+    opacity: 0.5;
+  }
+
+  /* Measured data points */
+  .chart-point {
+    fill: var(--accent);
+    stroke: #fff;
+    stroke-width: 2;
+  }
+
+  :where(.dark, .dark *) .chart-point {
+    stroke: #13151e;
+  }
+
+  /* Projected data points */
+  .chart-point-projected {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    opacity: 0.6;
+  }
+
+  /* Data labels */
+  .chart-point-label {
+    fill: rgb(var(--gray-dark));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* Annotation */
+  .chart-annotation {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 10px;
+    font-style: italic;
+  }
+
+  /* Caption */
+  .chart-caption {
+    text-align: center;
+    font-size: 14px;
+    color: rgb(var(--gray));
+    margin-top: 0.75em;
+    line-height: 1.4;
+  }
+
+  .chart-caption a {
+    color: var(--accent);
+  }
+</style>

@@ -1,0 +1,214 @@
+---
+interface Comparison {
+  profession: string;
+  task: string;
+  beforeMinutes: number;
+  afterMinutes: number;
+  beforeLabel: string;
+  afterLabel: string;
+}
+
+const data: Comparison[] = [
+  {
+    profession: 'Softwareentwicklung',
+    task: 'Feature entwickeln',
+    beforeMinutes: 960,
+    afterMinutes: 30,
+    beforeLabel: '~2 Tage',
+    afterLabel: '~30 Min',
+  },
+  {
+    profession: 'Recht',
+    task: 'Vertragsrecherche',
+    beforeMinutes: 960,
+    afterMinutes: 60,
+    beforeLabel: '~2 Tage',
+    afterLabel: '~1 Std',
+  },
+  {
+    profession: 'Medizin',
+    task: 'Fachliteratur sichten',
+    beforeMinutes: 240,
+    afterMinutes: 15,
+    beforeLabel: '~4 Std',
+    afterLabel: '~15 Min',
+  },
+  {
+    profession: 'Finanzanalyse',
+    task: 'Report erstellen',
+    beforeMinutes: 480,
+    afterMinutes: 120,
+    beforeLabel: '~1 Tag',
+    afterLabel: '~2 Std',
+  },
+];
+
+// --- Layout ---
+const W = 720;
+const rowH = 64;
+const rowGap = 12;
+const labelAreaW = 150;
+const barAreaX = labelAreaW + 10;
+const barAreaW = W - barAreaX - 60;
+const topPad = 32;
+const bottomPad = 20;
+const H = topPad + data.length * (rowH + rowGap) - rowGap + bottomPad;
+
+const maxMinutes = Math.max(...data.map(d => d.beforeMinutes));
+
+function toBarW(minutes: number): number {
+  return (minutes / maxMinutes) * barAreaW;
+}
+
+const barH = 20;
+const rows = data.map((d, i) => {
+  const y = topPad + i * (rowH + rowGap);
+  return {
+    ...d,
+    y,
+    beforeW: toBarW(d.beforeMinutes),
+    afterW: toBarW(d.afterMinutes),
+  };
+});
+---
+
+<figure class="profession-chart">
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="Vergleich: Aufgabendauer mit und ohne AI nach Berufsfeld"
+    width="100%"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title>Aufgabendauer mit und ohne AI nach Berufsfeld</title>
+
+    {/* Legend */}
+    <rect x={barAreaX} y={8} width={14} height={10} rx={2} class="bar-before" />
+    <text x={barAreaX + 20} y={17} class="legend-text">Vorher</text>
+    <rect x={barAreaX + 90} y={8} width={14} height={10} rx={2} class="bar-after" />
+    <text x={barAreaX + 110} y={17} class="legend-text">Mit AI</text>
+
+    {rows.map(row => (
+      <g>
+        {/* Profession label */}
+        <text
+          x={labelAreaW}
+          y={row.y + 18}
+          text-anchor="end"
+          class="profession-label"
+        >
+          {row.profession}
+        </text>
+        {/* Task label */}
+        <text
+          x={labelAreaW}
+          y={row.y + 36}
+          text-anchor="end"
+          class="task-label"
+        >
+          {row.task}
+        </text>
+
+        {/* Before bar */}
+        <rect
+          x={barAreaX}
+          y={row.y + 6}
+          width={row.beforeW}
+          height={barH}
+          rx={3}
+          class="bar-before"
+        />
+        <text
+          x={barAreaX + row.beforeW + 6}
+          y={row.y + 20}
+          class="bar-value"
+        >
+          {row.beforeLabel}
+        </text>
+
+        {/* After bar */}
+        <rect
+          x={barAreaX}
+          y={row.y + 6 + barH + 6}
+          width={row.afterW}
+          height={barH}
+          rx={3}
+          class="bar-after"
+        />
+        <text
+          x={barAreaX + row.afterW + 6}
+          y={row.y + 20 + barH + 6}
+          class="bar-value bar-value-accent"
+        >
+          {row.afterLabel}
+        </text>
+      </g>
+    ))}
+  </svg>
+  <figcaption class="chart-caption">
+    Ungefähre Zeitersparnis durch AI-Unterstützung nach Berufsfeld. Basierend auf Erfahrungsberichten.
+  </figcaption>
+</figure>
+
+<style>
+  .profession-chart {
+    margin: 2.5em 0;
+    padding: 0;
+  }
+
+  .profession-chart svg {
+    display: block;
+  }
+
+  .profession-label {
+    fill: rgb(var(--black));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .task-label {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11px;
+  }
+
+  .bar-before {
+    fill: rgb(var(--gray-light));
+  }
+
+  :where(.dark, .dark *) .bar-before {
+    fill: rgba(148, 155, 175, 0.2);
+  }
+
+  .bar-after {
+    fill: var(--accent);
+    opacity: 0.85;
+  }
+
+  .bar-value {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11px;
+  }
+
+  .bar-value-accent {
+    fill: var(--accent);
+    font-weight: 700;
+  }
+
+  .legend-text {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11px;
+  }
+
+  .chart-caption {
+    text-align: center;
+    font-size: 14px;
+    color: rgb(var(--gray));
+    margin-top: 0.75em;
+    line-height: 1.4;
+  }
+</style>
