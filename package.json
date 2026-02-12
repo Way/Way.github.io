@@ -13,8 +13,10 @@
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.17.1",
+    "satori": "^0.19.2",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {

@@ -8,14 +8,14 @@ import BlogPostIntro from '../components/BlogPostIntro.astro';
 import HeroVisual from '../components/HeroVisual.astro';
 import '../styles/global.css'; // Keep global styles
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & { image?: string };
 
-const { title, description, pubDate, updatedDate, prompt, visualTheme } = Astro.props;
+const { title, description, pubDate, updatedDate, prompt, visualTheme, image } = Astro.props;
 ---
 
 <html lang="de">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={title} description={description} image={image} />
 		<style>
 			.hero-container {
 				position: relative;
