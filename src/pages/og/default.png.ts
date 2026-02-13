@@ -18,7 +18,8 @@ export async function GET({}: APIContext) {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          background: 'linear-gradient(135deg, hsl(220, 50%, 12%) 0%, hsl(260, 40%, 22%) 100%)',
+          background:
+            'linear-gradient(135deg, hsl(220, 50%, 12%) 0%, hsl(260, 40%, 22%) 100%)',
           fontFamily: 'Atkinson',
         },
         children: [
@@ -42,7 +43,7 @@ export async function GET({}: APIContext) {
                 color: 'rgba(255, 255, 255, 0.6)',
                 marginTop: '16px',
               },
-              children: 'Technologie, Strategie & Innovation',
+              children: 'Technologie, KI & Innovation',
             },
           },
         ],
@@ -52,8 +53,18 @@ export async function GET({}: APIContext) {
       width: 1200,
       height: 630,
       fonts: [
-        { name: 'Atkinson', data: fontRegular, style: 'normal' as const, weight: 400 },
-        { name: 'Atkinson', data: fontBold, style: 'normal' as const, weight: 700 },
+        {
+          name: 'Atkinson',
+          data: fontRegular,
+          style: 'normal' as const,
+          weight: 400,
+        },
+        {
+          name: 'Atkinson',
+          data: fontBold,
+          style: 'normal' as const,
+          weight: 700,
+        },
       ],
     },
   );
