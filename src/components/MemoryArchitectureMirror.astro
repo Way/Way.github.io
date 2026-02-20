@@ -1,0 +1,223 @@
+---
+interface Layer {
+  agent: string;
+  agentSub: string;
+  human: string;
+  humanSub: string;
+  opacity: number;
+}
+
+const layers: Layer[] = [
+  {
+    agent: 'Rohdaten',
+    agentSub: 'Chat-Logs, Events',
+    human: 'Erlebnisse',
+    humanSub: 'Eindrücke, Momente',
+    opacity: 0.3,
+  },
+  {
+    agent: 'Extrahierte Fakten',
+    agentSub: 'Strukturierte Entities',
+    human: 'Überzeugungen',
+    humanSub: 'Was wir für wahr halten',
+    opacity: 0.5,
+  },
+  {
+    agent: 'Verdichtete Profile',
+    agentSub: 'Zusammengefasstes Wissen',
+    human: 'Gewohnheiten',
+    humanSub: 'Eingespielte Muster',
+    opacity: 0.75,
+  },
+  {
+    agent: 'Stabile Identität',
+    agentSub: 'Kernpräferenzen, Werte',
+    human: 'Identität',
+    humanSub: 'Wer wir sein wollen',
+    opacity: 1.0,
+  },
+];
+
+// Layout
+const W = 720;
+const H = 420;
+const colW = 240;
+const gap = 80;
+const rowH = 68;
+const rowGap = 16;
+const topPad = 50;
+const leftX = (W / 2) - gap / 2 - colW;
+const rightX = (W / 2) + gap / 2;
+const centerX = W / 2;
+
+const rows = layers.map((layer, i) => {
+  const y = topPad + i * (rowH + rowGap);
+  return { ...layer, y };
+});
+---
+
+<figure class="memory-mirror">
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="Diagramm: Parallele zwischen Agent-Memory-Architektur und menschlichem Gedächtnis"
+    width="100%"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title>Memory-Architektur: Agent vs. Mensch</title>
+    <defs>
+      <linearGradient id="fade-down-accent" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.15" />
+        <stop offset="100%" stop-color="var(--accent)" stop-opacity="0.6" />
+      </linearGradient>
+    </defs>
+
+    {/* Column headers */}
+    <text x={leftX + colW / 2} y={30} text-anchor="middle" class="mirror-header">Agent Memory</text>
+    <text x={rightX + colW / 2} y={30} text-anchor="middle" class="mirror-header">Human Memory</text>
+
+    {/* Stability gradient bars */}
+    <rect
+      x={leftX - 14}
+      y={topPad}
+      width={4}
+      height={rows.length * (rowH + rowGap) - rowGap}
+      rx={2}
+      fill="url(#fade-down-accent)"
+    />
+    <rect
+      x={rightX + colW + 10}
+      y={topPad}
+      width={4}
+      height={rows.length * (rowH + rowGap) - rowGap}
+      rx={2}
+      fill="url(#fade-down-accent)"
+    />
+
+    {/* Gradient labels */}
+    <text x={leftX - 14} y={topPad - 6} text-anchor="middle" class="mirror-gradient-label">flüchtig</text>
+    <text x={leftX - 14} y={topPad + rows.length * (rowH + rowGap) - rowGap + 16} text-anchor="middle" class="mirror-gradient-label">stabil</text>
+    <text x={rightX + colW + 12} y={topPad - 6} text-anchor="middle" class="mirror-gradient-label">flüchtig</text>
+    <text x={rightX + colW + 12} y={topPad + rows.length * (rowH + rowGap) - rowGap + 16} text-anchor="middle" class="mirror-gradient-label">stabil</text>
+
+    {rows.map((row) => (
+      <g>
+        {/* Agent box */}
+        <rect
+          x={leftX}
+          y={row.y}
+          width={colW}
+          height={rowH}
+          rx={8}
+          class="mirror-box"
+          style={`opacity: ${0.4 + row.opacity * 0.6}`}
+        />
+        <text x={leftX + colW / 2} y={row.y + 28} text-anchor="middle" class="mirror-label">{row.agent}</text>
+        <text x={leftX + colW / 2} y={row.y + 46} text-anchor="middle" class="mirror-sublabel">{row.agentSub}</text>
+
+        {/* Human box */}
+        <rect
+          x={rightX}
+          y={row.y}
+          width={colW}
+          height={rowH}
+          rx={8}
+          class="mirror-box"
+          style={`opacity: ${0.4 + row.opacity * 0.6}`}
+        />
+        <text x={rightX + colW / 2} y={row.y + 28} text-anchor="middle" class="mirror-label">{row.human}</text>
+        <text x={rightX + colW / 2} y={row.y + 46} text-anchor="middle" class="mirror-sublabel">{row.humanSub}</text>
+
+        {/* Connecting dotted line */}
+        <line
+          x1={leftX + colW}
+          y1={row.y + rowH / 2}
+          x2={rightX}
+          y2={row.y + rowH / 2}
+          class="mirror-connector"
+          style={`opacity: ${0.3 + row.opacity * 0.5}`}
+        />
+
+        {/* Center dot */}
+        <circle
+          cx={centerX}
+          cy={row.y + rowH / 2}
+          r={2.5}
+          class="mirror-dot"
+          style={`opacity: ${0.3 + row.opacity * 0.5}`}
+        />
+      </g>
+    ))}
+  </svg>
+  <figcaption class="chart-caption">
+    Schichten von Gedächtnis: Bei Agents wie bei Menschen wird Information von flüchtigen Rohdaten zu stabiler Identität verdichtet.
+  </figcaption>
+</figure>
+
+<style>
+  .memory-mirror {
+    margin: 2.5em 0;
+    padding: 0;
+  }
+
+  .memory-mirror svg {
+    display: block;
+  }
+
+  .mirror-header {
+    fill: rgb(var(--black));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .mirror-box {
+    fill: rgb(var(--gray-light));
+    stroke: none;
+  }
+
+  :where(.dark, .dark *) .mirror-box {
+    fill: rgba(148, 155, 175, 0.12);
+  }
+
+  .mirror-label {
+    fill: rgb(var(--black));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .mirror-sublabel {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11px;
+  }
+
+  .mirror-connector {
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+  }
+
+  .mirror-dot {
+    fill: var(--accent);
+  }
+
+  .mirror-gradient-label {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .chart-caption {
+    text-align: center;
+    font-size: 14px;
+    color: rgb(var(--gray));
+    margin-top: 0.75em;
+    line-height: 1.4;
+  }
+</style>

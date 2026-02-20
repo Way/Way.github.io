@@ -9,3 +9,129 @@
 >
   <slot />
 </div>
+
+<!-- Image zoom overlay -->
+<div id="img-zoom-overlay" class="img-zoom-overlay"></div>
+
+<style>
+  .prose :global(img) {
+    cursor: zoom-in;
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+  }
+
+  .prose :global(figure) {
+    cursor: zoom-in;
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+  }
+
+  .img-zoom-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+    z-index: 99;
+  }
+
+  .img-zoom-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+    cursor: zoom-out;
+  }
+
+  :global(.img-zoomed) {
+    position: relative;
+    z-index: 100;
+    cursor: zoom-out !important;
+    background: #f6f6f6;
+    border-radius: 12px;
+    padding: 1rem;
+  }
+
+  :where(.dark, .dark *) :global(.img-zoomed) {
+    background: #1a1d2b;
+  }
+</style>
+
+<script>
+  function initImageZoom() {
+    const overlay = document.getElementById('img-zoom-overlay');
+    if (!overlay) return;
+
+    let zoomedEl: HTMLElement | null = null;
+    let originalTransform = '';
+
+    function zoomIn(el: HTMLElement) {
+      if (zoomedEl) return;
+      zoomedEl = el;
+
+      const rect = el.getBoundingClientRect();
+      const viewportW = window.innerWidth;
+      const viewportH = window.innerHeight;
+
+      const padding = 40;
+      const maxW = viewportW - padding * 2;
+      const maxH = viewportH - padding * 2;
+
+      // For <img>, cap at natural resolution. For figures/SVGs, allow up to 3x.
+      let maxNaturalScale = 3;
+      if (el instanceof HTMLImageElement) {
+        maxNaturalScale = Math.min(
+          el.naturalWidth / rect.width,
+          el.naturalHeight / rect.height
+        );
+      }
+
+      const fitScale = Math.min(maxW / rect.width, maxH / rect.height);
+      const scale = Math.min(fitScale, maxNaturalScale, 3);
+
+      const imgCenterX = rect.left + rect.width / 2;
+      const imgCenterY = rect.top + rect.height / 2;
+      const translateX = viewportW / 2 - imgCenterX;
+      const translateY = viewportH / 2 - imgCenterY;
+
+      originalTransform = el.style.transform;
+      el.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+      el.classList.add('img-zoomed');
+      overlay.classList.add('active');
+    }
+
+    function zoomOut() {
+      if (!zoomedEl) return;
+      zoomedEl.style.transform = originalTransform;
+      zoomedEl.classList.remove('img-zoomed');
+      overlay.classList.remove('active');
+      zoomedEl = null;
+      originalTransform = '';
+    }
+
+    const prose = overlay.previousElementSibling;
+    if (!prose) return;
+
+    // Attach to both <img> and <figure> elements
+    prose.querySelectorAll('img, figure').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        // Don't let a figure click also trigger on a nested img
+        e.stopPropagation();
+        e.preventDefault();
+
+        const target = el as HTMLElement;
+        if (zoomedEl === target) {
+          zoomOut();
+        } else {
+          zoomOut();
+          zoomIn(target);
+        }
+      });
+    });
+
+    overlay.addEventListener('click', zoomOut);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') zoomOut();
+    });
+  }
+
+  initImageZoom();
+  document.addEventListener('astro:after-swap', initImageZoom);
+</script>
