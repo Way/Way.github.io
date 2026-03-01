@@ -1,48 +1,44 @@
 # alexvey.com
 
-Features:
+Personal blog by Alex Vey about AI, software engineering, and engineering culture. Built with Astro, Tailwind CSS, and MDX.
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+## Tech Stack
 
-## 🚀 Project Structure
+- [Astro](https://astro.build) (SSG)
+- [Tailwind CSS](https://tailwindcss.com) v4
+- MDX for interactive components
+- Auto-generated Open Graph images via Satori
+- RSS feed, sitemap, SEO-friendly URLs
 
-Inside of your Astro project, you'll see the following folders and files:
+## Development
 
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+```bash
+pnpm install     # Install dependencies
+pnpm dev         # Start dev server at localhost:4321
+pnpm build       # Build for production
+pnpm preview     # Preview production build
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Project Structure
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```
+src/
+├── content/blog/   # Blog posts (Markdown/MDX)
+├── components/     # Astro & interactive components
+├── layouts/        # Page layouts
+├── pages/          # Routes (index, about, blog, rss, og)
+└── styles/         # Global styles
+public/             # Static assets
+```
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## Writing
 
-Any static assets, like images, can be placed in the `public/` directory.
+Blog posts live in `src/content/blog/` as `.md` or `.mdx` files. Frontmatter fields:
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+| Field         | Required | Description                                              |
+| :------------ | :------- | :------------------------------------------------------- |
+| `title`       | yes      | Post title                                               |
+| `description` | yes      | Short summary for SEO and previews                       |
+| `pubDate`     | yes      | Publication date (determines sort order)                 |
+| `visualTheme` | no       | Header animation (`neural-network`, `mesh`, `towers`, `growth`, `vertical-stack`, `roundtable`) |
+| `prompt`      | no       | Prompt or teaser text                                    |
