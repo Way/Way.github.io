@@ -4,7 +4,7 @@ language: de
 description: 'Warum weniger Ziele zu mehr Ergebnissen führen, Subtraktion der bessere Hebel ist, und dein echtes Leben nicht irgendwann später anfängt.'
 pubDate: '2026-03-06'
 visualTheme: 'growth'
-prompt: 'Was wäre die eine Sache, die du in diesem Jahr wirklich verändern willst, wenn du ehrlich bist?'
+prompt: 'Welche eine Veränderung in deinem Leben wäre so wichtig, dass du bereit wärst, alles andere dafür radikal zu streichen? Nicht irgendwann, sondern ab heute?'
 tags:
   ['Persönliches Wachstum', 'Fokus', 'Zielsetzung', 'Produktivität', 'Mindset']
 ---
