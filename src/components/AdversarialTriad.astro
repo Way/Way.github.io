@@ -1,0 +1,221 @@
+---
+/**
+ * Adversarial Triad: Generator → Adversary → Referee
+ * Three-agent pattern where agents challenge each other's outputs.
+ */
+
+const W = 720;
+const H = 320;
+
+// Triangle layout
+const cx = W / 2;
+const topY = 60;
+const bottomY = 250;
+const sideOffset = 180;
+
+const agents = [
+  { label: 'Generator', sub: 'Schreibt Code', x: cx, y: topY, hue: 220 },
+  { label: 'Adversary', sub: '"Finde die Fehler"', x: cx - sideOffset, y: bottomY, hue: 0 },
+  { label: 'Referee', sub: 'Entscheidet', x: cx + sideOffset, y: bottomY, hue: 145 },
+];
+
+const nodeR = 32;
+
+// Arrows between agents (Generator → Adversary → Referee → Generator)
+const arrows = [
+  { from: 0, to: 1, label: 'Output' },
+  { from: 1, to: 2, label: 'Kritik' },
+  { from: 2, to: 0, label: 'Urteil' },
+];
+
+function arrowPath(from: typeof agents[0], to: typeof agents[0], offset: number = 0) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  const nx = dx / dist;
+  const ny = dy / dist;
+
+  const startX = from.x + nx * (nodeR + 6);
+  const startY = from.y + ny * (nodeR + 6);
+  const endX = to.x - nx * (nodeR + 10);
+  const endY = to.y - ny * (nodeR + 10);
+
+  // Slight curve via perpendicular offset
+  const px = -ny * offset;
+  const py = nx * offset;
+  const cpX = (startX + endX) / 2 + px;
+  const cpY = (startY + endY) / 2 + py;
+
+  return {
+    d: `M${startX.toFixed(1)},${startY.toFixed(1)} Q${cpX.toFixed(1)},${cpY.toFixed(1)} ${endX.toFixed(1)},${endY.toFixed(1)}`,
+    labelX: cpX,
+    labelY: cpY,
+    // Arrowhead at end
+    endX,
+    endY,
+    angle: Math.atan2(endY - cpY, endX - cpX),
+  };
+}
+
+const arrowData = arrows.map((a, i) => {
+  const path = arrowPath(agents[a.from], agents[a.to], 15);
+  return { ...a, ...path };
+});
+---
+
+<figure class="adversarial-triad">
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="Diagramm: Adversarial Triad mit Generator, Adversary und Referee"
+    width="100%"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title>Adversarial Triad: Generator, Adversary, Referee</title>
+    <defs>
+      <marker
+        id="arrowhead-triad"
+        markerWidth="8"
+        markerHeight="6"
+        refX="7"
+        refY="3"
+        orient="auto"
+      >
+        <polygon points="0 0, 8 3, 0 6" fill="var(--accent)" opacity="0.6" />
+      </marker>
+    </defs>
+
+    {/* Arrow paths */}
+    {arrowData.map((a) => (
+      <g>
+        <path
+          d={a.d}
+          fill="none"
+          stroke="var(--accent)"
+          stroke-width="1.5"
+          opacity="0.4"
+          marker-end="url(#arrowhead-triad)"
+        />
+        <text
+          x={a.labelX}
+          y={a.labelY - 8}
+          text-anchor="middle"
+          class="triad-arrow-label"
+        >
+          {a.label}
+        </text>
+      </g>
+    ))}
+
+    {/* Agent nodes */}
+    {agents.map((a) => (
+      <g>
+        {/* Outer ring */}
+        <circle
+          cx={a.x}
+          cy={a.y}
+          r={nodeR + 8}
+          fill="none"
+          stroke={`hsla(${a.hue}, 50%, 55%, 0.12)`}
+          stroke-width="1"
+        />
+        {/* Main circle */}
+        <circle
+          cx={a.x}
+          cy={a.y}
+          r={nodeR}
+          class="triad-node"
+          style={`--node-hue: ${a.hue}`}
+        />
+        {/* Label */}
+        <text
+          x={a.x}
+          y={a.y - 2}
+          text-anchor="middle"
+          class="triad-label"
+        >
+          {a.label}
+        </text>
+        {/* Sub-label */}
+        <text
+          x={a.x}
+          y={a.y + 14}
+          text-anchor="middle"
+          class="triad-sublabel"
+        >
+          {a.sub}
+        </text>
+      </g>
+    ))}
+
+    {/* Center label */}
+    <text x={cx} y={(topY + bottomY) / 2 + 20} text-anchor="middle" class="triad-center-label">
+      Produktiver
+    </text>
+    <text x={cx} y={(topY + bottomY) / 2 + 36} text-anchor="middle" class="triad-center-label">
+      Konflikt
+    </text>
+  </svg>
+  <figcaption class="chart-caption">
+    Adversarial Triad: Drei Agenten mit unterschiedlichen Rollen korrigieren sich gegenseitig.
+  </figcaption>
+</figure>
+
+<style>
+  .adversarial-triad {
+    margin: 2.5em 0;
+    padding: 0;
+  }
+
+  .adversarial-triad svg {
+    display: block;
+  }
+
+  .triad-node {
+    fill: rgba(148, 155, 175, 0.08);
+    stroke: hsla(var(--node-hue, 220), 50%, 55%, 0.4);
+    stroke-width: 2;
+  }
+
+  :where(.dark, .dark *) .triad-node {
+    fill: rgba(148, 155, 175, 0.1);
+  }
+
+  .triad-label {
+    fill: rgb(var(--black));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .triad-sublabel {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 10px;
+  }
+
+  .triad-arrow-label {
+    fill: var(--accent);
+    font-family: 'Atkinson', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  .triad-center-label {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    opacity: 0.7;
+  }
+
+  .chart-caption {
+    text-align: center;
+    font-size: 14px;
+    color: rgb(var(--gray));
+    margin-top: 0.75em;
+    line-height: 1.4;
+  }
+</style>

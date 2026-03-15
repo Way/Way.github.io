@@ -1,0 +1,224 @@
+---
+/**
+ * Red Team vs Blue Team: Adversarial security testing pattern.
+ * Shows attack simulation and defense learning cycle.
+ */
+
+const W = 720;
+const H = 260;
+
+const dividerX = W / 2;
+const redX = 170;
+const blueX = 550;
+const centerY = 110;
+const nodeR = 30;
+
+// Attack vectors from Red Team
+const attacks = [
+  { label: 'Prompt Injection', yOffset: -35 },
+  { label: 'Edge Cases', yOffset: 0 },
+  { label: 'Data Poisoning', yOffset: 35 },
+];
+
+// Defense responses from Blue Team
+const defenses = [
+  { label: 'Detection', yOffset: -35 },
+  { label: 'Validation', yOffset: 0 },
+  { label: 'Hardening', yOffset: 35 },
+];
+---
+
+<figure class="red-blue-team">
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="Diagramm: Red Team vs Blue Team Adversarial Testing"
+    width="100%"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title>Red Team vs Blue Team</title>
+    <defs>
+      <marker
+        id="arrowhead-red"
+        markerWidth="7"
+        markerHeight="5"
+        refX="6"
+        refY="2.5"
+        orient="auto"
+      >
+        <polygon points="0 0, 7 2.5, 0 5" fill="hsla(0, 55%, 55%, 0.5)" />
+      </marker>
+      <marker
+        id="arrowhead-blue"
+        markerWidth="7"
+        markerHeight="5"
+        refX="6"
+        refY="2.5"
+        orient="auto"
+      >
+        <polygon points="0 0, 7 2.5, 0 5" fill="hsla(220, 55%, 55%, 0.5)" />
+      </marker>
+    </defs>
+
+    {/* Divider line */}
+    <line
+      x1={dividerX} y1={30} x2={dividerX} y2={H - 30}
+      stroke="rgb(var(--gray-light))"
+      stroke-width="1"
+      stroke-dasharray="4 4"
+      opacity="0.5"
+    />
+    <text x={dividerX} y={20} text-anchor="middle" class="rb-divider-label">Angriffsfläche</text>
+
+    {/* Red Team node */}
+    <circle cx={redX} cy={centerY} r={nodeR + 8} fill="none"
+      stroke="hsla(0, 50%, 55%, 0.12)" stroke-width="1" />
+    <circle cx={redX} cy={centerY} r={nodeR}
+      class="rb-node rb-node-red" />
+    <text x={redX} y={centerY - 2} text-anchor="middle" class="rb-label">Red Team</text>
+    <text x={redX} y={centerY + 14} text-anchor="middle" class="rb-sublabel">Angreifer</text>
+
+    {/* Blue Team node */}
+    <circle cx={blueX} cy={centerY} r={nodeR + 8} fill="none"
+      stroke="hsla(220, 50%, 55%, 0.12)" stroke-width="1" />
+    <circle cx={blueX} cy={centerY} r={nodeR}
+      class="rb-node rb-node-blue" />
+    <text x={blueX} y={centerY - 2} text-anchor="middle" class="rb-label">Blue Team</text>
+    <text x={blueX} y={centerY + 14} text-anchor="middle" class="rb-sublabel">Verteidiger</text>
+
+    {/* Attack arrows */}
+    {attacks.map((a) => {
+      const y = centerY + a.yOffset;
+      return (
+        <g>
+          <line
+            x1={redX + nodeR + 8} y1={y}
+            x2={dividerX - 8} y2={y}
+            stroke="hsla(0, 55%, 55%, 0.3)"
+            stroke-width="1.2"
+            marker-end="url(#arrowhead-red)"
+          />
+          <text x={(redX + nodeR + dividerX) / 2} y={y - 6}
+            text-anchor="middle" class="rb-attack-label">
+            {a.label}
+          </text>
+        </g>
+      );
+    })}
+
+    {/* Defense arrows */}
+    {defenses.map((d) => {
+      const y = centerY + d.yOffset;
+      return (
+        <g>
+          <line
+            x1={blueX - nodeR - 8} y1={y}
+            x2={dividerX + 8} y2={y}
+            stroke="hsla(220, 55%, 55%, 0.3)"
+            stroke-width="1.2"
+            marker-end="url(#arrowhead-blue)"
+          />
+          <text x={(blueX - nodeR + dividerX) / 2} y={y - 6}
+            text-anchor="middle" class="rb-defense-label">
+            {d.label}
+          </text>
+        </g>
+      );
+    })}
+
+    {/* Learning feedback loop at bottom */}
+    <path
+      d={`M${blueX},${centerY + nodeR + 10} Q${dividerX},${H - 15} ${redX},${centerY + nodeR + 10}`}
+      fill="none"
+      stroke="var(--accent)"
+      stroke-width="1"
+      stroke-dasharray="4 3"
+      opacity="0.35"
+    />
+    <text x={dividerX} y={H - 18} text-anchor="middle" class="rb-feedback-label">
+      Lernschleife: Angriffe verbessern Verteidigung
+    </text>
+  </svg>
+  <figcaption class="chart-caption">
+    Red Team vs. Blue Team: Agenten simulieren Angriffe, andere lernen daraus. Beide werden mit jeder Runde besser.
+  </figcaption>
+</figure>
+
+<style>
+  .red-blue-team {
+    margin: 2.5em 0;
+    padding: 0;
+  }
+
+  .red-blue-team svg {
+    display: block;
+  }
+
+  .rb-node {
+    fill: rgba(148, 155, 175, 0.08);
+    stroke-width: 2;
+  }
+
+  .rb-node-red {
+    stroke: hsla(0, 50%, 55%, 0.4);
+  }
+
+  .rb-node-blue {
+    stroke: hsla(220, 50%, 55%, 0.4);
+  }
+
+  :where(.dark, .dark *) .rb-node {
+    fill: rgba(148, 155, 175, 0.1);
+  }
+
+  .rb-label {
+    fill: rgb(var(--black));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .rb-sublabel {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 10px;
+  }
+
+  .rb-divider-label {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .rb-attack-label {
+    fill: hsla(0, 55%, 55%, 0.7);
+    font-family: 'Atkinson', sans-serif;
+    font-size: 10px;
+  }
+
+  .rb-defense-label {
+    fill: hsla(220, 55%, 55%, 0.7);
+    font-family: 'Atkinson', sans-serif;
+    font-size: 10px;
+  }
+
+  .rb-feedback-label {
+    fill: var(--accent);
+    font-family: 'Atkinson', sans-serif;
+    font-size: 10px;
+    font-style: italic;
+  }
+
+  .chart-caption {
+    text-align: center;
+    font-size: 14px;
+    color: rgb(var(--gray));
+    margin-top: 0.75em;
+    line-height: 1.4;
+  }
+</style>

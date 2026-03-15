@@ -1,0 +1,57 @@
+---
+draft: true
+title: 'Agenten, die sich widersprechen'
+language: de
+description: 'Warum bessere Ergebnisse entstehen, wenn AI-Agenten nicht zusammenarbeiten, sondern sich gegenseitig herausfordern.'
+pubDate: '2026-03-22'
+visualTheme: 'signal'
+prompt: 'Wie funktionieren adversariale Multi-Agent-Workflows und warum liefern sie bessere Ergebnisse als einzelne Agenten?'
+tags: ['software-engineering', 'ai', 'agents', 'qualität']
+---
+import AdversarialTriad from '../../components/AdversarialTriad.astro';
+import GeneratorEvaluatorLoop from '../../components/GeneratorEvaluatorLoop.astro';
+import RedBlueTeam from '../../components/RedBlueTeam.astro';
+
+{/* ENTWURF: Dieser Artikel ist noch in Arbeit. */}
+
+Stell dir vor, du gibst einem Agenten eine Aufgabe und er liefert dir ein Ergebnis. Klingt gut. Aber woher weißt du, ob das Ergebnis wirklich gut ist? Der Agent wird dir selten sagen: "Ehrlich gesagt, das hier ist mittelmäßig."
+
+Sprachmodelle haben eine Eigenschaft, die in der Forschung "Sycophancy" genannt wird: Sie neigen dazu, dem Framing ihres Prompts enthusiastisch zu folgen. Wenn du sagst "Schreib mir eine Lösung", bekommst du eine Lösung, die sich überzeugend liest. Ob sie tatsächlich die beste ist, steht auf einem anderen Blatt.
+
+Der Entwickler [sysls](https://x.com/systematicls/status/2028814227004395561) nutzt genau diese Eigenschaft bewusst aus. Sein Trick: Statt einem Agenten blind zu vertrauen, lässt er mehrere Agenten gegeneinander arbeiten. Einer generiert, ein zweiter zerlegt das Ergebnis kritisch, ein dritter entscheidet. Die Qualität steigt, weil jeder Agent seine Rolle mit Überzeugung spielt. Sagst du einem Agenten "Dein Code ist Müll, finde die Probleme", wird er genau das mit vollem Einsatz tun.
+
+## Drei Muster, die funktionieren
+
+Das Prinzip lässt sich auf verschiedene Weisen umsetzen.
+
+### Die Triade: Generator, Kritiker, Schiedsrichter
+
+Das einfachste Setup: Drei Agenten mit klar verteilten Rollen. Einer baut, einer greift an, einer urteilt.
+
+<AdversarialTriad />
+
+Der Generator schreibt Code oder eine Lösung. Der Adversary sucht gezielt nach Schwächen, Fehlern, vergessenen Edge Cases. Der Referee bewertet beide Seiten und trifft die Entscheidung. Kein Agent hat alle Rollen gleichzeitig, und genau das macht den Unterschied.
+
+### Der Kreislauf: Schreiben, Kritisieren, Überarbeiten
+
+Statt drei parallele Rollen kannst du auch zwei Agenten in eine Schleife schicken. Einer schreibt, der andere zerlegt das Ergebnis. Dann geht es zurück zum ersten, der überarbeitet. Mit jeder Runde wird das Ergebnis besser.
+
+<GeneratorEvaluatorLoop />
+
+In der Praxis sieht man oft drei bis vier Durchläufe, bevor die Qualität sich auf einem hohen Niveau einpendelt. Das kostet mehr Rechenzeit als ein einzelner Durchlauf. Aber die Ergebnisse sind deutlich zuverlässiger.
+
+### Red Team vs. Blue Team: Angriff und Verteidigung
+
+Aus der IT-Sicherheit kommt ein Muster, das sich direkt auf die Softwareentwicklung übertragen lässt. Ein "Red Team" simuliert gezielt Angriffe: Prompt Injection, unerwartete Eingaben, Randbedingungen. Ein "Blue Team" lernt aus diesen Angriffen und baut Verteidigungen.
+
+<RedBlueTeam />
+
+Beide Seiten werden mit jeder Runde besser. Der Angreifer findet subtilere Schwachstellen, der Verteidiger wird robuster. Das gleiche Prinzip, das in der Cybersecurity seit Jahren funktioniert, lässt sich auf Code-Qualität, Testabdeckung und Architekturentscheidungen anwenden.
+
+## Was das in der Praxis bedeutet
+
+Natürlich kostet das alles mehr Rechenzeit. Drei Agenten statt einem, mehrere Durchläufe statt einem Versuch. Aber die Rechnung geht trotzdem auf, weil du weniger Zeit damit verbringst, Fehler zu finden, die ein einzelner Agent übersehen hat.
+
+Zwei Dinge bleiben wichtig: Ohne klare Leitplanken produziert auch ein Multi-Agent-Setup mehr Chaos als Qualität. Und die finale Entscheidung, ob ein Ergebnis gut genug ist, bleibt beim Menschen. Agenten können sich gegenseitig herausfordern. Aber die Verantwortung für das Endergebnis lässt sich nicht delegieren.
+
+Wer die besten Ergebnisse will, lässt seine Agenten nicht nebeneinander arbeiten. Sondern gegeneinander.
