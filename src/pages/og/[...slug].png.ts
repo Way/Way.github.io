@@ -9,7 +9,7 @@ const fontRegular = fs.readFileSync('./public/fonts/atkinson-regular.woff');
 const fontBold = fs.readFileSync('./public/fonts/atkinson-bold.woff');
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await getCollection('blog');
+  const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
   return posts.map((post) => ({
     params: { slug: post.id },
     props: {
