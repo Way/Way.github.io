@@ -1,0 +1,70 @@
+---
+title: 'Software neu denken'
+language: de
+description: 'Enterprise-Prozesse wurden für eine Welt gebaut, in der Code teuer war. Diese Welt gibt es nicht mehr.'
+pubDate: '2026-03-15'
+visualTheme: 'pipeline'
+prompt: 'Was passiert mit dem Entwicklungsprozess, wenn nicht mehr Menschen Code schreiben, sondern Agenten?'
+tags: ['software-engineering', 'ai', 'harness-engineering', 'process']
+---
+import SdlcToAdlc from '../../components/SdlcToAdlc.astro';
+
+[Todd Saunders](https://x.com/toddsaunders/status/2032067592652013947) hat letzte Woche etwas geschrieben, das mich nicht mehr loslässt: Das Meeting, in dem sein Team über ein Feature diskutiert hat, war teurer als das Feature selbst. Sechs Leute, eine Stunde, Tagessätze zusammengerechnet. Der Agent hat das Feature danach in zwanzig Minuten gebaut.
+
+Das ist kein Einzelfall. Dass Code billig geworden ist, [habe ich hier schon beschrieben](/blog/code-is-cheap). Aber Saunders' Beobachtung trifft einen wunden Punkt. Die Frage ist nicht mehr: Was kostet uns die Implementierung? Die Frage ist: Was kostet uns der ganze Prozess drumherum?
+
+## Prozesse aus einer anderen Welt
+
+Sprint Planning, Estimation Sessions, Approval Chains, mehrstufige Reviews. Alles Werkzeuge, die für ein bestimmtes Problem erfunden wurden: Entwicklungszeit war teuer und fehleranfällig. Also hat man geplant, priorisiert, abgesichert. Jede Stunde Coding musste sich lohnen.
+
+Das war sinnvoll. In einer Welt, in der ein Fehlversuch Wochen Arbeit und tausende Euro gekostet hat, war Planung die billigste Versicherung.
+
+Nur: Diese Welt gibt es nicht mehr. Ein Agent baut ein Feature in zwanzig Minuten. Wenn es nicht passt, baust du es nochmal. Und nochmal. Bevor das alte Team seinen ersten Sprint Review hätte, hast du drei Varianten getestet und die beste ausgerollt.
+
+Der Preis für einen Fehlversuch ist fast null geworden. Aber die Prozesse, die diesen Preis absichern sollten, kosten genauso viel wie früher.
+
+## Von der Pipeline zum lebenden System
+
+Der klassische Software Development Lifecycle (SDLC) ist eine Pipeline: Planen, Coden, Testen, Deployen. Schritt für Schritt, Phase für Phase. Jede Stufe wartet auf die vorherige. Ändern sich die Anforderungen mittendrin, bricht der Zeitplan.
+
+Was gerade entsteht, funktioniert grundlegend anders. Agenten planen, schreiben Code, testen und deployen nicht nacheinander, sondern gleichzeitig. Mehrere Teilaufgaben laufen parallel. Feedback kommt in Echtzeit zurück, nicht erst am Ende eines Sprints. Anforderungen können sich ändern, ohne dass alles neu geplant werden muss.
+
+<SdlcToAdlc />
+
+Die Ergebnisse sind messbar. [Rakutens Engineering-Team](https://rakuten.today/blog/rakuten-accelerates-development-with-claude-code%EF%BF%BC.html) hat die Zeit von der Idee bis zum fertigen Feature von 24 Tagen auf 5 reduziert. Nicht durch schnelleres Tippen, sondern weil ihre Engineers vier Agenten parallel arbeiten lassen, während sie selbst die fünfte Aufgabe übernehmen. Bei Google wird inzwischen [rund die Hälfte des neuen Codes](https://www.computerweekly.com/news/366638839/Half-of-Googles-software-development-now-AI-generated) von AI-Agenten generiert. Die Wartezeiten zwischen den Phasen fallen weg. Komplexe Implementierungen, die früher Tage gebraucht haben, entstehen in Stunden.
+
+Die Verschiebung passiert auf mehreren Ebenen gleichzeitig: Fixe Pläne werden zu laufend aktualisierten Zielen. Sequenzielle Übergaben werden zu parallelen Arbeitssträngen. Tests nach der Entwicklung werden zu kontinuierlichen Tests während der Entwicklung. Und statt einer Retrospektive am Ende des Projekts gibt es live Feedback, das sofort zurückfließt.
+
+## Zwei Ansätze, ein Prinzip
+
+Wie arbeiten Teams, die das begriffen haben? Ich sehe zwei Muster, die auf den ersten Blick gegensätzlich wirken.
+
+**Umgebungen bauen statt Code schreiben.** OpenAI hat kürzlich beschrieben, wie sie ihren Entwicklungsprozess umgebaut haben. Sie nennen es "[Harness Engineering](https://openai.com/index/harness-engineering/)". Die Idee: Engineers schreiben keinen Code mehr. Sie bauen die Umgebung, in der Agenten arbeiten. Konkret heißt das: klare Ziele definieren, automatische Qualitätschecks einrichten, Leitplanken setzen, innerhalb derer Agenten sich frei bewegen dürfen. Statt dem Agenten alles auf einmal zu erklären, bekommt er ein Inhaltsverzeichnis und schlägt selbst nach, was er braucht.
+
+Ein Detail fand ich besonders aufschlussreich: Je mehr Agenten produzieren, desto schneller verfällt eine Codebase, wenn niemand aufräumt. OpenAIs Lösung: unverrückbare Grundprinzipien als Leitplanken, dazu automatisierte Aufräum-Agenten, die den Code ständig gegen diese Prinzipien prüfen. Der Aufwand ist real. Aber er fließt in die richtige Stelle: in die Umgebung, nicht in die Implementierung einzelner Features.
+
+**Radikal weglassen.** Der Entwickler [sysls](https://x.com/systematicls/status/2028814227004395561) hat das Gegenteil probiert. Je mehr Tools, Regeln und Kontext er seinen Agenten gegeben hat, desto schlechter wurden die Ergebnisse. Der Agent hat sich in den Informationen verloren und schlechtere Entscheidungen getroffen. sysls' Lösung: alles rauswerfen, was nicht unmittelbar nötig ist. Weniger Abhängigkeiten, kürzere Anweisungen, fokussierte Aufgaben.
+
+Auf den ersten Blick widersprechen sich die beiden Ansätze. Auf den zweiten lösen sie dasselbe Problem: Der Agent braucht die richtigen Informationen zur richtigen Zeit. Nicht alles auf einmal, nicht zu wenig. OpenAI erreicht das durch Struktur, sysls durch radikales Kürzen. Der gemeinsame Nenner: Präzision beim Kontext.
+
+Wer den [Artikel über Agent-Orchestrierung](/blog/agents-at-the-table) gelesen hat, kennt das Grundprinzip. Hier geht es einen Schritt weiter. Nicht nur Agenten Aufgaben zuweisen, sondern den gesamten Arbeitsprozess so umbauen, dass Agenten sich darin zurechtfinden.
+
+## Wie sieht das in der Praxis aus?
+
+[Elvis Sun](https://x.com/elvissun/status/2025920521871716562), Solo-Founder und bekannt für seine Arbeit mit AI-Agenten, beschreibt seinen Alltag so: Kein Sprint Planning. Kein tägliches Standup mit fünfzehn Leuten. Stattdessen definiert er Ziele und Einschränkungen. Mehrere Agenten arbeiten parallel an Teilproblemen. Er prüft die Ergebnisse, korrigiert die Richtung, lässt weiterarbeiten.
+
+Das klingt nach einem Sonderfall. Ein Solo-Entwickler, kein Konzern. Aber das Muster taucht überall auf. Kleine Teams, die ihre Prozesse um die neue Realität herum gebaut haben, liefern schneller als große Organisationen mit ausgebauten Planungszyklen. Nicht weil die Einzelnen besser sind. Sondern weil der Overhead wegfällt.
+
+Scrum wurde erfunden, um Teams schneller zu machen. Zweiwöchige Iterationen statt jahrelanger Wasserfälle. Das war ein enormer Fortschritt. Aber die Grundannahme war: Implementierung ist teuer, also muss man sorgfältig planen, was man implementiert. Wenn diese Annahme nicht mehr stimmt, optimiert der Prozess den falschen Engpass.
+
+Das heißt nicht, dass Scrum tot ist. Es heißt, dass sich die Frage verschoben hat. Von "Was können wir uns leisten zu bauen?" zu "Wissen wir, was wir bauen sollten, und wie stellen wir sicher, dass es funktioniert?"
+
+## Was jetzt zählt
+
+Wir wissen noch nicht, wie der ideale Prozess für diese neue Welt aussieht. Harness Engineering ist ein Ansatz, radikaler Minimalismus ein anderer. Vermutlich wird es eine Mischung, die je nach Team anders aussieht.
+
+Was wir wissen: Der Vorteil liegt nicht darin, alles vorher perfekt durchzudenken. Er liegt darin, schneller zu lernen, was funktioniert. Bauen, ausprobieren, verwerfen, nochmal bauen. Die Kosten dafür sind fast null. Die Kosten für ein zweistündiges Meeting mit acht Leuten sind es nicht.
+
+Schau dir deinen Kalender an. Welche Meetings sind teurer als das, was sie produzieren? Welche Approval-Prozesse sichern Risiken ab, die es nicht mehr gibt? Welche Planungsrunden planen Dinge, die ein Agent in einer Stunde gebaut hätte?
+
+Die Teams, die das am schnellsten begreifen, werden nicht die mit den besten Agents sein. Sondern die, die ihre Prozesse am konsequentesten um die neue Realität herum gebaut haben.

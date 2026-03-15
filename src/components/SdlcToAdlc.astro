@@ -1,0 +1,410 @@
+---
+/**
+ * SDLC → ADLC: Visual comparison of the traditional sequential
+ * Software Development Lifecycle vs. the Agent-Driven Lifecycle.
+ * Left: linear pipeline. Right: parallel hub with feedback loops.
+ */
+
+const W = 720;
+const H = 340;
+
+// === SDLC (left side) ===
+const sdlcX = 145;
+const boxW = 104;
+const boxH = 32;
+const sdlcGap = 14;
+const sdlcStartY = 62;
+
+const sdlcPhases = ['Plan', 'Code', 'Test', 'Deploy'];
+
+function sdlcBoxY(i: number) {
+  return sdlcStartY + i * (boxH + sdlcGap);
+}
+
+// === ADLC (right side) ===
+const adlcCx = 540;
+const adlcCy = 170;
+const orbitR = 80;
+const nodeR = 26;
+const hubR = 18;
+
+interface AdlcNode {
+  label: string;
+  angle: number;
+  x: number;
+  y: number;
+}
+
+const adlcNodes: AdlcNode[] = [
+  { label: 'Plan', angle: -90 },
+  { label: 'Code', angle: 0 },
+  { label: 'Test', angle: 90 },
+  { label: 'Deploy', angle: 180 },
+].map(n => {
+  const rad = (n.angle * Math.PI) / 180;
+  return {
+    ...n,
+    x: adlcCx + orbitR * Math.cos(rad),
+    y: adlcCy + orbitR * Math.sin(rad),
+  };
+});
+
+// Feedback arc: almost full circle
+const feedbackR = orbitR + 24;
+const arcGap = 28; // degrees of gap for the arrowhead opening
+const arcStart = -90 + arcGap / 2;
+const arcEnd = -90 - arcGap / 2 + 360;
+
+function polarToCart(cx: number, cy: number, r: number, angleDeg: number) {
+  const rad = (angleDeg * Math.PI) / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+const arcA = polarToCart(adlcCx, adlcCy, feedbackR, arcStart);
+const arcB = polarToCart(adlcCx, adlcCy, feedbackR, arcEnd);
+
+// Transition arrow
+const transX1 = 225;
+const transX2 = 370;
+const transY = 170;
+---
+
+<figure class="sdlc-adlc">
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="Diagramm: Vergleich SDLC (sequenziell) vs. ADLC (parallel, agent-driven)"
+    width="100%"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title>SDLC vs. ADLC</title>
+    <defs>
+      <marker
+        id="arrowhead-sdlc"
+        markerWidth="7"
+        markerHeight="5"
+        refX="6"
+        refY="2.5"
+        orient="auto"
+      >
+        <polygon points="0 0, 7 2.5, 0 5" fill="rgb(var(--gray))" opacity="0.5" />
+      </marker>
+      <marker
+        id="arrowhead-adlc"
+        markerWidth="7"
+        markerHeight="5"
+        refX="6"
+        refY="2.5"
+        orient="auto"
+      >
+        <polygon points="0 0, 7 2.5, 0 5" fill="var(--accent)" opacity="0.6" />
+      </marker>
+      <marker
+        id="arrowhead-trans"
+        markerWidth="9"
+        markerHeight="7"
+        refX="8"
+        refY="3.5"
+        orient="auto"
+      >
+        <polygon points="0 0, 9 3.5, 0 7" fill="var(--accent)" opacity="0.45" />
+      </marker>
+      <marker
+        id="arrowhead-feedback"
+        markerWidth="7"
+        markerHeight="5"
+        refX="6"
+        refY="2.5"
+        orient="auto"
+      >
+        <polygon points="0 0, 7 2.5, 0 5" fill="var(--accent)" opacity="0.35" />
+      </marker>
+    </defs>
+
+    {/* === SDLC Header === */}
+    <text x={sdlcX} y={38} text-anchor="middle" class="sdlc-header">SDLC</text>
+    <text x={sdlcX} y={52} text-anchor="middle" class="sdlc-subheader">sequenziell</text>
+
+    {/* === SDLC Boxes + Arrows === */}
+    {sdlcPhases.map((phase, i) => {
+      const y = sdlcBoxY(i);
+      const centerY = y + boxH / 2;
+      return (
+        <g>
+          {/* Box */}
+          <rect
+            x={sdlcX - boxW / 2}
+            y={y}
+            width={boxW}
+            height={boxH}
+            rx={5}
+            class="sdlc-box"
+          />
+          <text
+            x={sdlcX}
+            y={centerY + 4}
+            text-anchor="middle"
+            class="sdlc-box-label"
+          >
+            {phase}
+          </text>
+          {/* Arrow to next box */}
+          {i < sdlcPhases.length - 1 && (
+            <line
+              x1={sdlcX}
+              y1={y + boxH + 1}
+              x2={sdlcX}
+              y2={sdlcBoxY(i + 1) - 1}
+              stroke="rgb(var(--gray))"
+              stroke-width="1.2"
+              opacity="0.35"
+              marker-end="url(#arrowhead-sdlc)"
+            />
+          )}
+        </g>
+      );
+    })}
+
+    {/* === Transition Arrow === */}
+    <line
+      x1={transX1}
+      y1={transY}
+      x2={transX2}
+      y2={transY}
+      stroke="var(--accent)"
+      stroke-width="1.5"
+      opacity="0.3"
+      stroke-dasharray="6 4"
+      marker-end="url(#arrowhead-trans)"
+    />
+
+    {/* === ADLC Header === */}
+    <text x={adlcCx} y={38} text-anchor="middle" class="adlc-header">ADLC</text>
+    <text x={adlcCx} y={52} text-anchor="middle" class="adlc-subheader">parallel + Echtzeit-Feedback</text>
+
+    {/* === ADLC Hub === */}
+    <circle
+      cx={adlcCx}
+      cy={adlcCy}
+      r={hubR + 6}
+      fill="none"
+      stroke="var(--accent)"
+      stroke-width="1"
+      opacity="0.12"
+    />
+    <circle
+      cx={adlcCx}
+      cy={adlcCy}
+      r={hubR}
+      class="adlc-hub"
+    />
+    <text
+      x={adlcCx}
+      y={adlcCy + 4}
+      text-anchor="middle"
+      class="adlc-hub-label"
+    >
+      Agent
+    </text>
+
+    {/* === ADLC Spokes (hub to nodes) === */}
+    {adlcNodes.map((n) => {
+      const rad = (n.angle * Math.PI) / 180;
+      const x1 = adlcCx + (hubR + 4) * Math.cos(rad);
+      const y1 = adlcCy + (hubR + 4) * Math.sin(rad);
+      const x2 = n.x - (nodeR + 6) * Math.cos(rad);
+      const y2 = n.y - (nodeR + 6) * Math.sin(rad);
+      return (
+        <line
+          x1={x1}
+          y1={y1}
+          x2={x2}
+          y2={y2}
+          stroke="var(--accent)"
+          stroke-width="1.2"
+          opacity="0.3"
+          marker-end="url(#arrowhead-adlc)"
+        />
+      );
+    })}
+
+    {/* === ADLC Phase Nodes === */}
+    {adlcNodes.map((n) => (
+      <g>
+        <circle
+          cx={n.x}
+          cy={n.y}
+          r={nodeR + 6}
+          fill="none"
+          stroke="var(--accent)"
+          stroke-width="1"
+          opacity="0.1"
+        />
+        <circle
+          cx={n.x}
+          cy={n.y}
+          r={nodeR}
+          class="adlc-node"
+        />
+        <text
+          x={n.x}
+          y={n.y + 4}
+          text-anchor="middle"
+          class="adlc-node-label"
+        >
+          {n.label}
+        </text>
+      </g>
+    ))}
+
+    {/* === Feedback Loop Arc === */}
+    <path
+      d={`M${arcA.x.toFixed(1)},${arcA.y.toFixed(1)} A${feedbackR},${feedbackR} 0 1,1 ${arcB.x.toFixed(1)},${arcB.y.toFixed(1)}`}
+      fill="none"
+      stroke="var(--accent)"
+      stroke-width="1"
+      stroke-dasharray="5 3"
+      opacity="0.25"
+      marker-end="url(#arrowhead-feedback)"
+    />
+
+    {/* === Bottom Labels === */}
+    <text x={sdlcX} y={H - 16} text-anchor="middle" class="sdlc-bottom-label">
+      Phase für Phase
+    </text>
+    <text x={adlcCx} y={H - 16} text-anchor="middle" class="adlc-bottom-label">
+      Alles gleichzeitig
+    </text>
+  </svg>
+  <figcaption class="chart-caption">
+    Vom klassischen Software Development Lifecycle zum Agent-Driven Lifecycle: Statt einer Pipeline ein lebendes System.
+  </figcaption>
+</figure>
+
+<style>
+  .sdlc-adlc {
+    margin: 2.5em 0;
+    padding: 0;
+  }
+
+  .sdlc-adlc svg {
+    display: block;
+  }
+
+  /* Headers */
+  .sdlc-header,
+  .adlc-header {
+    font-family: 'Atkinson', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .sdlc-header {
+    fill: rgb(var(--gray));
+  }
+
+  .adlc-header {
+    fill: var(--accent);
+  }
+
+  .sdlc-subheader,
+  .adlc-subheader {
+    font-family: 'Atkinson', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.03em;
+  }
+
+  .sdlc-subheader {
+    fill: rgb(var(--gray));
+    opacity: 0.6;
+  }
+
+  .adlc-subheader {
+    fill: var(--accent);
+    opacity: 0.6;
+  }
+
+  /* SDLC boxes */
+  .sdlc-box {
+    fill: rgba(148, 155, 175, 0.07);
+    stroke: rgb(var(--gray));
+    stroke-width: 1.2;
+    stroke-opacity: 0.25;
+  }
+
+  :where(.dark, .dark *) .sdlc-box {
+    fill: rgba(148, 155, 175, 0.08);
+  }
+
+  .sdlc-box-label {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ADLC hub */
+  .adlc-hub {
+    fill: rgba(148, 155, 175, 0.06);
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-opacity: 0.5;
+  }
+
+  :where(.dark, .dark *) .adlc-hub {
+    fill: rgba(148, 155, 175, 0.1);
+  }
+
+  .adlc-hub-label {
+    fill: var(--accent);
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* ADLC nodes */
+  .adlc-node {
+    fill: rgba(148, 155, 175, 0.06);
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-opacity: 0.35;
+  }
+
+  :where(.dark, .dark *) .adlc-node {
+    fill: rgba(148, 155, 175, 0.1);
+  }
+
+  .adlc-node-label {
+    fill: rgb(var(--black));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* Bottom labels */
+  .sdlc-bottom-label {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    opacity: 0.6;
+  }
+
+  .adlc-bottom-label {
+    fill: var(--accent);
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    opacity: 0.6;
+  }
+
+  .chart-caption {
+    text-align: center;
+    font-size: 14px;
+    color: rgb(var(--gray));
+    margin-top: 0.75em;
+    line-height: 1.4;
+  }
+</style>
