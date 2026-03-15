@@ -1,6 +1,6 @@
 ---
 interface Props {
-  theme: 'neural-network' | 'mesh' | 'towers' | 'growth' | 'vertical-stack' | 'roundtable';
+  theme: 'neural-network' | 'mesh' | 'towers' | 'growth' | 'vertical-stack' | 'roundtable' | 'pipeline' | 'swarm' | 'blueprint' | 'signal';
   seed: number;
   width: number;
   height: number;
@@ -276,6 +276,169 @@ for (let i = 0; i < seatCount; i++) {
       delay: (i * 0.3 + 0.5).toFixed(1),
       isActive: seats[i].isAgent !== seats[opposite].isAgent,
     });
+  }
+}
+
+// --- Pipeline: flowing stages connected by paths ---
+const stageCount = 5;
+const stageSpacing = width / (stageCount + 1);
+const stages = Array.from({ length: stageCount }, (_, i) => {
+  const cx = stageSpacing * (i + 1);
+  const cy = height * (0.35 + srand(seed + 700, i) * 0.3);
+  const r = 10 + srand(seed + 700, i + 10) * 8;
+  return {
+    cx,
+    cy,
+    r,
+    delay: (i * 0.3).toFixed(1),
+    hue: Math.round(200 + srand(seed + 700, i + 20) * 60),
+    lightness: Math.round(30 + srand(seed + 700, i + 30) * 15),
+  };
+});
+
+const pipeLines = stages.slice(0, -1).map((s, i) => {
+  const next = stages[i + 1];
+  const cpX = (s.cx + next.cx) / 2;
+  const cpY = (s.cy + next.cy) / 2 + (srand(seed + 710, i) - 0.5) * 40;
+  return {
+    d: `M${s.cx.toFixed(1)},${s.cy.toFixed(1)} Q${cpX.toFixed(1)},${cpY.toFixed(1)} ${next.cx.toFixed(1)},${next.cy.toFixed(1)}`,
+    delay: (i * 0.3 + 0.5).toFixed(1),
+    dashLen: Math.round(Math.sqrt((next.cx - s.cx) ** 2 + (next.cy - s.cy) ** 2) * 1.3),
+  };
+});
+
+// Data particles flowing along pipes
+const particleCount = 8;
+const pipeParticles = Array.from({ length: particleCount }, (_, i) => {
+  const pipeIdx = Math.floor(srand(seed + 720, i) * pipeLines.length);
+  const pipe = pipeLines[pipeIdx];
+  return {
+    pipeIdx,
+    r: 1.5 + srand(seed + 720, i + 10) * 1.5,
+    duration: (3 + srand(seed + 720, i + 20) * 4).toFixed(1),
+    delay: (srand(seed + 720, i + 30) * 5).toFixed(1),
+    hue: stages[pipeIdx].hue,
+  };
+});
+
+// --- Swarm: autonomous agents moving in coordinated patterns ---
+const swarmCount = 18;
+const swarmAgents = Array.from({ length: swarmCount }, (_, i) => {
+  const cx = 40 + srand(seed + 800, i * 6) * (width - 80);
+  const cy = 30 + srand(seed + 800, i * 6 + 1) * (height - 60);
+  const isLeader = i < 3;
+  return {
+    cx,
+    cy,
+    r: isLeader ? 4 + srand(seed + 800, i * 6 + 2) * 2 : 2 + srand(seed + 800, i * 6 + 2) * 1.5,
+    isLeader,
+    delay: (srand(seed + 800, i * 6 + 3) * 3).toFixed(1),
+    driftX: (-20 + srand(seed + 800, i * 6 + 4) * 40).toFixed(1),
+    driftY: (-15 + srand(seed + 800, i * 6 + 5) * 30).toFixed(1),
+    duration: (6 + srand(seed + 800, i * 6 + 2) * 8).toFixed(1),
+    hue: isLeader
+      ? Math.round(270 + srand(seed + 800, i + 40) * 30)
+      : Math.round(180 + srand(seed + 800, i + 40) * 60),
+  };
+});
+
+// Swarm communication lines between nearby agents
+const swarmLines: Array<{ x1: number; y1: number; x2: number; y2: number; delay: string }> = [];
+for (let i = 0; i < swarmAgents.length; i++) {
+  for (let j = i + 1; j < swarmAgents.length; j++) {
+    const dx = swarmAgents[i].cx - swarmAgents[j].cx;
+    const dy = swarmAgents[i].cy - swarmAgents[j].cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < Math.min(width, height) * 0.25) {
+      swarmLines.push({
+        x1: swarmAgents[i].cx,
+        y1: swarmAgents[i].cy,
+        x2: swarmAgents[j].cx,
+        y2: swarmAgents[j].cy,
+        delay: (srand(seed + 810, i + j) * 4).toFixed(1),
+      });
+    }
+  }
+}
+
+// --- Blueprint: technical grid with schematic elements ---
+const gridSpacingX = width / 8;
+const gridSpacingY = height / 5;
+const blueprintMarks: Array<{ cx: number; cy: number; type: 'cross' | 'circle' | 'square'; delay: string; size: number }> = [];
+for (let gx = 1; gx < 8; gx++) {
+  for (let gy = 1; gy < 5; gy++) {
+    if (srand(seed + 900, gx * 7 + gy) > 0.6) {
+      const types = ['cross', 'circle', 'square'] as const;
+      blueprintMarks.push({
+        cx: gx * gridSpacingX,
+        cy: gy * gridSpacingY,
+        type: types[Math.floor(srand(seed + 900, gx * 13 + gy) * 3)],
+        delay: ((gx + gy) * 0.12).toFixed(1),
+        size: 4 + srand(seed + 900, gx * 7 + gy + 50) * 4,
+      });
+    }
+  }
+}
+
+// Blueprint measurement lines
+const bpMeasureCount = 3;
+const bpMeasures = Array.from({ length: bpMeasureCount }, (_, i) => {
+  const isHorizontal = srand(seed + 910, i) > 0.5;
+  const pos = 0.2 + srand(seed + 910, i + 10) * 0.6;
+  const start = 0.1 + srand(seed + 910, i + 20) * 0.2;
+  const end = 0.7 + srand(seed + 910, i + 30) * 0.2;
+  return {
+    x1: isHorizontal ? start * width : pos * width,
+    y1: isHorizontal ? pos * height : start * height,
+    x2: isHorizontal ? end * width : pos * width,
+    y2: isHorizontal ? pos * height : end * height,
+    delay: (0.5 + i * 0.3).toFixed(1),
+  };
+});
+
+// Blueprint component boxes
+const bpBoxCount = 3;
+const bpBoxes = Array.from({ length: bpBoxCount }, (_, i) => {
+  const bw = 60 + srand(seed + 920, i) * 80;
+  const bh = 25 + srand(seed + 920, i + 5) * 30;
+  return {
+    x: 80 + srand(seed + 920, i + 10) * (width - 220),
+    y: 40 + srand(seed + 920, i + 15) * (height - 100),
+    w: bw,
+    h: bh,
+    delay: (0.3 + i * 0.25).toFixed(1),
+  };
+});
+
+// --- Signal: concentric wave rings from emitters ---
+const emitterCount = 3 + Math.floor(srand(seed + 1000, 0) * 2);
+const emitters = Array.from({ length: emitterCount }, (_, i) => {
+  const cx = width * (0.15 + srand(seed + 1000, i * 4) * 0.7);
+  const cy = height * (0.2 + srand(seed + 1000, i * 4 + 1) * 0.6);
+  const ringCount = 3 + Math.floor(srand(seed + 1000, i * 4 + 2) * 2);
+  return {
+    cx,
+    cy,
+    ringCount,
+    delay: (i * 0.5).toFixed(1),
+    maxR: 30 + srand(seed + 1000, i * 4 + 3) * 50,
+    hue: Math.round(30 + srand(seed + 1000, i + 20) * 30),
+  };
+});
+
+// Signal connection lines between emitters
+const signalLinks: Array<{ x1: number; y1: number; x2: number; y2: number; delay: string }> = [];
+for (let i = 0; i < emitters.length; i++) {
+  for (let j = i + 1; j < emitters.length; j++) {
+    if (srand(seed + 1010, i * 5 + j) > 0.4) {
+      signalLinks.push({
+        x1: emitters[i].cx,
+        y1: emitters[i].cy,
+        x2: emitters[j].cx,
+        y2: emitters[j].cy,
+        delay: (0.8 + (i + j) * 0.2).toFixed(1),
+      });
+    }
   }
 }
 ---
@@ -668,6 +831,264 @@ for (let i = 0; i < seatCount; i++) {
       ))}
     </g>
   )}
+
+  {theme === 'pipeline' && (
+    <g class="pipe-scene">
+      {/* Connection paths */}
+      {pipeLines.map((p, i) => (
+        <g>
+          <path
+            d={p.d}
+            fill="none"
+            stroke="rgba(140, 180, 255, 0.2)"
+            stroke-width="2"
+            stroke-linecap="round"
+            class="pipe-path"
+            style={`animation-delay: ${p.delay}s`}
+            stroke-dasharray={p.dashLen}
+            stroke-dashoffset={p.dashLen}
+          />
+          {/* Flow indicator line */}
+          <path
+            d={p.d}
+            fill="none"
+            stroke="rgba(160, 200, 255, 0.4)"
+            stroke-width="1"
+            stroke-linecap="round"
+            stroke-dasharray="4 12"
+            class="pipe-flow"
+            style={`animation-delay: ${p.delay}s; --dash-total: ${p.dashLen}`}
+          />
+        </g>
+      ))}
+      {/* Stage nodes */}
+      {stages.map((s) => (
+        <g class="pipe-stage" style={`animation-delay: ${s.delay}s`}>
+          {/* Outer ring */}
+          <circle
+            cx={s.cx.toFixed(1)}
+            cy={s.cy.toFixed(1)}
+            r={(s.r * 1.8).toFixed(1)}
+            fill="none"
+            stroke={`hsla(${s.hue}, 50%, ${s.lightness + 20}%, 0.15)`}
+            stroke-width="1"
+            class="pipe-ring"
+            style={`animation-delay: ${s.delay}s`}
+          />
+          {/* Core */}
+          <circle
+            cx={s.cx.toFixed(1)}
+            cy={s.cy.toFixed(1)}
+            r={s.r.toFixed(1)}
+            fill={`hsla(${s.hue}, 45%, ${s.lightness}%, 0.5)`}
+            stroke={`hsla(${s.hue}, 50%, ${s.lightness + 15}%, 0.6)`}
+            stroke-width="1.5"
+            class="pipe-core"
+            style={`animation-delay: ${s.delay}s`}
+          />
+          {/* Inner dot */}
+          <circle
+            cx={s.cx.toFixed(1)}
+            cy={s.cy.toFixed(1)}
+            r="3"
+            fill={`hsla(${s.hue}, 60%, 60%, 0.8)`}
+            class="pipe-dot"
+            style={`animation-delay: ${s.delay}s`}
+          />
+        </g>
+      ))}
+    </g>
+  )}
+
+  {theme === 'swarm' && (
+    <g class="swarm-scene">
+      {/* Communication lines */}
+      {swarmLines.map((l) => (
+        <line
+          x1={l.x1.toFixed(1)}
+          y1={l.y1.toFixed(1)}
+          x2={l.x2.toFixed(1)}
+          y2={l.y2.toFixed(1)}
+          stroke="rgba(180, 160, 255, 0.1)"
+          stroke-width="0.5"
+          class="swarm-link"
+          style={`animation-delay: ${l.delay}s`}
+        />
+      ))}
+      {/* Agent dots */}
+      {swarmAgents.map((a) => (
+        <g class="swarm-agent" style={`animation-delay: ${a.delay}s; --dx: ${a.driftX}px; --dy: ${a.driftY}px; --dur: ${a.duration}s`}>
+          {/* Trail glow for leaders */}
+          {a.isLeader && (
+            <circle
+              cx={a.cx.toFixed(1)}
+              cy={a.cy.toFixed(1)}
+              r={(a.r * 3).toFixed(1)}
+              fill="none"
+              stroke={`hsla(${a.hue}, 55%, 55%, 0.12)`}
+              stroke-width="1"
+              class="swarm-aura"
+              style={`animation-delay: ${a.delay}s`}
+            />
+          )}
+          {/* Core */}
+          <circle
+            cx={a.cx.toFixed(1)}
+            cy={a.cy.toFixed(1)}
+            r={a.r.toFixed(1)}
+            fill={`hsla(${a.hue}, 50%, 55%, ${a.isLeader ? '0.8' : '0.5'})`}
+            class="swarm-core"
+            style={`animation-delay: ${a.delay}s`}
+          />
+        </g>
+      ))}
+    </g>
+  )}
+
+  {theme === 'blueprint' && (
+    <g class="bp-scene">
+      {/* Grid lines */}
+      {Array.from({ length: 7 }, (_, i) => (
+        <line
+          x1={(i + 1) * gridSpacingX}
+          y1="0"
+          x2={(i + 1) * gridSpacingX}
+          y2={height}
+          stroke="rgba(100, 160, 220, 0.06)"
+          stroke-width="0.5"
+        />
+      ))}
+      {Array.from({ length: 4 }, (_, i) => (
+        <line
+          x1="0"
+          y1={(i + 1) * gridSpacingY}
+          x2={width}
+          y2={(i + 1) * gridSpacingY}
+          stroke="rgba(100, 160, 220, 0.06)"
+          stroke-width="0.5"
+        />
+      ))}
+      {/* Measurement lines */}
+      {bpMeasures.map((m) => (
+        <g class="bp-measure" style={`animation-delay: ${m.delay}s`}>
+          <line
+            x1={m.x1.toFixed(1)}
+            y1={m.y1.toFixed(1)}
+            x2={m.x2.toFixed(1)}
+            y2={m.y2.toFixed(1)}
+            stroke="rgba(100, 180, 255, 0.2)"
+            stroke-width="0.8"
+            stroke-dasharray="6 3"
+          />
+          {/* End caps */}
+          <circle cx={m.x1.toFixed(1)} cy={m.y1.toFixed(1)} r="2" fill="rgba(100, 180, 255, 0.3)" />
+          <circle cx={m.x2.toFixed(1)} cy={m.y2.toFixed(1)} r="2" fill="rgba(100, 180, 255, 0.3)" />
+        </g>
+      ))}
+      {/* Component boxes */}
+      {bpBoxes.map((b) => (
+        <g class="bp-box" style={`animation-delay: ${b.delay}s`}>
+          <rect
+            x={b.x.toFixed(1)}
+            y={b.y.toFixed(1)}
+            width={b.w.toFixed(1)}
+            height={b.h.toFixed(1)}
+            rx="3"
+            fill="rgba(80, 140, 200, 0.08)"
+            stroke="rgba(100, 160, 220, 0.25)"
+            stroke-width="1"
+          />
+          {/* Corner notch */}
+          <rect
+            x={(b.x + 4).toFixed(1)}
+            y={(b.y + 4).toFixed(1)}
+            width="8"
+            height="3"
+            rx="1"
+            fill="rgba(120, 180, 240, 0.35)"
+          />
+        </g>
+      ))}
+      {/* Schematic marks */}
+      {blueprintMarks.map((m) => (
+        <g class="bp-mark" style={`animation-delay: ${m.delay}s`}>
+          {m.type === 'cross' && (
+            <g>
+              <line x1={m.cx - m.size} y1={m.cy} x2={m.cx + m.size} y2={m.cy}
+                stroke="rgba(120, 180, 240, 0.3)" stroke-width="0.8" />
+              <line x1={m.cx} y1={m.cy - m.size} x2={m.cx} y2={m.cy + m.size}
+                stroke="rgba(120, 180, 240, 0.3)" stroke-width="0.8" />
+            </g>
+          )}
+          {m.type === 'circle' && (
+            <circle cx={m.cx} cy={m.cy} r={m.size * 0.7}
+              fill="none" stroke="rgba(120, 180, 240, 0.25)" stroke-width="0.8" />
+          )}
+          {m.type === 'square' && (
+            <rect x={m.cx - m.size * 0.5} y={m.cy - m.size * 0.5}
+              width={m.size} height={m.size}
+              fill="none" stroke="rgba(120, 180, 240, 0.2)" stroke-width="0.8"
+              transform={`rotate(45 ${m.cx} ${m.cy})`} />
+          )}
+        </g>
+      ))}
+    </g>
+  )}
+
+  {theme === 'signal' && (
+    <g class="sig-scene">
+      {/* Connection lines between emitters */}
+      {signalLinks.map((l) => (
+        <line
+          x1={l.x1.toFixed(1)}
+          y1={l.y1.toFixed(1)}
+          x2={l.x2.toFixed(1)}
+          y2={l.y2.toFixed(1)}
+          stroke="rgba(255, 180, 100, 0.12)"
+          stroke-width="0.8"
+          stroke-dasharray="4 6"
+          class="sig-link"
+          style={`animation-delay: ${l.delay}s`}
+        />
+      ))}
+      {/* Emitters with rings */}
+      {emitters.map((e) => (
+        <g class="sig-emitter" style={`animation-delay: ${e.delay}s`}>
+          {/* Concentric rings */}
+          {Array.from({ length: e.ringCount }, (_, r) => (
+            <circle
+              cx={e.cx.toFixed(1)}
+              cy={e.cy.toFixed(1)}
+              r={(e.maxR * ((r + 1) / e.ringCount)).toFixed(1)}
+              fill="none"
+              stroke={`hsla(${e.hue}, 60%, 55%, ${(0.2 - r * 0.04).toFixed(2)})`}
+              stroke-width="0.8"
+              class="sig-ring"
+              style={`animation-delay: ${(parseFloat(e.delay) + r * 0.4).toFixed(1)}s; --ring-scale: ${1 + r * 0.15}`}
+            />
+          ))}
+          {/* Core emitter */}
+          <circle
+            cx={e.cx.toFixed(1)}
+            cy={e.cy.toFixed(1)}
+            r="4"
+            fill={`hsla(${e.hue}, 65%, 55%, 0.7)`}
+            class="sig-core"
+            style={`animation-delay: ${e.delay}s`}
+          />
+          {/* Inner glow */}
+          <circle
+            cx={e.cx.toFixed(1)}
+            cy={e.cy.toFixed(1)}
+            r="8"
+            fill={`hsla(${e.hue}, 55%, 50%, 0.1)`}
+            class="sig-glow"
+            style={`animation-delay: ${e.delay}s`}
+          />
+        </g>
+      ))}
+    </g>
+  )}
 </svg>
 
 <style>
@@ -947,6 +1368,152 @@ for (let i = 0; i < seatCount; i++) {
     50% { opacity: 0.55; stroke-width: 1.8; }
   }
 
+  /* ── Pipeline ── */
+  .pipe-path {
+    animation: pipe-draw 1.5s ease-out both;
+  }
+  @keyframes pipe-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .pipe-flow {
+    animation: pipe-flow-move 3s linear infinite;
+  }
+  @keyframes pipe-flow-move {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -32; }
+  }
+
+  .pipe-stage {
+    animation: pipe-stage-appear 0.6s ease-out both;
+  }
+  @keyframes pipe-stage-appear {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .pipe-core {
+    animation: pipe-core-pulse 4s ease-in-out infinite;
+  }
+  @keyframes pipe-core-pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.75; }
+  }
+
+  .pipe-ring {
+    animation: pipe-ring-expand 4.5s ease-in-out infinite;
+  }
+  @keyframes pipe-ring-expand {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.2); }
+  }
+
+  .pipe-dot {
+    animation: pipe-dot-pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes pipe-dot-pulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  /* ── Swarm ── */
+  .swarm-agent {
+    animation: swarm-move var(--dur, 8s) ease-in-out infinite;
+  }
+  @keyframes swarm-move {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(var(--dx, 10px), calc(var(--dy, 8px) * 0.3)); }
+    50% { transform: translate(calc(var(--dx, 10px) * 0.6), var(--dy, 8px)); }
+    75% { transform: translate(calc(var(--dx, 10px) * -0.3), calc(var(--dy, 8px) * 0.7)); }
+  }
+
+  .swarm-core {
+    animation: swarm-pulse 3s ease-in-out infinite;
+  }
+  @keyframes swarm-pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.85; }
+  }
+
+  .swarm-aura {
+    animation: swarm-aura-expand 5s ease-in-out infinite;
+  }
+  @keyframes swarm-aura-expand {
+    0%, 100% { opacity: 0.12; transform: scale(1); }
+    50% { opacity: 0.25; transform: scale(1.4); }
+  }
+
+  .swarm-link {
+    animation: swarm-link-fade 6s ease-in-out infinite;
+  }
+  @keyframes swarm-link-fade {
+    0%, 100% { opacity: 0.1; }
+    40% { opacity: 0.25; }
+    60% { opacity: 0.08; }
+  }
+
+  /* ── Blueprint ── */
+  .bp-mark {
+    animation: bp-mark-appear 0.5s ease-out both, bp-mark-breathe 5s ease-in-out 1s infinite;
+  }
+  @keyframes bp-mark-appear {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes bp-mark-breathe {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+  }
+
+  .bp-box {
+    animation: bp-box-appear 0.8s ease-out both;
+  }
+  @keyframes bp-box-appear {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .bp-measure {
+    animation: bp-measure-draw 1s ease-out both;
+  }
+  @keyframes bp-measure-draw {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ── Signal ── */
+  .sig-ring {
+    animation: sig-ring-pulse 4s ease-in-out infinite;
+  }
+  @keyframes sig-ring-pulse {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(var(--ring-scale, 1.1)); }
+  }
+
+  .sig-core {
+    animation: sig-core-pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes sig-core-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+
+  .sig-glow {
+    animation: sig-glow-breathe 3.5s ease-in-out infinite;
+  }
+  @keyframes sig-glow-breathe {
+    0%, 100% { opacity: 0.1; transform: scale(1); }
+    50% { opacity: 0.25; transform: scale(1.4); }
+  }
+
+  .sig-link {
+    animation: sig-link-flow 4s ease-in-out infinite;
+  }
+  @keyframes sig-link-flow {
+    0%, 100% { opacity: 0.12; }
+    50% { opacity: 0.3; }
+  }
+
   /* ── Reduced motion ── */
   @media (prefers-reduced-motion: reduce) {
     .nn-node, .nn-pulse, .nn-glow, .nn-line,
@@ -957,7 +1524,11 @@ for (let i = 0; i < seatCount; i++) {
     .growth-root, .growth-spore, .growth-petal, .growth-bud,
     .vstack-layer, .vstack-bar, .vstack-edge, .vstack-arrow,
     .rt-table, .rt-table-inner, .rt-seat, .rt-core, .rt-ring,
-    .rt-agent-mark, .rt-line, .rt-line-active {
+    .rt-agent-mark, .rt-line, .rt-line-active,
+    .pipe-path, .pipe-flow, .pipe-stage, .pipe-core, .pipe-ring, .pipe-dot,
+    .swarm-agent, .swarm-core, .swarm-aura, .swarm-link,
+    .bp-mark, .bp-box, .bp-measure,
+    .sig-ring, .sig-core, .sig-glow, .sig-link {
       animation: none !important;
     }
     .tower {
@@ -978,6 +1549,25 @@ for (let i = 0; i < seatCount; i++) {
     .vstack-layer {
       transform: translateX(0) !important;
       opacity: 1 !important;
+    }
+    .pipe-path {
+      stroke-dashoffset: 0 !important;
+    }
+    .pipe-stage {
+      opacity: 1 !important;
+      transform: scale(1) !important;
+    }
+    .swarm-core {
+      opacity: 0.6 !important;
+    }
+    .bp-mark, .bp-box, .bp-measure {
+      opacity: 1 !important;
+    }
+    .sig-ring {
+      opacity: 0.2 !important;
+    }
+    .sig-core {
+      opacity: 0.7 !important;
     }
   }
 </style>
