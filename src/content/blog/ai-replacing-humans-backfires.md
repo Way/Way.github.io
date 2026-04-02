@@ -15,7 +15,7 @@ Zwei Drittel dieser Unternehmen haben inzwischen angefangen, genau diese Stellen
 
 ## Die Junior Death Spiral
 
-Im Tech-Sektor passiert gerade etwas, das in fünf Jahren richtig wehtun wird. Einstiegspositionen für Entwickler:innen sind massiv zurückgegangen. Die Logik der Entscheider klingt erstmal vernünftig: Einfache Tasks lassen sich automatisieren, also brauchen wir weniger Juniors.
+Im Tech-Sektor passiert gerade etwas, das in fünf Jahren richtig wehtun wird. Einstiegspositionen für Entwickler sind massiv zurückgegangen. Die Logik der Entscheider klingt erstmal vernünftig: Einfache Tasks lassen sich automatisieren, also brauchen wir weniger Juniors.
 
 Das Problem: Juniors von heute sind die Seniors von morgen. Wer keine Juniors einstellt, hat in fünf Jahren niemanden, der das System versteht. Niemanden, der gewachsen ist mit den Entscheidungen, den Altlasten, den Kompromissen, die jede echte Codebasis ausmachen. Man spart sich die Ausbildung und wundert sich dann, warum es keine erfahrenen Leute gibt.
 
@@ -49,7 +49,7 @@ Das sind keine Anekdoten. Es ist ein strukturelles Problem. AI-Output sieht übe
 
 Parallel dazu etabliert sich ein neues Muster: AI als Narrativ. Layoffs werden mit AI begründet, obwohl die eigentlichen Ursachen Managementfehler, sinkende Margen oder verfehlte Strategie sind. Produkte werden als "AI-powered" vermarktet, obwohl dahinter menschliche Arbeit steckt.
 
-Das bekannteste Beispiel: [Supervan](https://www.nytimes.com/2024/08/29/technology/ai-supervan-india.html), ein Logistik-Startup, das Investoren eine AI-gesteuerte Plattform verkaufte. In den Insolvenzunterlagen zeigte sich, dass die angeblich automatisierten Prozesse in Wahrheit von Hunderten schlecht bezahlter Arbeiter:innen in Indien manuell erledigt wurden. Die AI war eine Fassade. Kein Einzelfall: Die SEC hat inzwischen begonnen, [gegen AI Washing vorzugehen](https://www.sec.gov/newsroom/press-releases/2025-42), weil immer mehr Unternehmen AI-Fähigkeiten vortäuschen, die nicht existieren.
+Das bekannteste Beispiel: [Supervan](https://www.nytimes.com/2024/08/29/technology/ai-supervan-india.html), ein Logistik-Startup, das Investoren eine AI-gesteuerte Plattform verkaufte. In den Insolvenzunterlagen zeigte sich, dass die angeblich automatisierten Prozesse in Wahrheit von Hunderten schlecht bezahlter Arbeiter in Indien manuell erledigt wurden. Die AI war eine Fassade. Kein Einzelfall: Die SEC hat inzwischen begonnen, [gegen AI Washing vorzugehen](https://www.sec.gov/newsroom/press-releases/2025-42), weil immer mehr Unternehmen AI-Fähigkeiten vortäuschen, die nicht existieren.
 
 Die Kluft zwischen Versprechen und Realität wächst. Und je länger sie wächst, desto härter wird die Korrektur.
 
@@ -67,7 +67,7 @@ Der Wandel passiert nicht, weil jemand eine Studie liest. Er passiert, wenn der 
 
 ## Die Recovery-Phase
 
-Die Gewinner in dieser Phase sind nicht die, die am meisten automatisiert haben. Es sind die, die verstanden haben, wo AI aufhört und menschliches Urteilsvermögen anfängt. Architekt:innen und erfahrene Entwickler:innen, die begreifen, warum AI-Logik versagt. Die Systeme stabilisieren, Risiken begrenzen und Entscheidungen treffen können, die kein Modell treffen sollte. Der Markt bewegt sich weg von blinder Automatisierung hin zu gezielter Kombination.
+Die Gewinner in dieser Phase sind nicht die, die am meisten automatisiert haben. Es sind die, die verstanden haben, wo AI aufhört und menschliches Urteilsvermögen anfängt. Architekten und erfahrene Entwickler, die begreifen, warum AI-Logik versagt. Die Systeme stabilisieren, Risiken begrenzen und Entscheidungen treffen können, die kein Modell treffen sollte. Der Markt bewegt sich weg von blinder Automatisierung hin zu gezielter Kombination.
 
 AI verschiebt den Wert menschlicher Arbeit nach oben. Routineaufgaben werden billiger, ja. Aber Urteilsvermögen, Verantwortung, Systemverständnis, Kontextwissen: all das wird wertvoller. Nicht trotz AI, sondern wegen ihr.
 
