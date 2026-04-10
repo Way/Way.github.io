@@ -25,6 +25,9 @@ const blog = defineCollection({
         'swarm',
         'blueprint',
         'signal',
+        'cockpit',
+        'scaffold',
+        'orbit',
       ])
       .optional(),
   }),

@@ -1,0 +1,164 @@
+---
+interface Layer {
+  title: string;
+  subtitle: string;
+  width: number;
+  opacity: number;
+}
+
+const W = 720;
+const H = 300;
+const layerH = 64;
+const gap = 14;
+const centerX = W / 2;
+const bottomY = H - 40;
+
+const layers: Layer[] = [
+  {
+    title: 'Task-Anweisungen',
+    subtitle: 'Kontext für die konkrete Aufgabe',
+    width: 260,
+    opacity: 1.0,
+  },
+  {
+    title: 'Projekt-Anweisungen',
+    subtitle: 'Regeln für ein Arbeitsfeld',
+    width: 420,
+    opacity: 0.7,
+  },
+  {
+    title: 'Globale Anweisungen',
+    subtitle: 'Schreibstil, Konventionen, Arbeitsweise',
+    width: 580,
+    opacity: 0.45,
+  },
+];
+
+// Stack from bottom (widest) to top (narrowest)
+const rows = layers.reverse().map((layer, i) => {
+  const y = bottomY - (i + 1) * (layerH + gap);
+  return { ...layer, y };
+}).reverse();
+
+// Arrow positions (left side)
+const arrowX = centerX - rows[rows.length - 1].width / 2 - 30;
+const arrowTop = rows[0].y + layerH / 2;
+const arrowBottom = rows[rows.length - 1].y + layerH / 2;
+---
+
+<figure class="context-layers">
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="Diagramm: Drei Ebenen von Kontext – Global, Projekt, Task"
+    width="100%"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title>Kontextebenen: Global, Projekt, Task</title>
+    <defs>
+      <linearGradient id="cl-gradient" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.8" />
+        <stop offset="100%" stop-color="var(--accent)" stop-opacity="0.2" />
+      </linearGradient>
+      <marker id="cl-arrow" viewBox="0 0 10 10" refX="5" refY="5"
+        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)" opacity="0.5" />
+      </marker>
+    </defs>
+
+    {/* Vertical gradient bar */}
+    <rect
+      x={arrowX - 2}
+      y={arrowTop - 4}
+      width={4}
+      height={arrowBottom - arrowTop + 8}
+      rx={2}
+      fill="url(#cl-gradient)"
+    />
+
+    {/* Labels */}
+    <text x={arrowX} y={arrowTop - 14} text-anchor="middle" class="cl-gradient-label">spezifisch</text>
+    <text x={arrowX} y={arrowBottom + 22} text-anchor="middle" class="cl-gradient-label">allgemein</text>
+
+    {/* Layers */}
+    {rows.map((row) => (
+      <g>
+        <rect
+          x={centerX - row.width / 2}
+          y={row.y}
+          width={row.width}
+          height={layerH}
+          rx={8}
+          class="cl-box"
+          style={`opacity: ${0.35 + row.opacity * 0.65}`}
+        />
+        <text
+          x={centerX}
+          y={row.y + 26}
+          text-anchor="middle"
+          class="cl-label"
+        >{row.title}</text>
+        <text
+          x={centerX}
+          y={row.y + 44}
+          text-anchor="middle"
+          class="cl-sublabel"
+        >{row.subtitle}</text>
+      </g>
+    ))}
+  </svg>
+  <figcaption class="chart-caption">
+    Drei Ebenen von Kontext: Je spezifischer die Ebene, desto gezielter die Ergebnisse.
+  </figcaption>
+</figure>
+
+<style>
+  .context-layers {
+    margin: 2.5em 0;
+    padding: 0;
+  }
+
+  .context-layers svg {
+    display: block;
+  }
+
+  .cl-box {
+    fill: rgb(var(--gray-light));
+    stroke: none;
+  }
+
+  :where(.dark, .dark *) .cl-box {
+    fill: rgba(148, 155, 175, 0.12);
+  }
+
+  .cl-label {
+    fill: rgb(var(--black));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .cl-sublabel {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11.5px;
+  }
+
+  .cl-gradient-label {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .chart-caption {
+    text-align: center;
+    font-size: 14px;
+    color: rgb(var(--gray));
+    margin-top: 1.25em;
+    padding: 0 1.5em;
+    line-height: 1.4;
+  }
+</style>

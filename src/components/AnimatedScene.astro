@@ -1,6 +1,6 @@
 ---
 interface Props {
-  theme: 'neural-network' | 'mesh' | 'towers' | 'growth' | 'vertical-stack' | 'roundtable' | 'pipeline' | 'swarm' | 'blueprint' | 'signal';
+  theme: 'neural-network' | 'mesh' | 'towers' | 'growth' | 'vertical-stack' | 'roundtable' | 'pipeline' | 'swarm' | 'blueprint' | 'signal' | 'cockpit' | 'scaffold' | 'orbit';
   seed: number;
   width: number;
   height: number;
@@ -441,6 +441,147 @@ for (let i = 0; i < emitters.length; i++) {
     }
   }
 }
+
+// --- Cockpit: dashboard with panels, gauges, and status indicators ---
+const cpPanelCount = 4;
+const cpPanels = Array.from({ length: cpPanelCount }, (_, i) => {
+  const pw = 100 + srand(seed + 1100, i * 5) * 100;
+  const ph = 35 + srand(seed + 1100, i * 5 + 1) * 45;
+  return {
+    x: 30 + srand(seed + 1100, i * 5 + 2) * (width - pw - 60),
+    y: 15 + srand(seed + 1100, i * 5 + 3) * (height - ph - 30),
+    w: pw,
+    h: ph,
+    delay: (i * 0.25).toFixed(1),
+    hue: Math.round(240 + srand(seed + 1100, i * 5 + 4) * 40),
+  };
+});
+
+const cpGauges = cpPanels.flatMap((p, pi) => {
+  const count = 2 + Math.floor(srand(seed + 1110, pi) * 2);
+  return Array.from({ length: count }, (_, gi) => ({
+    cx: p.x + p.w * (0.2 + gi * 0.25),
+    cy: p.y + p.h * 0.55,
+    r: 6 + srand(seed + 1110, pi * 4 + gi) * 5,
+    fill: 0.3 + srand(seed + 1110, pi * 4 + gi + 10) * 0.55,
+    delay: (parseFloat(p.delay) + 0.3 + gi * 0.1).toFixed(1),
+    hue: p.hue,
+  }));
+});
+
+const cpStatusCount = 10;
+const cpDots = Array.from({ length: cpStatusCount }, (_, i) => ({
+  cx: 20 + srand(seed + 1120, i * 3) * (width - 40),
+  cy: 10 + srand(seed + 1120, i * 3 + 1) * (height - 20),
+  r: 1.5 + srand(seed + 1120, i * 3 + 2),
+  hue: [140, 45, 260][Math.floor(srand(seed + 1120, i + 20) * 3)],
+  delay: (srand(seed + 1120, i + 30) * 5).toFixed(1),
+}));
+
+const cpLinks: Array<{ x1: number; y1: number; x2: number; y2: number; delay: string }> = [];
+for (let i = 0; i < cpPanels.length; i++) {
+  for (let j = i + 1; j < cpPanels.length; j++) {
+    if (srand(seed + 1130, i * 5 + j) > 0.35) {
+      cpLinks.push({
+        x1: cpPanels[i].x + cpPanels[i].w / 2,
+        y1: cpPanels[i].y + cpPanels[i].h / 2,
+        x2: cpPanels[j].x + cpPanels[j].w / 2,
+        y2: cpPanels[j].y + cpPanels[j].h / 2,
+        delay: (0.6 + (i + j) * 0.15).toFixed(1),
+      });
+    }
+  }
+}
+
+// --- Scaffold: modular blocks with connectors ---
+const scModuleCount = 6;
+const scModules = Array.from({ length: scModuleCount }, (_, i) => {
+  const mw = 50 + srand(seed + 1200, i * 5) * 80;
+  const mh = 25 + srand(seed + 1200, i * 5 + 1) * 35;
+  return {
+    x: 30 + srand(seed + 1200, i * 5 + 2) * (width - mw - 60),
+    y: 15 + srand(seed + 1200, i * 5 + 3) * (height - mh - 30),
+    w: mw,
+    h: mh,
+    delay: (i * 0.2).toFixed(1),
+    hue: Math.round(255 + srand(seed + 1200, i * 5 + 4) * 30),
+    lightness: Math.round(25 + srand(seed + 1200, i + 20) * 15),
+  };
+});
+
+const scConnectors = scModules.flatMap((m, mi) => {
+  const positions = [
+    { cx: m.x, cy: m.y + m.h / 2 },
+    { cx: m.x + m.w, cy: m.y + m.h / 2 },
+    { cx: m.x + m.w / 2, cy: m.y },
+    { cx: m.x + m.w / 2, cy: m.y + m.h },
+  ];
+  return positions
+    .filter((_, pi) => srand(seed + 1210, mi * 4 + pi) > 0.4)
+    .map((pos, pi) => ({
+      ...pos,
+      delay: (parseFloat(m.delay) + 0.3).toFixed(1),
+    }));
+});
+
+const scLinks: Array<{ x1: number; y1: number; x2: number; y2: number; delay: string }> = [];
+for (let i = 0; i < scModules.length; i++) {
+  for (let j = i + 1; j < scModules.length; j++) {
+    const mi = scModules[i];
+    const mj = scModules[j];
+    const dx = (mi.x + mi.w / 2) - (mj.x + mj.w / 2);
+    const dy = (mi.y + mi.h / 2) - (mj.y + mj.h / 2);
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < Math.min(width, height) * 0.55) {
+      scLinks.push({
+        x1: mi.x + mi.w / 2,
+        y1: mi.y + mi.h / 2,
+        x2: mj.x + mj.w / 2,
+        y2: mj.y + mj.h / 2,
+        delay: (Math.max(parseFloat(mi.delay), parseFloat(mj.delay)) + 0.3).toFixed(1),
+      });
+    }
+  }
+}
+
+// --- Orbit: central core with orbital rings and satellites ---
+const orbitCx = width / 2;
+const orbitCy = height / 2;
+const orbitRingCount = 3;
+const orbitRings = Array.from({ length: orbitRingCount }, (_, i) => ({
+  rx: width * (0.12 + i * 0.11),
+  ry: height * (0.15 + i * 0.12),
+  rotation: Math.round(-15 + srand(seed + 1300, i) * 30),
+  delay: (i * 0.3).toFixed(1),
+}));
+
+const orbitSats = orbitRings.flatMap((ring, ri) => {
+  const count = 2 + Math.floor(srand(seed + 1310, ri) * 2);
+  return Array.from({ length: count }, (_, si) => {
+    const angle = (Math.PI * 2 * si) / count + srand(seed + 1310, ri * 4 + si) * 0.8;
+    const rad = (ring.rotation * Math.PI) / 180;
+    const px = Math.cos(angle) * ring.rx;
+    const py = Math.sin(angle) * ring.ry;
+    const cx = orbitCx + px * Math.cos(rad) - py * Math.sin(rad);
+    const cy = orbitCy + px * Math.sin(rad) + py * Math.cos(rad);
+    return {
+      cx,
+      cy,
+      r: 3 + srand(seed + 1310, ri * 4 + si + 10) * 4,
+      delay: (parseFloat(ring.delay) + si * 0.2).toFixed(1),
+      hue: Math.round(250 + ri * 15 + srand(seed + 1310, ri * 4 + si + 20) * 20),
+      drift: 4 + srand(seed + 1310, ri * 4 + si + 15) * 6,
+    };
+  });
+});
+
+const orbitLinks = orbitSats.map((s, i) => ({
+  x1: orbitCx,
+  y1: orbitCy,
+  x2: s.cx,
+  y2: s.cy,
+  delay: (parseFloat(s.delay) + 0.2).toFixed(1),
+}));
 ---
 
 <svg
@@ -1089,6 +1230,216 @@ for (let i = 0; i < emitters.length; i++) {
       ))}
     </g>
   )}
+
+  {theme === 'cockpit' && (
+    <g class="cp-scene">
+      {/* Connection lines between panels */}
+      {cpLinks.map((l) => (
+        <line
+          x1={l.x1.toFixed(1)} y1={l.y1.toFixed(1)}
+          x2={l.x2.toFixed(1)} y2={l.y2.toFixed(1)}
+          stroke="rgba(140, 160, 255, 0.1)"
+          stroke-width="0.8"
+          stroke-dasharray="4 8"
+          class="cp-link"
+          style={`animation-delay: ${l.delay}s`}
+        />
+      ))}
+      {/* Panels */}
+      {cpPanels.map((p) => (
+        <g class="cp-panel" style={`animation-delay: ${p.delay}s`}>
+          <rect
+            x={p.x.toFixed(1)} y={p.y.toFixed(1)}
+            width={p.w.toFixed(1)} height={p.h.toFixed(1)}
+            rx="5"
+            fill={`hsla(${p.hue}, 40%, 20%, 0.15)`}
+            stroke={`hsla(${p.hue}, 45%, 45%, 0.25)`}
+            stroke-width="1"
+          />
+          {/* Panel header bar */}
+          <rect
+            x={(p.x + 6).toFixed(1)} y={(p.y + 5).toFixed(1)}
+            width={(p.w * 0.4).toFixed(1)} height="2.5"
+            rx="1"
+            fill={`hsla(${p.hue}, 50%, 55%, 0.3)`}
+          />
+        </g>
+      ))}
+      {/* Gauges */}
+      {cpGauges.map((g) => (
+        <g class="cp-gauge" style={`animation-delay: ${g.delay}s`}>
+          <circle
+            cx={g.cx.toFixed(1)} cy={g.cy.toFixed(1)}
+            r={g.r.toFixed(1)}
+            fill="none"
+            stroke={`hsla(${g.hue}, 35%, 40%, 0.2)`}
+            stroke-width="1.5"
+          />
+          <circle
+            cx={g.cx.toFixed(1)} cy={g.cy.toFixed(1)}
+            r={g.r.toFixed(1)}
+            fill="none"
+            stroke={`hsla(${g.hue}, 55%, 60%, 0.5)`}
+            stroke-width="1.5"
+            stroke-dasharray={`${(g.fill * Math.PI * 2 * g.r).toFixed(1)} ${(Math.PI * 2 * g.r).toFixed(1)}`}
+            stroke-linecap="round"
+            transform={`rotate(-90 ${g.cx.toFixed(1)} ${g.cy.toFixed(1)})`}
+            class="cp-gauge-fill"
+            style={`animation-delay: ${g.delay}s`}
+          />
+          <circle
+            cx={g.cx.toFixed(1)} cy={g.cy.toFixed(1)}
+            r="1.5"
+            fill={`hsla(${g.hue}, 60%, 65%, 0.7)`}
+            class="cp-gauge-dot"
+            style={`animation-delay: ${g.delay}s`}
+          />
+        </g>
+      ))}
+      {/* Status dots */}
+      {cpDots.map((d) => (
+        <circle
+          cx={d.cx.toFixed(1)} cy={d.cy.toFixed(1)}
+          r={d.r.toFixed(1)}
+          fill={`hsla(${d.hue}, 55%, 55%, 0.6)`}
+          class="cp-dot"
+          style={`animation-delay: ${d.delay}s`}
+        />
+      ))}
+    </g>
+  )}
+
+  {theme === 'scaffold' && (
+    <g class="sc-scene">
+      {/* Connection lines */}
+      {scLinks.map((l) => (
+        <line
+          x1={l.x1.toFixed(1)} y1={l.y1.toFixed(1)}
+          x2={l.x2.toFixed(1)} y2={l.y2.toFixed(1)}
+          stroke="rgba(180, 160, 255, 0.15)"
+          stroke-width="1"
+          class="sc-link"
+          style={`animation-delay: ${l.delay}s`}
+        />
+      ))}
+      {/* Modules */}
+      {scModules.map((m) => (
+        <g class="sc-module" style={`animation-delay: ${m.delay}s`}>
+          <rect
+            x={m.x.toFixed(1)} y={m.y.toFixed(1)}
+            width={m.w.toFixed(1)} height={m.h.toFixed(1)}
+            rx="4"
+            fill={`hsla(${m.hue}, 35%, ${m.lightness}%, 0.2)`}
+            stroke={`hsla(${m.hue}, 40%, ${m.lightness + 20}%, 0.3)`}
+            stroke-width="1"
+            class="sc-block"
+            style={`animation-delay: ${m.delay}s`}
+          />
+          {/* Inner detail bars */}
+          <rect
+            x={(m.x + m.w * 0.1).toFixed(1)}
+            y={(m.y + m.h * 0.3).toFixed(1)}
+            width={(m.w * 0.3).toFixed(1)}
+            height="2"
+            rx="1"
+            fill={`hsla(${m.hue}, 45%, 50%, 0.15)`}
+          />
+          <rect
+            x={(m.x + m.w * 0.1).toFixed(1)}
+            y={(m.y + m.h * 0.6).toFixed(1)}
+            width={(m.w * 0.5).toFixed(1)}
+            height="2"
+            rx="1"
+            fill={`hsla(${m.hue}, 45%, 50%, 0.25)`}
+          />
+        </g>
+      ))}
+      {/* Connectors */}
+      {scConnectors.map((c) => (
+        <circle
+          cx={c.cx.toFixed(1)} cy={c.cy.toFixed(1)}
+          r="2.5"
+          fill="rgba(200, 180, 255, 0.15)"
+          stroke="rgba(200, 180, 255, 0.35)"
+          stroke-width="0.8"
+          class="sc-connector"
+          style={`animation-delay: ${c.delay}s`}
+        />
+      ))}
+    </g>
+  )}
+
+  {theme === 'orbit' && (
+    <g class="ob-scene">
+      {/* Orbital paths */}
+      {orbitRings.map((ring) => (
+        <ellipse
+          cx={orbitCx.toFixed(1)} cy={orbitCy.toFixed(1)}
+          rx={ring.rx.toFixed(1)} ry={ring.ry.toFixed(1)}
+          fill="none"
+          stroke="rgba(180, 160, 255, 0.1)"
+          stroke-width="0.8"
+          stroke-dasharray="3 6"
+          transform={`rotate(${ring.rotation} ${orbitCx.toFixed(1)} ${orbitCy.toFixed(1)})`}
+          class="ob-ring"
+          style={`animation-delay: ${ring.delay}s`}
+        />
+      ))}
+      {/* Links from satellites to center */}
+      {orbitLinks.map((l) => (
+        <line
+          x1={l.x1.toFixed(1)} y1={l.y1.toFixed(1)}
+          x2={l.x2.toFixed(1)} y2={l.y2.toFixed(1)}
+          stroke="rgba(160, 140, 255, 0.08)"
+          stroke-width="0.6"
+          class="ob-link"
+          style={`animation-delay: ${l.delay}s`}
+        />
+      ))}
+      {/* Center core */}
+      <circle
+        cx={orbitCx.toFixed(1)} cy={orbitCy.toFixed(1)}
+        r="20"
+        fill="rgba(180, 160, 255, 0.05)"
+        class="ob-core-glow"
+      />
+      <circle
+        cx={orbitCx.toFixed(1)} cy={orbitCy.toFixed(1)}
+        r="12"
+        fill="none"
+        stroke="rgba(180, 160, 255, 0.15)"
+        stroke-width="1"
+        class="ob-core-ring"
+      />
+      <circle
+        cx={orbitCx.toFixed(1)} cy={orbitCy.toFixed(1)}
+        r="5"
+        fill="rgba(200, 180, 255, 0.6)"
+        class="ob-core"
+      />
+      {/* Satellites */}
+      {orbitSats.map((s) => (
+        <g class="ob-sat" style={`animation-delay: ${s.delay}s; --drift: ${s.drift}px`}>
+          <circle
+            cx={s.cx.toFixed(1)} cy={s.cy.toFixed(1)}
+            r={(s.r * 2).toFixed(1)}
+            fill="none"
+            stroke={`hsla(${s.hue}, 45%, 55%, 0.12)`}
+            stroke-width="0.8"
+            class="ob-sat-ring"
+            style={`animation-delay: ${s.delay}s`}
+          />
+          <circle
+            cx={s.cx.toFixed(1)} cy={s.cy.toFixed(1)}
+            r={s.r.toFixed(1)}
+            fill={`hsla(${s.hue}, 50%, 55%, 0.6)`}
+            class="ob-sat-core"
+            style={`animation-delay: ${s.delay}s`}
+          />
+        </g>
+      ))}
+    </g>
+  )}
 </svg>
 
 <style>
@@ -1514,6 +1865,145 @@ for (let i = 0; i < emitters.length; i++) {
     50% { opacity: 0.3; }
   }
 
+  /* ── Cockpit ── */
+  .cp-panel {
+    animation: cp-panel-appear 0.6s ease-out both;
+  }
+  @keyframes cp-panel-appear {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .cp-gauge-fill {
+    animation: cp-gauge-pulse 4s ease-in-out infinite;
+  }
+  @keyframes cp-gauge-pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.75; }
+  }
+
+  .cp-gauge-dot {
+    animation: cp-dot-blink 3s ease-in-out infinite;
+  }
+
+  .cp-dot {
+    animation: cp-dot-blink 3s ease-in-out infinite;
+  }
+  @keyframes cp-dot-blink {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .cp-link {
+    animation: cp-link-flow 4s ease-in-out infinite;
+  }
+  @keyframes cp-link-flow {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.25; }
+  }
+
+  /* ── Scaffold ── */
+  .sc-module {
+    animation: sc-module-appear 0.7s ease-out both;
+  }
+  @keyframes sc-module-appear {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .sc-block {
+    animation: sc-breathe 5s ease-in-out infinite;
+  }
+  @keyframes sc-breathe {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.35; }
+  }
+
+  .sc-connector {
+    animation: sc-connector-pulse 3.5s ease-in-out infinite;
+  }
+  @keyframes sc-connector-pulse {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.3); }
+  }
+
+  .sc-link {
+    animation: sc-link-appear 0.8s ease-out both, sc-link-flow 4s ease-in-out 1s infinite;
+  }
+  @keyframes sc-link-appear {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes sc-link-flow {
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── Orbit ── */
+  .ob-sat {
+    animation: ob-float 6s ease-in-out infinite;
+  }
+  @keyframes ob-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(calc(var(--drift, 5px) * -1)); }
+  }
+
+  .ob-sat-core {
+    animation: ob-pulse 3.5s ease-in-out infinite;
+  }
+  @keyframes ob-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.9; }
+  }
+
+  .ob-sat-ring {
+    animation: ob-ring-expand 4s ease-in-out infinite;
+  }
+  @keyframes ob-ring-expand {
+    0%, 100% { opacity: 0.12; transform: scale(1); }
+    50% { opacity: 0.25; transform: scale(1.3); }
+  }
+
+  .ob-core {
+    animation: ob-core-pulse 4s ease-in-out infinite;
+  }
+  @keyframes ob-core-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  .ob-core-ring {
+    animation: ob-core-ring-pulse 5s ease-in-out infinite;
+  }
+  @keyframes ob-core-ring-pulse {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.15); }
+  }
+
+  .ob-core-glow {
+    animation: ob-glow-breathe 4.5s ease-in-out infinite;
+  }
+  @keyframes ob-glow-breathe {
+    0%, 100% { opacity: 0.05; transform: scale(1); }
+    50% { opacity: 0.12; transform: scale(1.2); }
+  }
+
+  .ob-ring {
+    animation: ob-path-pulse 5s ease-in-out infinite;
+  }
+  @keyframes ob-path-pulse {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.2; }
+  }
+
+  .ob-link {
+    animation: ob-link-fade 4s ease-in-out infinite;
+  }
+  @keyframes ob-link-fade {
+    0%, 100% { opacity: 0.08; }
+    50% { opacity: 0.18; }
+  }
+
   /* ── Reduced motion ── */
   @media (prefers-reduced-motion: reduce) {
     .nn-node, .nn-pulse, .nn-glow, .nn-line,
@@ -1528,7 +2018,10 @@ for (let i = 0; i < emitters.length; i++) {
     .pipe-path, .pipe-flow, .pipe-stage, .pipe-core, .pipe-ring, .pipe-dot,
     .swarm-agent, .swarm-core, .swarm-aura, .swarm-link,
     .bp-mark, .bp-box, .bp-measure,
-    .sig-ring, .sig-core, .sig-glow, .sig-link {
+    .sig-ring, .sig-core, .sig-glow, .sig-link,
+    .cp-panel, .cp-gauge-fill, .cp-gauge-dot, .cp-dot, .cp-link,
+    .sc-module, .sc-block, .sc-connector, .sc-link,
+    .ob-sat, .ob-sat-core, .ob-sat-ring, .ob-core, .ob-core-ring, .ob-core-glow, .ob-ring, .ob-link {
       animation: none !important;
     }
     .tower {
@@ -1568,6 +2061,23 @@ for (let i = 0; i < emitters.length; i++) {
     }
     .sig-core {
       opacity: 0.7 !important;
+    }
+    .cp-panel {
+      opacity: 1 !important;
+      transform: scale(1) !important;
+    }
+    .sc-module {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+    .sc-link {
+      opacity: 0.15 !important;
+    }
+    .ob-core {
+      opacity: 0.6 !important;
+    }
+    .ob-sat-core {
+      opacity: 0.6 !important;
     }
   }
 </style>

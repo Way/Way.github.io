@@ -1,0 +1,163 @@
+---
+const W = 720;
+const H = 360;
+const cx = W / 2;
+const cy = H / 2 + 15;
+const R = 105;
+
+const phases = [
+  { label: 'Planen', sub: 'Problem definieren, Schritte festlegen', angle: -90 },
+  { label: 'Ausführen', sub: 'Code schreiben, Tasks erledigen', angle: 30 },
+  { label: 'Prüfen', sub: 'Tests, Review, Validation', angle: 150 },
+];
+
+const nodes = phases.map((p) => {
+  const rad = (p.angle * Math.PI) / 180;
+  return {
+    ...p,
+    x: cx + Math.cos(rad) * R,
+    y: cy + Math.sin(rad) * R,
+  };
+});
+
+// Curved arrow paths between nodes
+function arcBetween(from: { x: number; y: number }, to: { x: number; y: number }, sweep: number) {
+  const mx = (from.x + to.x) / 2;
+  const my = (from.y + to.y) / 2;
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  const nx = -dy / len;
+  const ny = dx / len;
+  const cpx = mx + nx * sweep;
+  const cpy = my + ny * sweep;
+  return `M${from.x.toFixed(1)},${from.y.toFixed(1)} Q${cpx.toFixed(1)},${cpy.toFixed(1)} ${to.x.toFixed(1)},${to.y.toFixed(1)}`;
+}
+
+const nodeR = 36;
+const arrowSweep = 35;
+
+// Shorten paths so they don't overlap nodes
+function shortenedArc(from: { x: number; y: number }, to: { x: number; y: number }, sweep: number, shrink: number) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  const ux = dx / len;
+  const uy = dy / len;
+  const f = { x: from.x + ux * shrink, y: from.y + uy * shrink };
+  const t = { x: to.x - ux * shrink, y: to.y - uy * shrink };
+  return arcBetween(f, t, sweep);
+}
+
+const arrows = [
+  { from: nodes[0], to: nodes[1] },
+  { from: nodes[1], to: nodes[2] },
+  { from: nodes[2], to: nodes[0] },
+];
+---
+
+<figure class="pev-loop">
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="Diagramm: Zyklus aus Planen, Ausführen und Prüfen"
+    width="100%"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title>Plan-Execute-Validate Loop</title>
+    <defs>
+      <marker id="pev-arrow" viewBox="0 0 10 8" refX="9" refY="4"
+        markerWidth="8" markerHeight="6" orient="auto">
+        <path d="M 0 0.5 L 9 4 L 0 7.5" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linejoin="round" />
+      </marker>
+    </defs>
+
+    {/* Curved arrows */}
+    {arrows.map((a) => (
+      <path
+        d={shortenedArc(a.from, a.to, arrowSweep, nodeR + 6)}
+        fill="none"
+        stroke="var(--accent)"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        marker-end="url(#pev-arrow)"
+        class="pev-arrow-path"
+      />
+    ))}
+
+    {/* Nodes */}
+    {nodes.map((n) => (
+      <g>
+        <circle
+          cx={n.x.toFixed(1)}
+          cy={n.y.toFixed(1)}
+          r={nodeR}
+          class="pev-node"
+        />
+        <text
+          x={n.x.toFixed(1)}
+          y={(n.y + 1).toFixed(1)}
+          text-anchor="middle"
+          dominant-baseline="central"
+          class="pev-label"
+        >{n.label}</text>
+      </g>
+    ))}
+
+    {/* Subtitles outside nodes */}
+    <text x={nodes[0].x} y={nodes[0].y - nodeR - 14} text-anchor="middle" class="pev-sub">{nodes[0].sub}</text>
+    <text x={nodes[1].x + nodeR + 12} y={nodes[1].y + 5} text-anchor="start" class="pev-sub">{nodes[1].sub}</text>
+    <text x={nodes[2].x - nodeR - 12} y={nodes[2].y + 5} text-anchor="end" class="pev-sub">{nodes[2].sub}</text>
+  </svg>
+  <figcaption class="chart-caption">
+    Nicht linear, sondern zyklisch: Jede Iteration beginnt mit einem Plan und endet mit einer Prüfung.
+  </figcaption>
+</figure>
+
+<style>
+  .pev-loop {
+    margin: 2.5em 0;
+    padding: 0;
+  }
+
+  .pev-loop svg {
+    display: block;
+  }
+
+  .pev-node {
+    fill: rgb(var(--gray-light));
+    stroke: var(--accent);
+    stroke-width: 1.5;
+  }
+
+  :where(.dark, .dark *) .pev-node {
+    fill: rgba(148, 155, 175, 0.12);
+  }
+
+  .pev-label {
+    fill: rgb(var(--black));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .pev-sub {
+    fill: rgb(var(--gray));
+    font-family: 'Atkinson', sans-serif;
+    font-size: 11px;
+  }
+
+  .pev-arrow-path {
+    opacity: 0.5;
+  }
+
+  .chart-caption {
+    text-align: center;
+    font-size: 14px;
+    color: rgb(var(--gray));
+    margin-top: 1.25em;
+    padding: 0 1.5em;
+    line-height: 1.4;
+  }
+</style>
