@@ -54,6 +54,22 @@ Das Prinzip dahinter: Du baust dir eine Werkzeugkiste. Jedes neue Werkzeug macht
 
 Wo fängst du an? Mach ein Inventar deiner wiederkehrenden Aufgaben. Bewerte jede nach drei Kriterien: Wie oft kommt sie vor? Wie viel Zeit kostet sie? Wie viel wäre es wert, sie zu automatisieren? Die zwei Tasks, die bei allen drei Kriterien oben stehen: Die automatisierst du zuerst. Nicht alles gleichzeitig. Ein bis zwei Automationen pro Woche, dafür stabil und verlässlich.
 
+## Vom Baustein zum Workflow
+
+Einzelne Bausteine machen dich schneller. Aber ein Scheduled Task hier, ein Custom Command dort, ein Skill für dieses und jenes: Das ergibt noch keinen Workflow. Was fehlt, ist der Bauplan.
+
+Jeder wiederholbare Workflow folgt demselben Grundmuster. Vier Phasen, die einen Kreislauf bilden. **Trigger:** Was startet den Prozess? Ein Zeitplan, ein externes Event, ein manueller Anstoß. **Ingestion:** Die Daten, die der Workflow braucht. E-Mails, Analytics, Meeting-Transkripte, Web-Recherche. Das ist Context Engineering in Reinform: Du entscheidest, welches Wissen Claude bekommt, und bestimmst damit, wie gut es arbeiten kann. **Transformation:** Hier passiert das eigentliche Denken. Verdichten, extrahieren, vergleichen, konvertieren. Aus Rohdaten wird ein Ergebnis. **Actions:** Das Ergebnis landet dort, wo es hingehört. Eine Mail geht raus, ein Ticket wird erstellt, ein Dokument aktualisiert. Manchmal wird der Output zum Input des nächsten Durchlaufs.
+
+Klingt schematisch? Zwei Beispiele.
+
+Morgens um 7:30 liegt dein Branchen-Briefing im Postfach. Kein manuelles Googlen, kein Scrollen durch Feeds. Ein Scheduled Task triggert den Workflow täglich. Claude durchsucht die relevanten YouTube-Kanäle, Blogs, Subreddits und News-Seiten. Alles Irrelevante fliegt raus, der Rest verdichtet sich zu den drei bis fünf Meldungen, die du kennen musst. Die Mail geht automatisch raus. Jeden Tag. Ohne dass du einen Finger rührst.
+
+Zweites Beispiel: Ein Lead füllt dein Kontaktformular aus. Innerhalb von Minuten besucht Claude die Website, findet das LinkedIn-Profil, schaut in öffentliche Datenquellen. Daraus entsteht ein Sales-Briefing: Branche, Größe, aktuelle Kampagnen, mögliche Anknüpfungspunkte. Das Briefing landet im CRM, optional geht eine personalisierte Follow-up-Mail raus. Dein Sales-Team bekommt nicht einen Namen, sondern Kontext.
+
+Beide Workflows folgen exakt demselben Muster. Die Bausteine sind andere. Der Bauplan ist identisch.
+
+Ein Agent in einer offenen Session darf kreativ sein. Er liefert jedes Mal ein leicht anderes Ergebnis. Das ist in Ordnung, manchmal sogar erwünscht. Aber dein morgendliches Briefing oder dein Lead-Enrichment darf nicht mal funktionieren und mal nicht. Workflows brauchen Vorhersagbarkeit. Definierte Inputs, erwartbare Outputs, klare Schritte. Das ist der Unterschied zwischen einem hilfreichen Assistenten und einer verlässlichen Infrastruktur.
+
 ## Erst denken, dann machen (lassen)
 
 Hier passiert der teuerste Fehler. Du gibst Claude eine Aufgabe und sagst: Mach. Claude macht. Das Ergebnis ist formal korrekt, löst aber das falsche Problem. Setzt an der falschen Stelle an. Oder übersieht einen Randfall, der dir in fünf Minuten aufgefallen wäre.
