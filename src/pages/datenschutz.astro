@@ -1,0 +1,162 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <BaseHead
+      title={`Datenschutzerklärung - ${SITE_TITLE}`}
+      description="Datenschutzerklärung dieser Webseite"
+    />
+    <style>
+      main {
+        width: 960px;
+        margin: auto;
+        padding: 1em;
+        line-height: 1.6;
+      }
+      h2,
+      h3 {
+        margin-top: 1.5em;
+      }
+      address {
+        font-style: normal;
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h2>Datenschutzerklärung</h2>
+
+      <h3>1. Verantwortlicher</h3>
+      <p>
+        Verantwortlich für die Datenverarbeitung auf dieser Webseite im Sinne
+        der Datenschutz-Grundverordnung (DSGVO) ist:
+      </p>
+      <address>
+        Alexander Vey<br />
+        Kanzelweg 24<br />
+        34128 Kassel<br />
+        E-Mail: alex@alexvey.com
+      </address>
+
+      <h3>2. Hosting (GitHub Pages)</h3>
+      <p>
+        Diese Webseite wird bei GitHub Pages gehostet. Anbieter ist die GitHub,
+        Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA. Beim Aufruf
+        der Seite werden technisch notwendige Informationen automatisch in
+        sogenannten Server-Logfiles erfasst, die der Browser an den Server
+        übermittelt. Erfasst werden insbesondere:
+      </p>
+      <ul>
+        <li>IP-Adresse des anfragenden Endgeräts</li>
+        <li>Datum und Uhrzeit des Zugriffs</li>
+        <li>Name und URL der abgerufenen Datei</li>
+        <li>Webseite, von der aus der Zugriff erfolgt (Referrer)</li>
+        <li>Verwendeter Browser sowie ggf. das Betriebssystem</li>
+      </ul>
+      <p>
+        Diese Daten werden zur Auslieferung der Inhalte und zur Sicherstellung
+        der Funktionsfähigkeit benötigt. Rechtsgrundlage ist Art. 6 Abs. 1 lit.
+        f DSGVO (berechtigtes Interesse an einer stabilen und sicheren
+        Bereitstellung). Da GitHub als Anbieter in den USA sitzt, kann es zu
+        einer Übermittlung personenbezogener Daten in die USA kommen. GitHub
+        stellt entsprechende Garantien über Standardvertragsklauseln zur
+        Verfügung. Weitere Informationen finden sich in der
+        Datenschutzerklärung von GitHub: <a
+          href="https://docs.github.com/de/site-policy/privacy-policies/github-privacy-statement"
+          target="_blank"
+          rel="noopener noreferrer">GitHub Privacy Statement</a
+        >.
+      </p>
+
+      <h3>3. Reichweitenmessung mit Umami</h3>
+      <p>
+        Zur statistischen Auswertung der Webseitennutzung wird der Dienst Umami
+        eingesetzt (Anbieter: Umami Software, Inc., 2261 Market Street #4051,
+        San Francisco, CA 94114, USA). Umami arbeitet ohne Cookies und ohne
+        dauerhafte Kennungen. Es werden ausschließlich anonymisierte Daten zu
+        Seitenaufrufen, Referrern, Browser- und Geräte-Typen sowie ungefähren
+        geografischen Regionen erfasst. IP-Adressen werden nicht im Klartext
+        gespeichert.
+      </p>
+      <p>
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte
+        Interesse besteht darin, die Nutzung dieser Webseite in aggregierter
+        Form zu verstehen und Inhalte zu verbessern. Weitere Informationen:
+        <a
+          href="https://umami.is/privacy"
+          target="_blank"
+          rel="noopener noreferrer">https://umami.is/privacy</a
+        >.
+      </p>
+
+      <h3>4. Externe Links</h3>
+      <p>
+        Diese Webseite enthält Verlinkungen zu externen Plattformen, unter
+        anderem zu X (ehemals Twitter), GitHub sowie zu weiteren im
+        Blog-Inhalt referenzierten Quellen (etwa fino.digital oder METR.org).
+        Es handelt sich dabei um reine Hyperlinks. Eine Übertragung
+        personenbezogener Daten an diese Anbieter findet erst statt, wenn ein
+        Link aktiv angeklickt wird. Für die Datenverarbeitung auf den
+        Zielseiten sind die jeweiligen Betreiber verantwortlich.
+      </p>
+
+      <h3>5. Lokale Speicherung von Einstellungen</h3>
+      <p>
+        Diese Webseite speichert die gewählte Farbpräferenz (heller oder dunkler
+        Modus) im lokalen Speicher (Local Storage) des Browsers. Diese
+        Information verlässt das Endgerät nicht und wird ausschließlich zur
+        Anzeige der Webseite verwendet. Rechtsgrundlage ist Art. 6 Abs. 1 lit.
+        f DSGVO sowie § 25 Abs. 2 Nr. 2 TTDSG (technisch notwendige Speicherung
+        zur Bereitstellung eines vom Nutzer ausdrücklich gewünschten Dienstes).
+      </p>
+
+      <h3>6. Schriftarten</h3>
+      <p>
+        Die verwendeten Schriftarten werden lokal vom eigenen Server
+        ausgeliefert. Es findet keine Verbindung zu externen Schriftarten-Diensten
+        (etwa Google Fonts) statt.
+      </p>
+
+      <h3>7. Rechte der betroffenen Personen</h3>
+      <p>
+        Sofern personenbezogene Daten von Ihnen verarbeitet werden, stehen Ihnen
+        die folgenden Rechte zu:
+      </p>
+      <ul>
+        <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
+        <li>Recht auf Berichtigung (Art. 16 DSGVO)</li>
+        <li>Recht auf Löschung (Art. 17 DSGVO)</li>
+        <li>Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+        <li>Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</li>
+        <li>
+          Recht auf Widerspruch gegen Verarbeitungen, die auf Art. 6 Abs. 1 lit.
+          f DSGVO beruhen (Art. 21 DSGVO)
+        </li>
+        <li>
+          Recht auf Beschwerde bei einer Aufsichtsbehörde (Art. 77 DSGVO)
+        </li>
+      </ul>
+      <p>
+        Zur Ausübung dieser Rechte genügt eine formlose E-Mail an die oben
+        angegebene Adresse.
+      </p>
+
+      <h3>8. Stand und Änderungen</h3>
+      <p>
+        Diese Datenschutzerklärung wird angepasst, sobald sich technische
+        Gegebenheiten oder eingesetzte Dienste ändern. Maßgeblich ist die jeweils
+        beim Aufruf der Webseite abrufbare Fassung.
+      </p>
+      <p><em>Stand: Mai 2026</em></p>
+    </main>
+    <Footer />
+  </body>
+</html>
