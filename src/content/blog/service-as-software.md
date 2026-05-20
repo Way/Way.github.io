@@ -47,6 +47,8 @@ Sequoias 6:1-Verhältnis ist die schärfste Zahl, die du dieses Jahr zum Thema s
 
 Wichtiger als die einzelne Zahl ist die zweite Eigenschaft dieses Marktes: Ein großer Teil dieser Arbeit ist bereits ausgelagert, häufig nach Indien, auf die Philippinen, nach Polen. Genau dort lässt sich am leichtesten angreifen. Ein bereits ausgelagerter Prozess braucht kein Change Management in der eigenen Belegschaft. Du wechselst von Vendor A (Menschen) zu Vendor B (Agenten). Punkt.
 
+Im selben Verhältnis steckt der eigentliche Wettbewerbshebel. Service-Budgets ticken nicht aus IT-Töpfen, sondern aus Lohn-, Operations- und Outsourcing-Linien. Wer Outcomes verkauft, konkurriert nicht gegen ein 50.000-Dollar-SaaS-Abo, sondern gegen eine sechsstellige Headcount-Position oder einen langlaufenden BPO-Vertrag. Selbst ein Bruchteil davon ist pro Kunde eine andere Marge, als klassischer Software-Vertrieb je gesehen hat.
+
 Tavel formuliert es so: AI öffnet Software den Zugang zu Verticals, in die sie nie reingekommen ist, weil am Ende immer ein Mensch die eigentliche Arbeit machen musste. Was dabei mit verschoben wird, ist auch die Geographie der Arbeit. Was Offshore-Belegschaften in Bangalore oder Manila heute liefern, kann ein Agent im Rechenzentrum übermorgen liefern. Mit Konsequenzen für Löhne, Kompetenzprofile und Standortpolitik, die in den VC-Texten kaum auftauchen.
 
 ## Wer baut das gerade?
@@ -62,6 +64,8 @@ Vier Firmen, vier Verticals, dasselbe Muster.
 **Outbound: ColdIQ.** Das Beispiel, das im VC-Narrativ regelmäßig untergeht, weil es ohne Bewertungsschlagzeile kommt. ColdIQ steht 2026 bei [7 Millionen Dollar ARR, 70 aktiven Kunden und einem Team von 30 Personen in zehn Ländern. Ohne externes Kapital aufgebaut](https://x.com/itsalexvacca/status/2053229243723841618). Kein VC, kein Angel-Round. Die Firma verkauft Outbound-Arbeit als Service. Der Stack, mit dem die Arbeit erledigt wird (Claude Code, Clay, Lovable, eine intern gebaute Twain-Integration), bleibt unter der Haube. Auf der Operator-Seite zählt eine Zahl: Ein Teammitglied, das früher vier Kunden bedient hat, betreut heute dreizehn.
 
 Vier Firmen, vier Branchen, ein Muster. Der Anbieter übernimmt die Arbeit, die früher Menschen in einer Servicefirma erledigt haben. Der Kunde sieht das Resultat. Die Rechnung kommt nicht pro Sitz, sondern pro Outcome. Und entscheidend: Das funktioniert sowohl im 11-Milliarden-VC-Modell als auch im 7-Millionen-Bootstrap.
+
+[Julien Bek von Sequoia](https://sequoiacap.com/article/services-the-new-software/) trennt diese Welle in zwei Modi. Ein Copilot verkauft das bessere Werkzeug an Profis, die weiter haften. Ein Autopilot übernimmt die Arbeit selbst und haftet für das Ergebnis. Harvey ist heute überwiegend Copilot, Crosby ist Autopilot, Decagon und Sierra schalten je nach Eskalationspfad zwischen beidem. Beks Prognose für 2026: Viele Copilots werden versuchen, in den Autopilot-Modus zu wechseln, und genau am Innovator's Dilemma scheitern, weil sie die eigene Kundschaft kannibalisieren müssten. Reine Autopilots haben den strukturellen Vorteil.
 
 ## Die Mathematik, die in den VC-Texten fehlt
 
@@ -82,6 +86,8 @@ Die Verschiebung lässt sich an einer klaren Trennlinie erklären. In den Servic
 **Mensch:** Strategie, Urteil, Verantwortung, Kundenbeziehung. Den Enterprise-Deal verhandeln, Haftungsentscheidungen treffen, mit dem Kunden definieren, welches Problem überhaupt gelöst werden soll. Wer Beziehungen über Jahre trägt und wer im Zweifel den Kopf hinhält.
 
 **Agent:** Mustererkennung, Listenbau, Recherche, Texterzeugung, Deployment, Reporting, Admin. Tausend Leads aus drei Datenquellen ziehen und Sequenzen pro Kontakt schreiben. Reports zusammenklicken, CSVs aufräumen, Konfigurationen in fünf Tools nachklicken. Alles, was sich aus Kontext und Beispielen ableiten lässt, ohne dass am Ende jemand zur Rede gestellt werden muss.
+
+Sequoia hat dieselbe Trennung mit anderem Vokabular formuliert: Intelligence und Judgement. Intelligenz ist die regelbasierte, beschreibbare Arbeit, die ein gut konfigurierter Agent heute übernimmt. Urteil ist die erfahrungsbasierte Entscheidung, die im Zweifel verantwortet wird. Software-Engineering führt die Welle an, weil viel davon Intelligenz ist. In anderen Branchen verläuft die Linie woanders. Sie wandert mit jedem Modellsprung weiter Richtung Agent, aber nicht beliebig schnell.
 
 Der Trick liegt nicht darin, mehr Agenten in den Stack zu kippen. Der Trick ist die saubere Trennung. Wenn ein Operator versucht, Strategie an einen Agenten zu delegieren, blutet der Kunde aus. Wenn ein Operator weiter selbst Listen baut, Copy schreibt und Kampagnen deployt, blutet die Marge aus.
 
