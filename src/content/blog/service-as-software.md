@@ -1,7 +1,7 @@
 ---
-title: 'Services-as-a-Software'
+title: 'Service as Software'
 language: de
-description: 'Sequoia und Y Combinator nennen es 2026 die Consensus-Wette: AI-native Firmen verkaufen nicht Software, sondern direkt die Arbeit. Über die Mathematik, die in den VC-Texten fehlt, und die drei Workflows, die einen Anbieter von "Agentur mit AI-Features" zu "Services-as-a-Software" machen.'
+description: 'Sequoia und Y Combinator nennen es 2026 die Consensus-Wette: AI-native Firmen verkaufen nicht Software, sondern direkt die Arbeit. Über die Mathematik, die in den VC-Texten fehlt, und die drei Workflows, die einen Anbieter von "Agentur mit AI-Features" zu "Service as Software" machen.'
 pubDate: '2026-05-13'
 visualTheme: 'swarm'
 prompt: 'Wenn AI-Agenten komplexe Wissensarbeit übernehmen können, verkaufen die spannendsten Firmen nicht mehr Software, sondern direkt die Arbeit. Was bedeutet diese Verschiebung für SaaS, für Servicefirmen und für die Frage, wer am Ende die Verantwortung trägt?'
@@ -21,7 +21,7 @@ Das ist [Crosby](https://crosby.ai/), eine Kanzlei aus New York. Kunden wie [Cur
 
 Crosby verkauft kein Tool. Crosby verkauft das Ergebnis.
 
-Services-as-a-Software meint genau das: Anbieter, die nicht das Werkzeug liefern, sondern den fertigen Output. Mit einer Kostenstruktur, die sich wie Software verhält, statt wie eine Agentur.
+Service as Software meint genau das: Anbieter, die nicht das Werkzeug liefern, sondern den fertigen Output. Mit einer Kostenstruktur, die sich wie Software verhält, statt wie eine Agentur.
 
 Klingt nach Nuance. Ist eine Umkehrung des Geschäftsmodells, das die letzten 25 Jahre Tech getragen hat.
 
@@ -71,7 +71,7 @@ Der eigentliche Hebel sitzt auf der Operator-Seite. Klassische Agenturen, Kanzle
 
 [ColdIQ hat seine Zahlen offengelegt](https://x.com/itsalexvacca/status/2053229243723841618): Pro GTM-Operator stieg die Kundenkapazität von vier auf dreizehn. Gleiche Person, gleiche Qualität, gleiche Retention. Die Kosten pro Kunde sind flach geblieben, weil sich der menschliche Input pro Kunde nicht erhöht hat. Der Umsatz pro Teammitglied hat sich dabei fast verdreifacht. Die GuV liest sich danach nicht mehr wie die einer Body-Shop-Agentur, sondern wie die eines Softwareprodukts: hohe Bruttomarge, niedrige variable Kosten, skalierbare Lieferung.
 
-Genau das ist die Verschiebung, die SaaS-Bewertungsmultiples für Services-as-a-Software erst rechtfertigt. Nicht der ARR allein. Die Form der Kostenkurve.
+Genau das ist die Verschiebung, die SaaS-Bewertungsmultiples für Service as Software erst rechtfertigt. Nicht der ARR allein. Die Form der Kostenkurve.
 
 Und das ist der Grund, warum ein 7-Millionen-Bootstrap mit 30 Leuten und ein 11-Milliarden-VC-Startup im Kern dieselbe These spielen. Beide brechen die Headcount-Decke, die das alte Modell hatte. Beide liefern pro Person ein Vielfaches der alten Menge. Der Rest sind Branche und Finanzierungsstrategie.
 
@@ -89,7 +89,7 @@ Und ein kontraintuitiver Punkt fällt dabei auf: Die meisten Agenturen automatis
 
 ColdIQ hat seine Lösung öffentlich beschrieben: drei Workflows. Eine interne Listenbau-Maschine, die ICP-Briefings per Sprache aufnimmt und Apollo, LinkedIn Sales Navigator und Clay-Enrichment in einem Pass abdeckt. Eine Twain-Integration in Clay, die personalisierte Drei-Schritt-Sequenzen pro Lead schreibt, sobald Strategie und ICP definiert sind. Und ein Claude-Code-Skill, der die fertige Liste in Instantly als Kampagne deployt, inklusive Mapping und Sending-Schedules. Drei Workflows, drei Rollen, die vorher in Vollzeit liefen, jeweils auf Minuten Operator-Zeit verdichtet.
 
-Wer diese Trennung nicht sauber zieht, baut nur eine Agentur mit AI-Features. Wer sie zieht, baut eine Services-as-a-Software-Firma.
+Wer diese Trennung nicht sauber zieht, baut nur eine Agentur mit AI-Features. Wer sie zieht, baut eine Service-as-Software-Firma.
 
 ## Warum Outcome-Pricing alles verändert
 
@@ -139,7 +139,7 @@ Hier zeigt sich, warum Klarna gescheitert ist und warum Harvey trotzdem wächst.
 
 AI verändert nicht den Bedarf an Vertrauen. Sie verändert nur, wer es trägt. Crosby haftet als Kanzlei. Harvey verkauft an Kanzleien, die haften. Decagon arbeitet mit Eskalations-Schemata, in denen Menschen für schwierige Fälle einstehen. Die Modelle, die funktionieren, klären diese Frage. Die Modelle, die scheitern, verschleiern sie.
 
-Je nach Branche kommt regulatorischer Druck oben drauf. Auditierbarkeit von Entscheidungen, Nachweisketten für Beratung, DSGVO bei personenbezogenen Daten, Berufshaftpflicht in Healthcare und Steuerberatung, Aufsichtsrecht bei Finanzdienstleistern. Wer Services-as-a-Software in regulierten Verticals verkauft, hat keine Wahl: Die Lieferschicht muss so dokumentiert sein, dass im Streitfall jemand reproduzieren kann, warum der Agent so entschieden hat.
+Je nach Branche kommt regulatorischer Druck oben drauf. Auditierbarkeit von Entscheidungen, Nachweisketten für Beratung, DSGVO bei personenbezogenen Daten, Berufshaftpflicht in Healthcare und Steuerberatung, Aufsichtsrecht bei Finanzdienstleistern. Wer Service as Software in regulierten Verticals verkauft, hat keine Wahl: Die Lieferschicht muss so dokumentiert sein, dass im Streitfall jemand reproduzieren kann, warum der Agent so entschieden hat.
 
 Genau das ist der Punkt, der für Entscheider in Konzernen zählt. Wenn du erwägst, einen Service auf AI-native umzustellen, ist die richtige Frage nicht "Kann der Agent das?". Die richtige Frage lautet: Wer trägt das Risiko, wenn er es falsch macht? Wenn die Antwort "irgendwer in unserer Compliance" ist, wird das nicht klappen. Wenn die Antwort "der Anbieter haftet vertraglich" ist, kann das funktionieren.
 
