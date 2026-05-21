@@ -37,7 +37,8 @@ const { width, height } = dimensions[variant];
     position: relative;
     width: 100%;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
   }
   .hero-visual :global(svg) {
     display: block;
@@ -69,8 +70,8 @@ const { width, height } = dimensions[variant];
     inset: 0;
     background: linear-gradient(
       to top,
-      rgba(0, 0, 0, 0.5) 0%,
-      rgba(0, 0, 0, 0.15) 40%,
+      rgba(0, 0, 0, 0.25) 0%,
+      rgba(0, 0, 0, 0.05) 50%,
       transparent 100%
     );
     pointer-events: none;

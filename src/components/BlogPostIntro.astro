@@ -6,22 +6,34 @@ interface Props {
 const { content } = Astro.props;
 ---
 
-<div class="chat-intro">
-  {content}
-</div>
+<aside class="prompt-note" aria-label="Schreibimpuls">
+  <span class="prompt-label">Schreibimpuls</span>
+  <p>{content}</p>
+</aside>
 
 <style>
-  .chat-intro {
-    background-color: rgb(var(--gray-light));
-    border-radius: 10px;
-    padding: 1em;
-    font-size: 16px;
-    margin: 1.5rem;
+  .prompt-note {
+    border-left: 2px solid var(--terracotta);
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    margin: 0 0 2.5rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--ink-dim);
   }
-  @media (max-width: 720px) {
-    .chat-intro {
-      margin: 0;
-      margin-bottom: 1.5rem;
-    }
+  .prompt-label {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .prompt-note p {
+    margin: 0;
+    font-family: 'Newsreader', Georgia, serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--ink);
   }
 </style>

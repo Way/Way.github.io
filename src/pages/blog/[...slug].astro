@@ -2,7 +2,6 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 import { render } from 'astro:content';
-import Prose from '../../components/Prose.astro';
 
 export async function getStaticPaths() {
 	const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
@@ -18,7 +17,5 @@ const { Content } = await render(post);
 ---
 
 <BlogPost {...post.data} image={`/og/${post.id}.png`}>
-	<Prose>
-		<Content />
-	</Prose>
+	<Content />
 </BlogPost>

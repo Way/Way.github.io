@@ -13,9 +13,9 @@ const { seed, hue1, hue2, shapeCount, patternType, opacity, rotation } = params;
 
 const shapes = generateShapePositions(seed, shapeCount, width, height);
 
-// Blend hashed hues toward the site's accent purple (270°) for cohesion
-const blendedHue1 = Math.round((hue1 + 270) / 2);
-const blendedHue2 = Math.round((hue2 + 260) / 2);
+// Blend hashed hues toward the site's tinten-indigo accent (245°) for cohesion
+const blendedHue1 = Math.round((hue1 + 245) / 2);
+const blendedHue2 = Math.round((hue2 + 235) / 2);
 
 // Generate wave path data
 function wavePath(yBase: number, amplitude: number, frequency: number, phase: number): string {
@@ -58,12 +58,12 @@ function gridLines(count: number): Array<{ x1: number; y1: number; x2: number; y
 >
   <defs>
     <linearGradient id={`bg-${seed}`} x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color={`hsl(${blendedHue1}, 55%, 18%)`} />
-      <stop offset="50%" stop-color={`hsl(${Math.round((blendedHue1 + blendedHue2) / 2)}, 45%, 12%)`} />
-      <stop offset="100%" stop-color={`hsl(${blendedHue2}, 50%, 10%)`} />
+      <stop offset="0%" stop-color={`hsl(${blendedHue1}, 42%, 16%)`} />
+      <stop offset="50%" stop-color={`hsl(${Math.round((blendedHue1 + blendedHue2) / 2)}, 36%, 11%)`} />
+      <stop offset="100%" stop-color={`hsl(${blendedHue2}, 40%, 9%)`} />
     </linearGradient>
     <radialGradient id={`glow-${seed}`} cx="50%" cy="50%" r="60%">
-      <stop offset="0%" stop-color={`hsl(${blendedHue1}, 60%, 30%)`} stop-opacity="0.3" />
+      <stop offset="0%" stop-color={`hsl(${blendedHue1}, 50%, 28%)`} stop-opacity="0.28" />
       <stop offset="100%" stop-color="transparent" stop-opacity="0" />
     </radialGradient>
   </defs>
