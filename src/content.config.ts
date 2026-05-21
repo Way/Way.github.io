@@ -28,6 +28,7 @@ const blog = defineCollection({
         'cockpit',
         'scaffold',
         'orbit',
+        'constellation',
       ])
       .optional(),
   }),

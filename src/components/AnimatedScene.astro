@@ -1,6 +1,6 @@
 ---
 interface Props {
-  theme: 'neural-network' | 'mesh' | 'towers' | 'growth' | 'vertical-stack' | 'roundtable' | 'pipeline' | 'swarm' | 'blueprint' | 'signal' | 'cockpit' | 'scaffold' | 'orbit';
+  theme: 'neural-network' | 'mesh' | 'towers' | 'growth' | 'vertical-stack' | 'roundtable' | 'pipeline' | 'swarm' | 'blueprint' | 'signal' | 'cockpit' | 'scaffold' | 'orbit' | 'constellation';
   seed: number;
   width: number;
   height: number;
@@ -582,6 +582,85 @@ const orbitLinks = orbitSats.map((s, i) => ({
   y2: s.cy,
   delay: (parseFloat(s.delay) + 0.2).toFixed(1),
 }));
+
+// --- Constellation: team clusters with lead anchor + members + cross-team links ---
+const teamCount = 3;
+const constellationTeams = Array.from({ length: teamCount }, (_, ti) => {
+  const slot = (ti + 0.5) / teamCount;
+  const baseCx = width * (0.18 + slot * 0.64);
+  const yJitter = (srand(seed + 1400, ti) - 0.5) * 0.25;
+  const baseCy = height * (0.5 + yJitter);
+  const memberCount = 3 + Math.floor(srand(seed + 1400, ti + 10) * 3);
+  const hue = Math.round(190 + ti * 55 + srand(seed + 1400, ti + 20) * 20);
+  const clusterR = Math.min(width, height) * (0.16 + srand(seed + 1400, ti + 30) * 0.06);
+
+  const anchor = {
+    cx: baseCx,
+    cy: baseCy,
+    r: 5.5 + srand(seed + 1400, ti + 40) * 1.2,
+    hue,
+    delay: (ti * 0.35).toFixed(1),
+    drift: 2 + srand(seed + 1400, ti + 50) * 2,
+  };
+
+  const angleOffset = srand(seed + 1410, ti) * Math.PI * 2;
+  const members = Array.from({ length: memberCount }, (_, mi) => {
+    const angle = angleOffset + (Math.PI * 2 * mi) / memberCount
+      + (srand(seed + 1410, ti * 11 + mi) - 0.5) * 0.6;
+    const dist = clusterR * (0.65 + srand(seed + 1410, ti * 11 + mi + 100) * 0.5);
+    return {
+      cx: baseCx + Math.cos(angle) * dist,
+      cy: baseCy + Math.sin(angle) * dist * 0.85,
+      r: 2.5 + srand(seed + 1410, ti * 11 + mi + 200) * 1.5,
+      hue: hue + Math.round((srand(seed + 1410, ti * 11 + mi + 300) - 0.5) * 30),
+      delay: (ti * 0.35 + 0.25 + mi * 0.08).toFixed(2),
+      drift: 3 + srand(seed + 1410, ti * 11 + mi + 400) * 3,
+    };
+  });
+
+  return { anchor, members, clusterR, baseCx, baseCy, hue };
+});
+
+// Inner links: anchor to each member
+const cnInnerLinks = constellationTeams.flatMap((team) =>
+  team.members.map((m) => ({
+    x1: team.anchor.cx,
+    y1: team.anchor.cy,
+    x2: m.cx,
+    y2: m.cy,
+    delay: m.delay,
+  })),
+);
+
+// Member-to-member soft links within a cluster (gives the "team chemistry" feel)
+const cnMemberLinks = constellationTeams.flatMap((team, ti) => {
+  const links: Array<{ x1: number; y1: number; x2: number; y2: number; delay: string }> = [];
+  for (let i = 0; i < team.members.length; i++) {
+    const next = team.members[(i + 1) % team.members.length];
+    links.push({
+      x1: team.members[i].cx,
+      y1: team.members[i].cy,
+      x2: next.cx,
+      y2: next.cy,
+      delay: (ti * 0.35 + 0.6 + i * 0.1).toFixed(2),
+    });
+  }
+  return links;
+});
+
+// Cross-team links: anchor to anchor (faint, dashed)
+const cnCrossLinks: Array<{ x1: number; y1: number; x2: number; y2: number; delay: string }> = [];
+for (let i = 0; i < constellationTeams.length; i++) {
+  for (let j = i + 1; j < constellationTeams.length; j++) {
+    cnCrossLinks.push({
+      x1: constellationTeams[i].anchor.cx,
+      y1: constellationTeams[i].anchor.cy,
+      x2: constellationTeams[j].anchor.cx,
+      y2: constellationTeams[j].anchor.cy,
+      delay: (1.2 + (i + j) * 0.25).toFixed(2),
+    });
+  }
+}
 ---
 
 <svg
@@ -1440,6 +1519,113 @@ const orbitLinks = orbitSats.map((s, i) => ({
       ))}
     </g>
   )}
+
+  {theme === 'constellation' && (
+    <g class="cn-scene">
+      {/* Cross-team links between anchors (faint, dashed) */}
+      {cnCrossLinks.map((l) => (
+        <line
+          x1={l.x1.toFixed(1)} y1={l.y1.toFixed(1)}
+          x2={l.x2.toFixed(1)} y2={l.y2.toFixed(1)}
+          stroke="rgba(200, 190, 240, 0.18)"
+          stroke-width="0.8"
+          stroke-dasharray="3 5"
+          class="cn-cross"
+          style={`animation-delay: ${l.delay}s`}
+        />
+      ))}
+      {/* Member-to-member soft ring within each team */}
+      {cnMemberLinks.map((l) => (
+        <line
+          x1={l.x1.toFixed(1)} y1={l.y1.toFixed(1)}
+          x2={l.x2.toFixed(1)} y2={l.y2.toFixed(1)}
+          stroke="rgba(170, 160, 210, 0.18)"
+          stroke-width="0.7"
+          class="cn-member-link"
+          style={`animation-delay: ${l.delay}s`}
+        />
+      ))}
+      {/* Team aura ellipses behind each cluster */}
+      {constellationTeams.map((team, ti) => (
+        <ellipse
+          cx={team.baseCx.toFixed(1)}
+          cy={team.baseCy.toFixed(1)}
+          rx={(team.clusterR * 1.15).toFixed(1)}
+          ry={(team.clusterR * 0.95).toFixed(1)}
+          fill={`hsla(${team.hue}, 55%, 55%, 0.04)`}
+          stroke={`hsla(${team.hue}, 50%, 60%, 0.12)`}
+          stroke-width="0.8"
+          stroke-dasharray="2 4"
+          class="cn-aura"
+          style={`animation-delay: ${(ti * 0.35).toFixed(2)}s`}
+        />
+      ))}
+      {/* Inner links: anchor to each member */}
+      {cnInnerLinks.map((l) => (
+        <line
+          x1={l.x1.toFixed(1)} y1={l.y1.toFixed(1)}
+          x2={l.x2.toFixed(1)} y2={l.y2.toFixed(1)}
+          stroke="rgba(210, 195, 255, 0.3)"
+          stroke-width="0.9"
+          class="cn-inner"
+          style={`animation-delay: ${l.delay}s`}
+        />
+      ))}
+      {/* Team nodes (anchor + members) */}
+      {constellationTeams.map((team) => (
+        <g>
+          {/* Members */}
+          {team.members.map((m) => (
+            <g class="cn-member" style={`animation-delay: ${m.delay}s; --drift: ${m.drift}px`}>
+              <circle
+                cx={m.cx.toFixed(1)} cy={m.cy.toFixed(1)}
+                r={(m.r * 2.4).toFixed(1)}
+                fill="none"
+                stroke={`hsla(${m.hue}, 50%, 60%, 0.15)`}
+                stroke-width="0.8"
+                class="cn-member-ring"
+                style={`animation-delay: ${m.delay}s`}
+              />
+              <circle
+                cx={m.cx.toFixed(1)} cy={m.cy.toFixed(1)}
+                r={m.r.toFixed(1)}
+                fill={`hsla(${m.hue}, 50%, 62%, 0.75)`}
+                class="cn-member-core"
+                style={`animation-delay: ${m.delay}s`}
+              />
+            </g>
+          ))}
+          {/* Anchor (lead) */}
+          <g class="cn-anchor" style={`animation-delay: ${team.anchor.delay}s; --drift: ${team.anchor.drift}px`}>
+            <circle
+              cx={team.anchor.cx.toFixed(1)} cy={team.anchor.cy.toFixed(1)}
+              r={(team.anchor.r * 2.6).toFixed(1)}
+              fill="none"
+              stroke={`hsla(${team.anchor.hue}, 60%, 65%, 0.18)`}
+              stroke-width="1"
+              class="cn-anchor-ring"
+              style={`animation-delay: ${team.anchor.delay}s`}
+            />
+            <circle
+              cx={team.anchor.cx.toFixed(1)} cy={team.anchor.cy.toFixed(1)}
+              r={team.anchor.r.toFixed(1)}
+              fill={`hsla(${team.anchor.hue}, 55%, 60%, 0.85)`}
+              class="cn-anchor-core"
+              style={`animation-delay: ${team.anchor.delay}s`}
+            />
+            {/* Small inner highlight (the "lead" mark) */}
+            <circle
+              cx={team.anchor.cx.toFixed(1)} cy={team.anchor.cy.toFixed(1)}
+              r="1.6"
+              fill={`hsla(${team.anchor.hue}, 75%, 85%, 0.95)`}
+              class="cn-anchor-dot"
+              style={`animation-delay: ${team.anchor.delay}s`}
+            />
+          </g>
+        </g>
+      ))}
+    </g>
+  )}
 </svg>
 
 <style>
@@ -2004,6 +2190,99 @@ const orbitLinks = orbitSats.map((s, i) => ({
     50% { opacity: 0.18; }
   }
 
+  /* ── Constellation ── */
+  .cn-aura {
+    animation: cn-aura-appear 1s ease-out both, cn-aura-pulse 6s ease-in-out 1s infinite;
+  }
+  @keyframes cn-aura-appear {
+    from { opacity: 0; transform: scale(0.85); transform-origin: center; }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes cn-aura-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
+  .cn-anchor {
+    animation: cn-anchor-float 5s ease-in-out infinite;
+  }
+  @keyframes cn-anchor-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(calc(var(--drift, 3px) * -1)); }
+  }
+
+  .cn-anchor-core {
+    animation: cn-pulse 3.2s ease-in-out infinite;
+  }
+  @keyframes cn-pulse {
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 1; }
+  }
+
+  .cn-anchor-ring {
+    animation: cn-ring-expand 4.5s ease-in-out infinite;
+  }
+  @keyframes cn-ring-expand {
+    0%, 100% { opacity: 0.18; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.2); }
+  }
+
+  .cn-anchor-dot {
+    animation: cn-anchor-dot-blink 2.8s ease-in-out infinite;
+  }
+  @keyframes cn-anchor-dot-blink {
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+
+  .cn-member {
+    animation: cn-member-float 6s ease-in-out infinite;
+  }
+  @keyframes cn-member-float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translateY(calc(var(--drift, 4px) * -1)); }
+  }
+
+  .cn-member-core {
+    animation: cn-pulse 3.8s ease-in-out infinite;
+  }
+
+  .cn-member-ring {
+    animation: cn-member-ring-pulse 5s ease-in-out infinite;
+  }
+  @keyframes cn-member-ring-pulse {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.25); }
+  }
+
+  .cn-inner {
+    animation: cn-inner-appear 1s ease-out both, cn-inner-flow 4.5s ease-in-out 1s infinite;
+  }
+  @keyframes cn-inner-appear {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes cn-inner-flow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.55; }
+  }
+
+  .cn-member-link {
+    animation: cn-link-fade 5.5s ease-in-out infinite;
+  }
+  @keyframes cn-link-fade {
+    0%, 100% { opacity: 0.18; }
+    50% { opacity: 0.35; }
+  }
+
+  .cn-cross {
+    animation: cn-cross-fade 5s ease-in-out infinite;
+  }
+  @keyframes cn-cross-fade {
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.3; }
+  }
+
   /* ── Reduced motion ── */
   @media (prefers-reduced-motion: reduce) {
     .nn-node, .nn-pulse, .nn-glow, .nn-line,
@@ -2021,7 +2300,10 @@ const orbitLinks = orbitSats.map((s, i) => ({
     .sig-ring, .sig-core, .sig-glow, .sig-link,
     .cp-panel, .cp-gauge-fill, .cp-gauge-dot, .cp-dot, .cp-link,
     .sc-module, .sc-block, .sc-connector, .sc-link,
-    .ob-sat, .ob-sat-core, .ob-sat-ring, .ob-core, .ob-core-ring, .ob-core-glow, .ob-ring, .ob-link {
+    .ob-sat, .ob-sat-core, .ob-sat-ring, .ob-core, .ob-core-ring, .ob-core-glow, .ob-ring, .ob-link,
+    .cn-aura, .cn-anchor, .cn-anchor-core, .cn-anchor-ring, .cn-anchor-dot,
+    .cn-member, .cn-member-core, .cn-member-ring,
+    .cn-inner, .cn-member-link, .cn-cross {
       animation: none !important;
     }
     .tower {
@@ -2078,6 +2360,13 @@ const orbitLinks = orbitSats.map((s, i) => ({
     }
     .ob-sat-core {
       opacity: 0.6 !important;
+    }
+    .cn-aura, .cn-anchor, .cn-member, .cn-inner, .cn-member-link, .cn-cross {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .cn-anchor-core, .cn-anchor-dot, .cn-member-core {
+      opacity: 0.85 !important;
     }
   }
 </style>
