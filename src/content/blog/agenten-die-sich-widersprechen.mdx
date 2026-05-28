@@ -2,7 +2,7 @@
 draft: true
 title: 'Agenten, die sich widersprechen'
 language: de
-description: 'Warum bessere Ergebnisse entstehen, wenn AI-Agenten nicht zusammenarbeiten, sondern sich gegenseitig herausfordern.'
+description: 'Warum mehrere AI-Agenten, die sich gegenseitig herausfordern, bessere Ergebnisse liefern als ein einzelner.'
 pubDate: '2026-03-22'
 visualTheme: 'signal'
 prompt: 'Wie funktionieren adversariale Multi-Agent-Workflows und warum liefern sie bessere Ergebnisse als einzelne Agenten?'
@@ -14,44 +14,64 @@ import RedBlueTeam from '../../components/RedBlueTeam.astro';
 
 {/* ENTWURF: Dieser Artikel ist noch in Arbeit. */}
 
-Stell dir vor, du gibst einem Agenten eine Aufgabe und er liefert dir ein Ergebnis. Klingt gut. Aber woher weißt du, ob das Ergebnis wirklich gut ist? Der Agent wird dir selten sagen: "Ehrlich gesagt, das hier ist mittelmäßig."
+Du gibst Claude eine Aufgabe. Er liefert. Die Antwort liest sich aufgeräumt, kommt mit Erklärung, ein paar Bullet Points, am Ende ein freundliches "let me know if you need anything else". Wahrscheinlich ist die Lösung sogar OK. Aber ob sie wirklich gut ist, wirst du so nicht erfahren. Dein Agent wird dir selten ins Gesicht sagen: "Ehrlich gesagt, der Code hier ist Mittelmaß."
 
-Sprachmodelle haben eine Eigenschaft, die in der Forschung "Sycophancy" genannt wird: Sie neigen dazu, dem Framing ihres Prompts enthusiastisch zu folgen. Wenn du sagst "Schreib mir eine Lösung", bekommst du eine Lösung, die sich überzeugend liest. Ob sie tatsächlich die beste ist, steht auf einem anderen Blatt.
+Das hat einen Namen. [Sharma et al. (Anthropic, Oktober 2023)](https://arxiv.org/abs/2310.13548) haben die Eigenschaft "Sycophancy" genannt und über alle großen Sprachmodelle hinweg nachgewiesen. Die Modelle ziehen ihre Antwort dorthin, wo der Prompt sie haben will. Fragst du "ist X richtig?", finden sie Argumente für X. Fragst du "ist X falsch?", finden sie Argumente dagegen. Im selben Lauf, mit demselben Faktum.
 
-Der Entwickler [sysls](https://x.com/systematicls/status/2028814227004395561) nutzt genau diese Eigenschaft bewusst aus. Sein Trick: Statt einem Agenten blind zu vertrauen, lässt er mehrere Agenten gegeneinander arbeiten. Einer generiert, ein zweiter zerlegt das Ergebnis kritisch, ein dritter entscheidet. Die Qualität steigt, weil jeder Agent seine Rolle mit Überzeugung spielt. Sagst du einem Agenten "Dein Code ist Müll, finde die Probleme", wird er genau das mit vollem Einsatz tun.
+Der Entwickler [sysls](https://x.com/systematicls/status/2028814227004395561) hat angefangen, genau das auszunutzen. Er gibt mehreren Agenten widersprüchliche Aufträge im gleichen Workflow: der eine baut etwas auf, der zweite reißt es kritisch auseinander, ein dritter wiegt beide Seiten ab und entscheidet. Jeder spielt seine Rolle mit voller Überzeugung, weil das Modell dem Framing folgt. Sagst du einem Agenten "der Code unten ist Müll, finde mir alle Probleme", legt das gleiche Modell, das gerade noch stolz auf seinen Code war, mit echter Begeisterung los.
 
 ## Drei Muster, die funktionieren
 
-Das Prinzip lässt sich auf verschiedene Weisen umsetzen.
+Drei Setups habe ich in den letzten Monaten häufig gesehen. Sie unterscheiden sich in der Topologie, das Grundprinzip ist dasselbe.
 
 ### Die Triade: Generator, Kritiker, Schiedsrichter
 
-Das einfachste Setup: Drei Agenten mit klar verteilten Rollen. Einer baut, einer greift an, einer urteilt.
+Das einfachste Setup. Drei Agenten, klar verteilte Rollen. Einer baut. Einer greift an. Einer urteilt.
 
 <AdversarialTriad />
 
-Der Generator schreibt Code oder eine Lösung. Der Adversary sucht gezielt nach Schwächen, Fehlern, vergessenen Edge Cases. Der Referee bewertet beide Seiten und trifft die Entscheidung. Kein Agent hat alle Rollen gleichzeitig, und genau das macht den Unterschied.
+Der Generator schreibt Code oder eine Lösung. Der Adversary sucht gezielt nach Schwächen, Race Conditions, vergessenen Fehlerpfaden, falschen Annahmen. Der Referee bekommt beide Seiten vorgelegt und entscheidet. Niemand hält alle drei Rollen zugleich. Genau diese Trennung kippt das Ergebnis.
+
+Wichtig ist der Prompt für den Adversary. Generische Kritik ("achte auf Qualität") führt zu generischer Kritik. Konkret formuliert sieht das so aus:
+
+```text
+Hier ist Code von einem anderen Agenten. Er behauptet, Problem X zu lösen.
+Deine Aufgabe: Finde die Stellen, an denen dieser Code unter realen
+Bedingungen bricht. Race Conditions, Edge Cases, falsche Annahmen,
+vergessene Fehlerpfade, Sicherheitslücken.
+Sei spezifisch: Zeile und konkretes Szenario. Keine pauschalen Bewertungen.
+```
+
+Je härter der Adversary-Prompt formuliert ist, desto mehr findet er. Das ist die Sycophancy, die jetzt für dich arbeitet.
 
 ### Der Kreislauf: Schreiben, Kritisieren, Überarbeiten
 
-Statt drei parallele Rollen kannst du auch zwei Agenten in eine Schleife schicken. Einer schreibt, der andere zerlegt das Ergebnis. Dann geht es zurück zum ersten, der überarbeitet. Mit jeder Runde wird das Ergebnis besser.
+Zwei Agenten in einer Schleife. Einer schreibt, der andere zerlegt das Ergebnis. Dann geht es zurück zum ersten, der überarbeitet. Mit jeder Runde wird die Lösung weiter abgeschliffen.
 
 <GeneratorEvaluatorLoop />
 
-In der Praxis sieht man oft drei bis vier Durchläufe, bevor die Qualität sich auf einem hohen Niveau einpendelt. Das kostet mehr Rechenzeit als ein einzelner Durchlauf. Aber die Ergebnisse sind deutlich zuverlässiger.
+In den Setups, die ich gesehen habe, pendelt sich die Qualität nach drei bis vier Runden auf einem stabilen Niveau ein. Ab der fünften Runde kommen meist nur noch kosmetische Änderungen. Das ist konsistent mit den Beobachtungen aus dem [Self-Refine-Paper (Madaan et al., 2023)](https://arxiv.org/abs/2303.17651), das genau dieses Muster über mehrere Aufgaben getestet hat.
 
-### Red Team vs. Blue Team: Angriff und Verteidigung
+Token-Verbrauch steigt linear mit der Rundenzahl. Für eine schnelle Antwort auf eine simple Frage ist das Overkill. Für Aufgaben, bei denen ein Fehler teuer wird (Migrationen, Auth-Logik, Geldströme, Datenmodellierung), zahlt sich der Loop schnell aus.
 
-Aus der IT-Sicherheit kommt ein Muster, das sich direkt auf die Softwareentwicklung übertragen lässt. Ein "Red Team" simuliert gezielt Angriffe: Prompt Injection, unerwartete Eingaben, Randbedingungen. Ein "Blue Team" lernt aus diesen Angriffen und baut Verteidigungen.
+### Red Team gegen Blue Team
+
+Das Muster kommt aus der IT-Sicherheit. Ein "Red Team" simuliert gezielte Angriffe: Prompt Injection, manipulierte Eingaben, Randfälle, die der Verteidiger nicht erwartet. Ein "Blue Team" lernt aus den Angriffen und baut Verteidigung. Beide Seiten ziehen sich gegenseitig nach oben.
 
 <RedBlueTeam />
 
-Beide Seiten werden mit jeder Runde besser. Der Angreifer findet subtilere Schwachstellen, der Verteidiger wird robuster. Das gleiche Prinzip, das in der Cybersecurity seit Jahren funktioniert, lässt sich auf Code-Qualität, Testabdeckung und Architekturentscheidungen anwenden.
+Anthropic nutzt ein verwandtes Prinzip in [Constitutional AI](https://arxiv.org/abs/2212.08073). Ein Modell prüft seine eigenen Antworten gegen eine Sammlung von Prinzipien und überschreibt sie, wenn sie verletzt werden. Im Kern ist das ein Red-Blue-Loop mit nur einem Modell, das die Rollen wechselt.
+
+Für Code-Qualität funktioniert die Methode genauso. Der Red-Agent schreibt absichtlich kaputte Inputs, der Blue-Agent härtet die Implementierung. Nach ein paar Runden hast du eine Testsuite, an die du selbst nie gedacht hättest, weil du dein eigenes System zu gut kennst, um es feindlich zu sehen.
 
 ## Was das in der Praxis bedeutet
 
-Natürlich kostet das alles mehr Rechenzeit. Drei Agenten statt einem, mehrere Durchläufe statt einem Versuch. Aber die Rechnung geht trotzdem auf, weil du weniger Zeit damit verbringst, Fehler zu finden, die ein einzelner Agent übersehen hat.
+Mehr Agenten kosten mehr Rechenzeit. Drei statt einem, vier Durchläufe statt einem Versuch. Token-Verbrauch steigt entsprechend. Das ist real.
 
-Zwei Dinge bleiben wichtig: Ohne klare Leitplanken produziert auch ein Multi-Agent-Setup mehr Chaos als Qualität. Und die finale Entscheidung, ob ein Ergebnis gut genug ist, bleibt beim Menschen. Agenten können sich gegenseitig herausfordern. Aber die Verantwortung für das Endergebnis lässt sich nicht delegieren.
+Aber die Rechnung kippt, sobald du den nachgelagerten Aufwand mitzählst. Ein einzelner Agent produziert Code, den du anschließend selbst nach Fehlern absuchen darfst. Ein Triade-Setup hat das schon in den Prompt gezogen. Die Stunden, die du in Code-Review, manuelles Debugging und nachgelagerte Hotfixes nicht reinsteckst, sind oft teurer als die zusätzlichen Tokens.
 
-Wer die besten Ergebnisse will, lässt seine Agenten nicht nebeneinander arbeiten. Sondern gegeneinander.
+Zwei Dinge bleiben wichtig. Ohne klare Leitplanken produziert auch ein Multi-Agent-Setup mehr Chaos als Qualität. Wer die Rollen unscharf hält, bekommt drei Agenten, die alle ein bisschen zustimmen, sich höflich gegenseitig korrigieren und am Ende auf "sieht gut aus" einschwenken. Das ist dann teurer als der Single-Agent-Lauf und genauso flach.
+
+Und die finale Entscheidung, ob ein Ergebnis taugt, fällt am Schreibtisch eines Menschen. Agenten können sich gegenseitig herausfordern. Sie können Schwächen freilegen, die einem einzelnen Modell entgehen würden. Was sie nicht können: die Verantwortung tragen. Die liegt bei dir, wenn der Code in Produktion läuft.
+
+Die belastbarsten Ergebnisse habe ich dort gesehen, wo Agenten sich offen widersprechen. Wo einer baut, reißt der andere auseinander. Und niemand nickt höflich. Genau dort fühlt sich das System an wie ein gutes Pair-Programming-Gespräch, bei dem beide Seiten verstanden haben, dass Höflichkeit hier keine Tugend ist.
