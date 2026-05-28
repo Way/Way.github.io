@@ -2,7 +2,7 @@
 
 ## Wer schreibt hier?
 
-Alex ist VP of Engineering, Unternehmer, denkt gern in Systemen und schreibt über AI, Softwareentwicklung und Unternehmenskultur – immer durch die Linse menschlicher Auswirkungen, **weil echte Differenzierung beim Menschen entsteht, nicht bei der Technologie.**
+Alex ist VP of Engineering, Unternehmer, denkt gern in Systemen und schreibt über AI, Softwareentwicklung und Unternehmenskultur – Immer mit Blick auf den Menschen, **weil echte Differenzierung beim Menschen entsteht, nicht bei der Technologie.**
 
 ## Stimme und Haltung
 
