@@ -1,0 +1,58 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+if (!import.meta.env.DEV) {
+	return Astro.redirect('/');
+}
+
+const drafts = (await getCollection('blog'))
+	.filter((p) => p.data.draft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<!doctype html>
+<html lang="de">
+	<head>
+		<BaseHead title={`Drafts · ${SITE_TITLE}`} description="Nur lokal sichtbar. Drafts in Arbeit." />
+		<style>
+			main { max-width: 720px; margin: 0 auto; padding: 2rem 1rem; }
+			h1 { margin-bottom: 0.25rem; }
+			.note { color: rgb(var(--gray)); font-size: 0.9rem; margin-bottom: 2rem; }
+			ul { list-style: none; padding: 0; margin: 0; }
+			li { padding: 1rem 0; border-bottom: 1px solid rgba(var(--gray-light), 0.5); }
+			li a { display: block; text-decoration: none; }
+			li a:hover .title { color: rgb(var(--accent)); }
+			.title { margin: 0 0 0.25rem; font-size: 1.25rem; }
+			.meta { color: rgb(var(--gray)); font-size: 0.85rem; }
+			.description { margin: 0.5rem 0 0; color: rgb(var(--gray-dark)); font-size: 0.95rem; }
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Drafts</h1>
+			<p class="note">Nur im dev-Server sichtbar. Im prod-Build werden diese Seiten nicht generiert.</p>
+			<ul>
+				{drafts.map((post) => (
+					<li>
+						<a href={`/drafts/${post.id}/`}>
+							<h2 class="title">{post.data.title}</h2>
+							<p class="meta">
+								<FormattedDate date={post.data.pubDate} /> · {post.id}
+							</p>
+							{post.data.description && (
+								<p class="description">{post.data.description}</p>
+							)}
+						</a>
+					</li>
+				))}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
