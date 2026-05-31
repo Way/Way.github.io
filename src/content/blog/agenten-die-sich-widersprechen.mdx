@@ -61,11 +61,110 @@ Anthropic nutzt ein verwandtes Prinzip in [Constitutional AI](https://arxiv.org/
 
 Für Code-Qualität funktioniert die Methode genauso. Der Red-Agent schreibt absichtlich kaputte Inputs, der Blue-Agent härtet die Implementierung. Nach ein paar Runden hast du eine Testsuite, an die du selbst nie gedacht hättest, weil du dein eigenes System zu gut kennst, um es feindlich zu sehen.
 
+## Zwei Setups, die du heute bauen kannst
+
+Die drei Muster sind die Topologie. Wie sieht das aus, wenn du es selbst aufsetzt? Zwei Setups lohnt es sich, fast eins zu eins zu übernehmen.
+
+### Der Council: fünf Perspektiven für teure Entscheidungen
+
+Manche Fragen haben echte Konsequenzen. Welches Produktformat. Welcher Preis. Eine neue Person einstellen oder den Workflow automatisieren. Die Architekturentscheidung, die du in sechs Monaten nicht billig zurückdrehst. Ein einzelnes Modell gibt dir darauf eine glatte Antwort, und glatt ist hier das Problem.
+
+[Ole Lehmann](https://x.com/itsolelehmann/status/2038661433626333649) ruft für solche Fragen einen Council auf. Fünf Berater, jeder mit einer Haltung, die den anderen ins Gehege kommt:
+
+- **Contrarian.** Nimmt an, deine Idee hat einen fatalen Fehler, und sucht ihn, bis er ihn findet.
+- **First Principles Thinker.** Wirft dein Framing weg und baut das Problem von unten neu auf. Was löst du hier eigentlich?
+- **Expansionist.** Sucht das Upside nebenan und fragt, ob du nicht zu klein denkst.
+- **Outsider.** Kennt dich nicht, kennt deine Branche nicht, prüft nur, ob die Value Prop für einen Fremden trägt.
+- **Executor.** Will nur eins wissen: die konkrete Aktion, die du Montagmorgen ausführst.
+
+Der Trick steckt im Ablauf. Die fünf antworten parallel, blind füreinander. Dann werden ihre Antworten anonymisiert, A bis E, Namen weg. Fünf Reviewer lesen alle fünf und beantworten drei Fragen: Welche Antwort trägt am weitesten? Welche hat den größten blinden Fleck? Was haben alle übersehen? Erst danach liest ein Chairman das Ganze und fällt ein Urteil.
+
+```text
+council this: [dein Kontext, so ausführlich wie möglich]
+
+  5 Advisors    → antworten parallel, blind füreinander
+  anonymisieren → Antworten A bis E, Namen versteckt
+  5 Reviewer    → stärkste Antwort? größter blinder Fleck?
+                  was haben alle fünf übersehen?
+  Chairman      → ein Urteil, die Risiken beim Ignorieren,
+                  genau eine nächste Aktion
+```
+
+Die Anonymisierung ist wichtiger, als sie aussieht. Wüssten die Reviewer, dass Antwort C vom Contrarian stammt, würden sie sie als "die negative" abhaken. Ohne Label müssen sie das Argument selbst wiegen.
+
+Über die Schärfe entscheidet der Advisor-Prompt. Generisch formuliert bekommst du fünf höfliche Varianten derselben Meinung. Der Contrarian zum Beispiel:
+
+```text
+Du bist der Contrarian. Geh davon aus, dass diese Idee scheitert.
+Finde den einen Grund, an dem sie zerbricht: das übersehene Risiko,
+die Annahme, die nicht hält, den Moment, in dem die Realität
+zurückschlägt. Sei gnadenlos, sei konkret.
+Eine Schwäche, präzise benannt, schlägt fünf vage Bedenken.
+```
+
+Was der Council mit dir macht, ist fast wichtiger als das Urteil. Die glatte Single-Agent-Antwort fühlt sich gut an, weil sie deinem Framing folgt. Fünf Berater, die sich gegenseitig widersprechen, nehmen dir das gute Gefühl. Bei einer teuren Entscheidung willst du genau das.
+
+### Die Pipeline: ein Feature über Nacht
+
+[Zodchi](https://x.com/zodchiii/status/2060674246880149900) hat dasselbe Prinzip auf Code übertragen. Statt einem Agenten, der ein Feature in einem Rutsch baut, schieben vier Spezialisten es durch eine Kette: Spec, Implementierung, Tests, Review. Am Morgen liegt ein Branch da, plus ein Review-Report. Du entscheidest, ob er rausgeht.
+
+Im Repo sieht das so aus:
+
+```text
+.claude/
+  agents/
+    planner.md     # Opus, plant, schreibt nur die Spec
+    coder.md       # Sonnet, implementiert exakt die Spec
+    tester.md      # Sonnet, schreibt Tests und führt sie aus
+    reviewer.md    # Opus, read-only, misstrauisch
+  commands/
+    ship.md        # orchestriert die vier
+.pipeline/
+  spec.md          # Planner schreibt, alle anderen lesen
+  changes.md       # Coder dokumentiert, was er angefasst hat
+  test-results.md  # Tester legt das Ergebnis ab
+  review.md        # Reviewer fällt das Urteil
+```
+
+Jeder Agent kennt nur seine Rolle und seine Files. Der Planner liest den relevanten Code und schreibt eine präzise Spec: betroffene Files, Signaturen, Edge Cases, Patterns. Was unklar bleibt, landet ganz oben als OPEN QUESTIONS. Der Coder liest nur die Spec und implementiert genau das, ohne kreativ zu werden. Der Tester deckt Happy Path, jeden benannten Edge Case und mindestens einen Failure ab, führt die Tests aus und stoppt, sobald etwas rot ist.
+
+Der Reviewer ist der interessanteste. Er bekommt alles und vertraut nichts:
+
+```markdown
+Du bist Reviewer. Read-only. Du vertraust niemandem.
+Lies spec.md, changes.md, test-results.md und mach `git diff`.
+Bewerte gegen die Spec, nicht gegen die Tests: grüne Tests können
+das Falsche prüfen.
+Schreib dein Urteil nach review.md, SHIP / NEEDS WORK / BLOCK,
+plus die konkreten Stellen, die ein Mensch anfassen muss.
+```
+
+Der Command verdrahtet die vier und bricht ab, sobald es hakt:
+
+```text
+/ship <feature-beschreibung>
+
+  planner   → spec.md          stopp, wenn OPEN QUESTIONS oben stehen
+  coder     → changes.md
+  tester    → test-results.md  stopp bei rotem Test, mit Log
+  reviewer  → review.md        zeig mir das Urteil
+```
+
+Den Widerspruch trägt hier die Struktur selbst. Planner und Reviewer prompst du bewusst paranoid, auf Security, Datenintegrität, Performance. Den Coder hältst du klein, er folgt der Spec und erfindet nichts dazu. Der Tester misstraut den glatten Fällen und schreibt absichtlich die Tests, die wehtun. Vier Agenten kontrollieren sich gegenseitig, obwohl keiner das ganze Bild sieht.
+
+Verdrahten musst du das nicht von Hand. [Cat Wu](https://x.com/_catwu/status/2060054180379689074) zeigt, wie Claude aus einer Beschreibung in natürlicher Sprache einen Dynamic Workflow baut und sich dann strikt an die Reihenfolge hält. Du kannst sogar vorschreiben, wo Widerspruch hingehört: "Phase 2, zwei Agenten implementieren denselben Code unabhängig. Phase 3, ein Reviewer vergleicht beide." Die Widersprüche sind dann Teil des Plans.
+
 ## Was das in der Praxis bedeutet
 
 Mehr Agenten kosten mehr Rechenzeit. Drei statt einem, vier Durchläufe statt einem Versuch. Token-Verbrauch steigt entsprechend. Das ist real.
 
 Aber die Rechnung kippt, sobald du den nachgelagerten Aufwand mitzählst. Ein einzelner Agent produziert Code, den du anschließend selbst nach Fehlern absuchen darfst. Ein Triade-Setup hat das schon in den Prompt gezogen. Die Stunden, die du in Code-Review, manuelles Debugging und nachgelagerte Hotfixes nicht reinsteckst, sind oft teurer als die zusätzlichen Tokens.
+
+Der teuerste Posten taucht in keiner Token-Rechnung auf. Mit Councils und Pipelines kannst du zwanzig Agenten gleichzeitig starten, und genau da schnappt die Falle zu. [Addy Osmani](https://x.com/addyosmani/status/2059844244907696186) fasst es in ein Bild aus der Programmierung: In einem System voller paralleler Agenten bist du das GIL, der Global Interpreter Lock. Egal wie viele Threads laufen, am Ende muss alles durch deinen Kopf, und der arbeitet seriell.
+
+Daraus folgt eine Obergrenze, die mit Rechenzeit nichts zu tun hat. Wie viele Agent-Ergebnisse prüfst du an einem Tag wirklich gründlich? Vier? Sechs? Das ist deine Zahl. Eine Pipeline, deren Review du überspringst, ist schlechter als gar kein Agent, weil sie dir eine Sicherheit vorspielt, die du nicht hast.
+
+Also miss die Flotte an deiner Review-Kapazität. Sechs Pipelines, die du gründlich liest, schlagen zwanzig, die du überfliegst. Isolierbares wie Docs, Logs oder kleine Migrationen können Agenten halb-autonom abarbeiten, du schaust am Ende auf wenige Artefakte. Die tiefen Architektur- und Produktfragen gehören in einen Council oder zu einem einzelnen Sparringspartner, in deine besten Stunden. Lass dir testbare Artefakte hinlegen, Diffs, Tests, Logs, Specs, und block dir feste Review-Zeit, statt zwischen Threads zu springen. Dein Lock ist zu wertvoll für Arbeit, die eine Maschine prüfen kann.
 
 Zwei Dinge bleiben wichtig. Ohne klare Leitplanken produziert auch ein Multi-Agent-Setup mehr Chaos als Qualität. Wer die Rollen unscharf hält, bekommt drei Agenten, die alle ein bisschen zustimmen, sich höflich gegenseitig korrigieren und am Ende auf "sieht gut aus" einschwenken. Das ist dann teurer als der Single-Agent-Lauf und genauso flach.
 
