@@ -15,7 +15,7 @@ Du gibst Claude eine Aufgabe. Er liefert. Die Antwort liest sich aufgeräumt, ko
 
 Das hat einen Namen. [Sharma et al. (Anthropic, Oktober 2023)](https://arxiv.org/abs/2310.13548) haben die Eigenschaft "Sycophancy" genannt und über alle großen Sprachmodelle hinweg nachgewiesen. Die Modelle ziehen ihre Antwort dorthin, wo der Prompt sie haben will. Fragst du "ist X richtig?", finden sie Argumente für X. Fragst du "ist X falsch?", finden sie Argumente dagegen. Im selben Lauf, mit demselben Faktum.
 
-Der Entwickler [sysls](https://x.com/systematicls/status/2028814227004395561) hat angefangen, genau das auszunutzen. Er gibt mehreren Agenten widersprüchliche Aufträge im gleichen Workflow: der eine baut etwas auf, der zweite reißt es kritisch auseinander, ein dritter wiegt beide Seiten ab und entscheidet. Jeder spielt seine Rolle mit voller Überzeugung, weil das Modell dem Framing folgt. Sagst du einem Agenten "der Code unten ist Müll, finde mir alle Probleme", legt das gleiche Modell, das gerade noch stolz auf seinen Code war, mit echter Begeisterung los.
+Der Entwickler [sysls](https://x.com/systematicls/status/2028814227004395561) hat angefangen, genau das auszunutzen. Er gibt mehreren Agenten widersprüchliche Aufträge im gleichen Workflow: der eine baut etwas auf, der zweite reißt es kritisch auseinander, ein dritter wiegt beide Seiten ab und entscheidet. Jeder spielt seine Rolle mit voller Überzeugung. Sagst du einem Agenten "der Code unten ist Müll, finde mir alle Probleme", legt dasselbe Modell, das gerade noch stolz auf seinen Code war, mit echter Begeisterung los.
 
 ## Drei Muster, die funktionieren
 
@@ -27,7 +27,7 @@ Das einfachste Setup. Drei Agenten, klar verteilte Rollen. Einer baut. Einer gre
 
 <AdversarialTriad />
 
-Der Generator schreibt Code oder eine Lösung. Der Adversary sucht gezielt nach Schwächen, Race Conditions, vergessenen Fehlerpfaden, falschen Annahmen. Der Referee bekommt beide Seiten vorgelegt und entscheidet. Niemand hält alle drei Rollen zugleich. Genau diese Trennung kippt das Ergebnis.
+Der Generator schreibt Code oder eine Lösung. Der Adversary sucht gezielt nach den Schwächen, die der Generator übersehen hat. Der Referee bekommt beide Seiten vorgelegt und entscheidet. Niemand hält alle drei Rollen zugleich. Genau diese Trennung kippt das Ergebnis.
 
 Wichtig ist der Prompt für den Adversary. Generische Kritik ("achte auf Qualität") führt zu generischer Kritik. Konkret formuliert sieht das so aus:
 
@@ -152,19 +152,23 @@ Der Command verdrahtet die vier und bricht ab, sobald es hakt:
 
 Den Widerspruch trägt hier die Struktur selbst. Planner und Reviewer prompst du bewusst paranoid, auf Security, Datenintegrität, Performance. Den Coder hältst du klein, er folgt der Spec und erfindet nichts dazu. Der Tester misstraut den glatten Fällen und schreibt absichtlich die Tests, die wehtun. Vier Agenten kontrollieren sich gegenseitig, obwohl keiner das ganze Bild sieht.
 
-Verdrahten musst du das nicht von Hand. [Cat Wu](https://x.com/_catwu/status/2060054180379689074) zeigt, wie Claude aus einer Beschreibung in natürlicher Sprache einen Dynamic Workflow baut und sich dann strikt an die Reihenfolge hält. Du kannst sogar vorschreiben, wo Widerspruch hingehört: "Phase 2, zwei Agenten implementieren denselben Code unabhängig. Phase 3, ein Reviewer vergleicht beide." Die Widersprüche sind dann Teil des Plans.
+Verdrahten musst du das nicht mehr von Hand. Seit Anthropic [Dynamic Workflows in Claude Code](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code) ausgeliefert hat, schreibt Claude die Orchestrierung selbst. Aus einer Beschreibung in natürlicher Sprache entsteht ein Skript, das zig bis hunderte Sub-Agenten in einer Session koordiniert und sich strikt an die Reihenfolge hält. [Cat Wu](https://x.com/_catwu/status/2060054180379689074) zeigt, wie du sogar vorschreiben kannst, wo der Widerspruch hingehört: "Phase 2, zwei Agenten implementieren denselben Code unabhängig. Phase 3, ein Reviewer vergleicht beide." Die Widersprüche sind dann Teil des Plans.
+
+Das eigentlich Bemerkenswerte: Die adversariale Prüfung steckt im Mechanismus selbst. Eine Gruppe Agenten geht ein Problem aus unabhängigen Winkeln an, eine andere versucht gezielt, ihre Ergebnisse zu widerlegen, und der Lauf iteriert, bis die Antworten konvergieren. Das Muster aus dem Kreislauf weiter oben, jetzt unter der Haube, statt von Hand zusammengesteckt.
+
+Wie weit das trägt, zeigt der Umbau von Bun. Jarred Sumner hat die JavaScript-Runtime von Zig nach Rust portiert, 750.000 Zeilen in elf Tagen. Parallele Agenten schrieben hunderte .rs-Files, und über jede einzelne Datei liefen zwei Reviewer. Adversariales Review als Fließband, über eine komplette Sprachmigration.
 
 ## Was das in der Praxis bedeutet
 
-Mehr Agenten kosten mehr Rechenzeit. Drei statt einem, vier Durchläufe statt einem Versuch. Token-Verbrauch steigt entsprechend. Das ist real.
+Mehr Agenten kosten mehr Rechenzeit. Drei statt einem, vier Durchläufe statt einem Versuch. Token-Verbrauch steigt entsprechend. Ein Workflow mit hundert Sub-Agenten, jeder ein paar tausend Tokens, landet schnell bei einer halben Million Tokens pro Lauf. Das ist real.
 
 Aber die Rechnung kippt, sobald du den nachgelagerten Aufwand mitzählst. Ein einzelner Agent produziert Code, den du anschließend selbst nach Fehlern absuchen darfst. Ein Triade-Setup hat das schon in den Prompt gezogen. Die Stunden, die du in Code-Review, manuelles Debugging und nachgelagerte Hotfixes nicht reinsteckst, sind oft teurer als die zusätzlichen Tokens.
 
-Der teuerste Posten taucht in keiner Token-Rechnung auf. Mit Councils und Pipelines kannst du zwanzig Agenten gleichzeitig starten, und genau da schnappt die Falle zu. [Addy Osmani](https://x.com/addyosmani/status/2059844244907696186) fasst es in ein Bild aus der Programmierung: In einem System voller paralleler Agenten bist du das GIL, der Global Interpreter Lock. Egal wie viele Threads laufen, am Ende muss alles durch deinen Kopf, und der arbeitet seriell.
+Der teuerste Posten taucht in keiner Token-Rechnung auf. Councils, Pipelines, Dynamic Workflows: technisch startest du heute zig bis hunderte Sub-Agenten in einer Session, bis zu tausend pro Lauf. Und genau da schnappt die Falle zu. [Addy Osmani](https://x.com/addyosmani/status/2059844244907696186) fasst es in ein Bild aus der Programmierung: In einem System voller paralleler Agenten bist du das GIL, der Global Interpreter Lock. Egal wie viele Threads laufen, am Ende muss alles durch deinen Kopf, und der arbeitet seriell.
 
 Daraus folgt eine Obergrenze, die mit Rechenzeit nichts zu tun hat. Wie viele Agent-Ergebnisse prüfst du an einem Tag wirklich gründlich? Vier? Sechs? Das ist deine Zahl. Eine Pipeline, deren Review du überspringst, ist schlechter als gar kein Agent, weil sie dir eine Sicherheit vorspielt, die du nicht hast.
 
-Also miss die Flotte an deiner Review-Kapazität. Sechs Pipelines, die du gründlich liest, schlagen zwanzig, die du überfliegst. Isolierbares wie Docs, Logs oder kleine Migrationen können Agenten halb-autonom abarbeiten, du schaust am Ende auf wenige Artefakte. Die tiefen Architektur- und Produktfragen gehören in einen Council oder zu einem einzelnen Sparringspartner, in deine besten Stunden. Lass dir testbare Artefakte hinlegen, Diffs, Tests, Logs, Specs, und block dir feste Review-Zeit, statt zwischen Threads zu springen. Dein Lock ist zu wertvoll für Arbeit, die eine Maschine prüfen kann.
+Also miss die Flotte an deiner Review-Kapazität. Sechs Pipelines, die du gründlich liest, schlagen zwanzig, die du überfliegst. Isolierbares wie Docs, Logs oder kleine Migrationen laufen halb-autonom, du schaust am Ende auf wenige Artefakte. Die tiefen Architektur- und Produktfragen gehören in einen Council oder zu einem einzelnen Sparringspartner, in deine besten Stunden. Lass dir testbare Artefakte hinlegen, Diffs, Tests, Specs, und block feste Review-Zeit, statt zwischen Threads zu springen. Dein Lock ist zu wertvoll für Arbeit, die eine Maschine prüfen kann.
 
 Zwei Dinge bleiben wichtig. Ohne klare Leitplanken produziert auch ein Multi-Agent-Setup mehr Chaos als Qualität. Wer die Rollen unscharf hält, bekommt drei Agenten, die alle ein bisschen zustimmen, sich höflich gegenseitig korrigieren und am Ende auf "sieht gut aus" einschwenken. Das ist dann teurer als der Single-Agent-Lauf und genauso flach.
 
