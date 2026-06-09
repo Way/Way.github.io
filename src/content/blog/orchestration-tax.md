@@ -1,7 +1,7 @@
 ---
-title: 'Die Orchestration Tax ist echt. Das meiste davon ist Busywork.'
+title: 'Acht Köche, ein Küchenchef: die Orchestration Tax'
 language: de
-description: 'Addy Osmani hat recht: Du kannst dein eigenes Urteil nicht parallelisieren. Aber das, was acht Agenten gleichzeitig so zermürbend macht, war zum größten Teil nie Urteil. Es war Tooling, das nie für Maschinen gebaut wurde.'
+description: 'Acht Agenten produzieren achtmal so viel Code, aber jede Änderung läuft am Ende über einen einzigen Reviewer: dich. Addy Osmani nennt das die Orchestration Tax. Die Frage dahinter ist, woraus diese Steuer wirklich besteht und wie viel davon dein Urteil verlangt.'
 pubDate: '2026-06-09'
 visualTheme: 'cockpit'
 prompt: 'Woraus besteht die Orchestration Tax beim Betrieb vieler AI-Agenten wirklich, und welcher Teil davon ist echtes menschliches Urteil gegenüber reinem Tooling-Overhead?'
@@ -15,25 +15,29 @@ tags:
   ]
 ---
 
-[Addy Osmani](https://addyosmani.com/blog/orchestration-tax/) hat letzte Woche etwas in Worte gefasst, das viele schon im Bauch gespürt haben, bevor es einen Namen hatte. Einen Agenten zu starten kostet fast nichts. Das, was er produziert, zu lesen, zu verstehen und in eine Codebase zu mergen, die weiter funktionieren muss: das kostet genau so viel wie immer. Lässt du acht Agenten gleichzeitig laufen, bekommst du nicht den achtfachen Output. Du bekommst eine sehr tiefe Queue, die einen einzigen Reviewer füttert. Dich.
+Stell dir eine Küche im Vollbetrieb vor. Du stellst acht Köche ein, und tatsächlich kommen jetzt achtmal so viele Pfannen vom Herd. Nur läuft jeder Teller am Ende über einen einzigen Punkt: den Pass. So heißt in der Gastronomie der Tresen zwischen Küche und Service, wo angerichtet, unter Wärmelampen warmgehalten und abgeholt wird. Dort schaut der Küchenchef auf jeden Teller und entscheidet, ob er rausgeht oder zurück muss. Der Chef bist du. Acht Köche heißen nicht acht Chefs. Sie heißen eine sehr lange Schlange am Pass und eine Person, die jeden Teller einzeln abnimmt.
 
-Osmani nennt das die Orchestration Tax, und das Bild, zu dem er greift, kommt aus der Programmierung: du bist das [GIL](https://addyosmani.com/blog/orchestration-tax/), der Global Interpreter Lock. Deine Agenten laufen nebenläufig. Jede Arbeit, die echtes Urteil braucht, muss zuerst deinen Lock holen, und es gibt genau einen Lock, und du hältst ihn. Amdahls Gesetz macht den Rest. Der serielle Anteil setzt die Decke, egal wie viele Worker du auf den parallelen Teil wirfst.
+Genau das passiert gerade an tausenden Schreibtischen mit AI-Agenten. Einen Agenten zu starten kostet fast nichts. Das, was er produziert, zu lesen, zu verstehen und in eine Codebase zu mergen, die weiter funktionieren muss: das kostet genau so viel wie immer. Lässt du acht Agenten gleichzeitig laufen, bekommst du nicht den achtfachen Output. Du bekommst eine sehr tiefe Queue, die einen einzigen Reviewer füttert. Dich.
 
-Er hat recht. Das will ich klar sagen, bevor ich irgendwas hinzufüge, weil der bequeme Reflex hier wäre, den Essay mit einem Pitch wegzuwischen. Du kannst dich nicht parallelisieren. Zwanzig laufende Agenten und ein Dashboard voller grüner Häkchen können sich anfühlen wie der produktivste Tag deines Lebens, während fast nichts in main landet. Beschäftigt sein und produktiv sein sind schon lange zwei verschiedene Dinge. Agenten haben den Abstand nur lauter gemacht.
+[Addy Osmani](https://addyosmani.com/blog/orchestration-tax/) hat dafür letzte Woche einen Namen gefunden: die Orchestration Tax. Eine Steuer, die du auf jeden zusätzlichen Agenten zahlst, ohne dass sie je auf einer Rechnung auftaucht. Sein Bild kommt aus der Programmierung: du bist das GIL, der Global Interpreter Lock. Deine Agenten laufen nebenläufig, aber jede Arbeit, die echtes Urteil braucht, muss zuerst deinen Lock holen, und es gibt genau einen Lock, und du hältst ihn.
 
-Über die Steuer streite ich also nicht. Ich will genauer hinsehen, was eigentlich drinsteckt.
+Dahinter steht eine alte Regel aus der Parallelrechnung, [Amdahls Gesetz](https://de.wikipedia.org/wiki/Amdahlsches_Gesetz): Wie viel schneller ein Programm durch mehr Prozessoren wird, hat eine harte Obergrenze, und die bestimmt der Anteil, der ohnehin nacheinander laufen muss. Du kannst den parallelen Teil beliebig beschleunigen, über diese Grenze kommst du nie. In der Küche heißt das simpel: Du kannst beliebig viele Köche einstellen, am Pass steht weiter genau einer, und an ihm staut sich alles.
 
-## Zwei Kosten im selben Mantel
+Er hat recht, und ich will das klar sagen, bevor ich irgendwas hinzufüge. Du kannst dich nicht parallelisieren. Zwanzig laufende Agenten und ein Dashboard voller grüner Häkchen können sich anfühlen wie der produktivste Tag deines Lebens, während fast nichts davon im fertigen Produkt landet. Beschäftigt sein und produktiv sein sind schon lange zwei verschiedene Dinge. Agenten haben den Abstand nur lauter gemacht.
 
-Wenn du eine Handvoll Agenten durch ein normales Setup orchestrierst, ein paar Chat-Fenster, drei Terminals, ein Ticket-Board, das älter ist als das ganze Thema, verschmelzen zwei sehr unterschiedliche Kosten zu einem einzigen Gefühl von Überforderung.
+Die Frage, die mich seitdem nicht loslässt, steht hinter dem Begriff: woraus besteht diese Steuer eigentlich? Und wie viel davon ist wirklich meine, in dem Sinn, dass nur ich sie zahlen kann? Denn am Pass macht der Küchenchef zwei sehr verschiedene Dinge gleichzeitig, und nur eines davon ist seine Kunst.
+
+## Zwei Kosten, verkleidet als eine
+
+Am Pass macht der Chef das Eine, das niemand sonst kann: schmecken und entscheiden. Geht der Teller raus? Daneben macht er ein Dutzend Dinge, die jeder Hilfskoch übernehmen könnte: Bons sortieren, nachfragen, ob Station drei fertig ist, den Pass abwischen, die Heizlampe checken. Beim Orchestrieren von Agenten verschmelzen genau diese zwei Kosten zu einem einzigen Gefühl von Überforderung. Und nur eine davon ist deine.
 
 Die erste ist Urteil. Gehört diese Änderung in die Codebase? Hat der Agent das richtige Problem gelöst oder den plausibel aussehenden Nachbarn daneben? Tut diese Abstraktion in drei Monaten weh? Wenn zwei Branches dieselbe Datei anfassen, welcher hat recht? Diese Arbeit ist deine. Sie ist nicht reduzierbar. Kein Tool darf diesen Lock für dich halten, und jedes Tool, das behauptet, es könne das, lügt dich an oder bringt dir gerade eine teure Lektion bei.
 
-Die zweite Kosten ist alles um das Urteil herum. Zwischen acht Fenstern hin- und herklicken, um dich zu erinnern, wer gerade was macht. Nachsehen, ob Agent Nummer vier schon fertig ist. Den Build nochmal anwerfen, weil du nicht sicher bist, ob das letzte Diff noch kompiliert. Das Worktree jagen, das mit einem anderen Worktree kollidiert ist. Drei Absätze Agenten-Geplapper lesen, um den einen Satz zu finden, der sagt: ich bin blockiert. So oft den Kontext wechseln, dass deine besten Stunden weg sind, bevor du dich überhaupt zum Denken hinsetzt.
+Die zweite Kosten ist die ganze Hilfsarbeit drumherum. Zwischen acht Fenstern hin- und herklicken, um dich zu erinnern, wer gerade was macht. Nachsehen, ob Agent Nummer vier schon fertig ist. Den Build nochmal anwerfen, weil du nicht sicher bist, ob das letzte Diff noch kompiliert. Das Worktree jagen, das mit einem anderen Worktree kollidiert ist. Drei Absätze Agenten-Geplapper lesen, um den einen Satz zu finden, der sagt: ich bin blockiert. So oft den Kontext wechseln, dass deine besten Stunden weg sind, bevor du dich überhaupt zum Denken hinsetzt.
 
-Dieser zweite Haufen ist auch echte Arbeit. Er ist nur in keinem sinnvollen Sinn deine. Er hat die Form eines Tools, nicht die Form eines Menschen. Eine Maschine sollte fast alles davon erledigen.
+Dieser zweite Haufen ist auch echte Arbeit. Er ist nur in keinem sinnvollen Sinn deine. Er hat die Form eines Tools, nicht die Form eines Menschen. Ein Hilfskoch sollte ihn machen, und im Software-Fall heißt Hilfskoch: eine Maschine.
 
-Und hier schnappt die Falle zu. Im Chat-Fenster-und-Terminal-Workflow liegen die beiden Kosten physisch ineinander. Das Urteil wohnt am selben Ort wie das Babysitten. Jedes Mal, wenn du nach einer echten Entscheidung greifst, watest du durch einen Sumpf aus Status-Checks, um hinzukommen. Es fühlt sich an, als wäre das Urteil der Flaschenhals. Meistens steht das Urteil einfach nur hinter einer langen Schlange aus Overhead.
+Und hier schnappt die Falle zu. Im Workflow aus Chat-Fenstern und Terminals liegen die beiden Kosten physisch ineinander. Das Urteil wohnt am selben Ort wie die Statusarbeit. Jedes Mal, wenn du nach einer echten Entscheidung greifst, watest du durch einen Sumpf aus Nachsehen und Nachfragen, um hinzukommen. Es fühlt sich an, als wäre das Urteil der Flaschenhals. Meistens steht das Urteil einfach nur hinter einer langen Schlange aus Verwaltung.
 
 Trenn die beiden, und die Urteils-Steuer fällt kleiner aus, als der Tag sich angefühlt hat.
 
@@ -43,23 +47,21 @@ Chat-Fenster vergessen. Schließ den Tab, und der Kontext ist weg. Also wirst du
 
 Keines dieser Werkzeuge wurde für eine Welt entworfen, in der die meisten deiner Mitarbeiter keine Menschen sind. Sie wurden dafür zusammengezimmert. Genau dort kommt ein überraschend großer Teil der Orchestration Tax her: nicht aus den Agenten, nicht aus deinem Urteil, sondern aus den Nähten zwischen drei Tools, die nie dafür gedacht waren, ein Team aus Maschinen zu führen.
 
-Liest man Osmanis Empfehlungen genau, drehen sie sich fast alle ums Schließen dieser Nähte. Und wenn man sie als Liste vor sich hat, springt einem etwas an: vier von fünf sind Dinge, die Infrastruktur einfach für dich tun sollte.
+Liest man Osmanis Empfehlungen genau, drehen sie sich fast alle ums Schließen dieser Nähte. Und wenn man sie als Liste vor sich hat, springt einem etwas an: das meiste darin ist Arbeit, die eine Maschine übernehmen sollte.
 
-## Die Empfehlungen als Infrastruktur-Spec gelesen
+## Vier von fünf gehören dem Hilfskoch
 
-Osmani gibt fünf Ratschläge, wie man weniger Steuer zahlt. Vier davon sind in Wahrheit Aufgaben für eine Maschine.
+Osmani gibt fünf Ratschläge, wie man weniger Steuer zahlt. Liest man sie nebeneinander, hängt nur einer wirklich an dir. Die anderen vier beschreiben Arbeit, die eine Maschine erledigen sollte, lange bevor sie deinen Pass erreicht.
 
-Skalier deine Agentenzahl an deiner Review-Kapazität. Die richtige Zahl paralleler Agenten ist die, die du wirklich gründlich prüfen kannst, und das sind für die meisten Menschen niedrige einstellige Werte. Das gehört kein Bauchgefühl, das gehört eine Konfiguration und ein Budget-Gate, das vor jeder einzelnen Arbeit greift. Du setzt die Decke einmal, statt sie um 23 Uhr neu zu entdecken, wenn das Dashboard dich anlügt.
+Der eine, der bleibt, ist die Delegation. Wie viele Agenten du parallel laufen lässt, richtet sich nach der Zahl, die du an einem Tag wirklich gründlich prüfst, und das sind bei den meisten niedrige einstellige Werte. Welche Arbeit sicher abzugeben ist und welche zu verzahnt dafür, entscheidest ebenfalls du. Diesen Teil kann dir niemand abnehmen, und ein gutes System sollte es nicht mal versuchen. Es sollte deine Zahl nur festhalten, statt dass du sie um 23 Uhr neu entdeckst, wenn das Dashboard dich anlügt.
 
-Delegier das Isolierbare, behalt das Verzahnte. Was du abgibst, entscheidest du. Das ist Urteil und bleibt bei dir. Was verschwinden sollte, sind die Kosten der Isolation selbst: jeder Agent arbeitet in seinem eigenen Git-Worktree auf seinem eigenen Branch, sodass zwei parallele Agenten sich nie mitten im Lauf die Dateien überschreiben. Die halbfertige Datei, an der zwei gleichzeitig editiert haben, hört auf, ein Ding zu sein, das passieren kann. Berühren ihre Branches später dieselben Zeilen, ist das ein Merge-Konflikt, und den aufzulösen ist Urteil, also kommt es zu dir zurück.
+Der Rest ist Hilfsarbeit, und hier wird das Prinzip konkret. Nimm die Verifikation, den Ratschlag, der am meisten zählt. "Baut das? Läuft das? Besteht es den Linter?" ist eine Frage, die kein Mensch vierzigmal am Tag beantworten sollte. Auf Infrastruktur-Ebene heißt das: bevor eine Änderung in deiner Queue landet, hat ein Prozess schon den Build angeworfen, den Linter gefahren und einen echten Dev-Server angesprochen, um zu sehen, ob das Ding überhaupt antwortet. Kaputte Builds und tote Server erreichen dich gar nicht. Wenn du draufschaust, hat die Arbeit die simplen Gates längst passiert, und übrig bleibt der Teil, der einen Menschen braucht. Das ist der Hilfskoch, der die Teller wegräumt, die offensichtlich zurückmüssen, damit am Pass nur die Entscheidungen ankommen, die wirklich du treffen musst.
 
-Bündel deine Reviews. Interrupt-getriebenes Review ist die teuerste Sorte, weil jeder Ping deine Aufmerksamkeit zurücksetzt. Fertige Arbeit gehört in eine Review-Spalte und sollte dort warten. Eine Queue, die du abläufst, wenn du es entscheidest, kein Strom aus Benachrichtigungen, der deinen Tag bestimmt. Das Bündeln muss strukturell sein. Sonst brauchst du die Disziplin, und Disziplin um 17 Uhr ist ein schlechter Plan.
+Dasselbe Muster trägt die anderen drei. Zwei Köche, die sich am selben Schneidebrett ins Gehege kommen, sind kein Drama mehr, sobald jeder sein eigenes Brett hat. In Software ist das ein eigener Git-Worktree pro Agent auf eigenem Branch, kein Überschreiben mitten im Lauf. Berühren ihre Branches später dieselben Zeilen, wird daraus ein Merge-Konflikt, und der ist wieder Urteil, also landet er bei dir.
 
-Automatisier die Verifikation, damit du Urteil nur dort ausgibst, wo Urteil nötig ist. Das ist der Punkt, der am meisten zählt. Bevor irgendwas dich erreicht, läuft der Build, läuft der Linter, und es prüft ein lebender Dev-Server, ob das Ding überhaupt antwortet. Kaputte Builds und tote Server sollten gar nicht erst in deiner Queue landen. Wenn du auf eine Änderung schaust, hat sie die dummen Gates schon passiert, und übrig bleibt nur der Teil, der einen Menschen braucht.
+Fertige Arbeit muss auch nicht in dem Moment geprüft werden, in dem sie fertig wird. Sie kann in einer Spalte warten, die du abläufst, wenn du so weit bist, statt dass jeder Ping deine Aufmerksamkeit zurücksetzt. Und deine besten Stunden zu schützen ist dann keine eigene Disziplin mehr, sondern fällt von selbst ab. Ein System, das sich Arbeit zieht und nur auftaucht, wenn etwas zu entscheiden ist, lässt dir den Kopf fürs harte Problem, statt dich vor einem Fortschrittsbalken Wache stehen zu lassen.
 
-Schütz deine besten Stunden fürs Denken. Ein gutes System ist push-basiert. Agenten ziehen sich Karten selbst, so wie ein Kollege es täte, arbeiten, während du etwas anderes tust, und tauchen auf, wenn es etwas zu entscheiden gibt. Kein Pollen, kein "ist es schon fertig", kein Wachestehen vor einem Fortschrittsbalken. Deine besten Stunden gehen an das harte Problem statt ans Dashboard.
-
-Vier von fünf erledigt das System selbst. Und der fünfte, was du delegierst, wird billiger, sobald Isolation aufhört, dein Problem zu sein.
+Vier von fünf erledigt also das System. Der fünfte bleibt deiner, und er wird leichter, sobald die anderen vier dir aus dem Weg sind.
 
 ## Wo der Lock bei dir bleibt, mit Absicht
 
@@ -75,6 +77,6 @@ Das GIL löst sich also nicht auf. Osmanis Kernaussage überlebt unversehrt, und
 
 Du wirst weiter hart über harte Probleme nachdenken. Das war immer der Job, und es ist der gute Teil. Manchmal ist der beste Zug, den du machen kannst, jeden Agenten zu schließen, den Lock selbst zu halten und ein einziges, sperriges Problem anzustarren, bis es nachgibt. Osmani sagt das auch, und er hat recht.
 
-Die Orchestration Tax ist echt. Die Frage, die sich lohnt: wie viel von deiner Rechnung ist wirklich deine? Bei mir war das meiste Busywork im Kostüm des Urteils. Schieb das Busywork zu den Maschinen, behalt das Urteil, und die Arbeit fühlt sich wieder an wie Bauen statt wie Flugsicherung. (Genau diese Trennung versuche ich mit [Harmony](https://gethmy.com) in Infrastruktur zu gießen, falls dich interessiert, wie das in echt aussieht.)
+Die Orchestration Tax ist echt. Die Frage, die sich lohnt: wie viel von deiner Rechnung ist wirklich deine? Bei mir stellte sich der größte Teil als Hilfsarbeit heraus, verkleidet als Urteil. Gib die Hilfsarbeit an die Maschinen, behalt das Schmecken am Pass, und die Arbeit fühlt sich wieder an wie Kochen statt wie Flugsicherung. (Genau diese Trennung versuche ich mit [Harmony](https://gethmy.com) in Infrastruktur zu gießen, falls dich interessiert, wie das in echt aussieht.)
 
 Agenten brauchen dich nicht, um ihnen zuzusehen. Sie brauchen einen Ort zum Arbeiten, einen Weg zur Koordination und eine klare Linie zu der einen Person, deren Entscheidung noch zählt. Diese Person bist immer noch du. So soll es sein.
