@@ -1,0 +1,68 @@
+---
+title: 'Das Nützliche und das Bedeutsame'
+language: de
+description: 'Agenten werden richtig gut im Nützlichen: Code schreiben, Tests laufen lassen, den Pull Request aufmachen. Je billiger dieses Nützliche wird, desto wertvoller wird das, was darüber liegt: Urteil, Geschmack und Vertrauen. Warum dieser Teil auch dann noch uns gehört, wenn die Modelle alles andere übernehmen.'
+pubDate: '2026-07-10'
+visualTheme: 'vertical-stack'
+prompt: 'Wenn Maschinen das Nützliche übernehmen, wohin verschiebt sich der Wert, den ein Mensch beiträgt, und warum bleibt dieser Teil menschlich?'
+tags:
+  [
+    'AI',
+    'Agenten',
+    'Zukunft der Arbeit',
+    'Judgment',
+    'Automatisierung',
+  ]
+---
+
+Niemand freut sich aufs Bürgeramt. Keiner steht morgens auf und denkt: super, heute darf ich drei Wochen auf einen Termin warten, eine Nummer ziehen und ein Formular ausfüllen, das am Ende sowieso nur abgetippt wird. Diese ganze Sorte Arbeit, die Zulassungsstelle, die Steuererklärung, die Überweisung, die man am liebsten gar nicht selbst anfasst, erledigt man einfach, weil sie erledigt werden muss. Freiwillig macht das keiner.
+
+Dan Koe hat dafür ein schönes Bild [gefunden](https://x.com/thedankoe/status/2073418764058825045): Niemand will ein menschliches Bürgeramt. Das Nützliche, die Utility, geben wir gern ab, sobald es jemand für uns übernimmt. Und inzwischen übernimmt es die Maschine.
+
+## Die Maschine übernimmt das Nützliche
+
+Genau dieser Teil der Arbeit wandert nämlich gerade Stück für Stück rüber. Der Agent schreibt den Code, lässt die Tests laufen und legt dir morgens den fertigen Pull Request hin, während du geschlafen hast. Wie billig das Programmieren dadurch geworden ist, habe ich [an anderer Stelle](/blog/code-is-cheap) beschrieben. Der teure Teil war ja ohnehin nie das Tippen. Teuer war immer die Entscheidung davor: Was davon lohnt sich überhaupt?
+
+Und was für Code gilt, gilt für tausend andere kleine Aufgaben, die einen Betrieb am Laufen halten. Rechnungen sortieren, Termine koordinieren, einen Text zusammenfassen, den ersten Entwurf hinstellen, die Tabelle in Ordnung bringen. Dieser ganze unsichtbare Unterbau lässt sich immer öfter einer Maschine überlassen, günstig und rund um die Uhr.
+
+Damit schrumpft der mechanische Anteil an fast jedem Job auf einen kleinen Rest. Und sobald dieser Unterbau wegfällt, verschiebt sich alles, was darüber liegt.
+
+## Der Wert wandert nach oben
+
+Denn je billiger das Nützliche wird, desto wertvoller wird das, was darüber liegt.
+
+Und das ist viel konkreter, als es zunächst klingt. Da ist einmal das Urteil darüber, ob sich eine Sache überhaupt lohnt. Dann der Geschmack dafür, was in deinem Kontext wirklich gut ist und was eben nur so gerade okay. Und schließlich das Vertrauen, also die Frage, wem oder was du eine Aufgabe eigentlich guten Gewissens überlässt.
+
+Ein Beispiel macht das greifbar. Ein Agent baut dir über Nacht zehn neue Features, aber ob eines davon das richtige war, kann er dir nicht sagen. Er stellt dir fünf Varianten einer Landing Page hin, alle sauber gebaut, alle funktionieren, doch welche davon wirklich nach euch klingt und welche nach Baukasten von der Stange, das entscheidet am Ende ein Mensch mit Geschmack. Und wenn dann doch mal etwas nach draußen geht und schiefläuft, ist es auch ein Mensch, der dafür geradesteht, und nicht das Modell.
+
+Das ungefähr ist gemeint, wenn von Bedeutung die Rede ist. Es ist die Arbeit, die übrig bleibt, wenn das reine Ausführen fast nichts mehr kostet.
+
+## Warum die Maschine nicht nachklettert
+
+Jetzt könnte man fragen: Wenn die Maschine sich schon das Nützliche holt, warum klettert sie dann nicht einfach weiter nach oben und übernimmt das Urteil gleich mit?
+
+Eine hübsche Antwort darauf kommt aus den 1930ern. Alfred Korzybski hat 1931 den Satz geprägt, die Karte ist nicht das Gebiet. Eine Beschreibung von etwas ist eben nie das Ding selbst. Thariq hat diesen alten Gedanken kürzlich [auf die Arbeit mit KI-Agenten übertragen](https://x.com/trq212/status/2073100352921215386): Deine Prompts, dein Kontext und deine Pläne sind die Karte, während die echte Codebase, das echte Produkt und der echte Nutzer das Gebiet sind.
+
+Eine Maschine arbeitet immer auf der Karte. Sie optimiert das, was sie messen kann, also die Metrik, den Testfall, die Vorgabe, die du ihr gibst. Was aber wirklich gut ist und was sich lohnt, steht selten sauber auf dieser Karte. Es lebt im Gebiet, mitten zwischen echten Menschen, in lauter Dingen, die nie jemand aufschreibt, weil sie zu selbstverständlich wirken. Du kennst bestimmt so ein Dashboard, auf dem alle Häkchen grün sind, während sich das Produkt selbst trotzdem falsch anfühlt. Die Karte stimmte, das Gebiet nicht.
+
+Beim Thema Evals habe ich das [ausführlicher beschrieben](/blog/woher-weisst-du-dass-es-funktioniert). Eine Eval prüft, ob das Ergebnis zu dem passt, was du vorher als gut festgelegt hast. Das Festlegen selbst nimmt dir aber kein Modell ab, dieser Maßstab kommt jedes Mal von dir.
+
+Und dann kommt noch der unbequeme Teil dazu. Richard Feynman hat 1974 in Caltech einen Satz gesagt, der bis heute sitzt: „The first principle is that you must not fool yourself, and you are the easiest person to fool." Urteil ist deshalb harte, tägliche Arbeit, nämlich die Übung, sich nicht ständig selbst in die Tasche zu lügen. Und genau diese Übung kann dir eine Maschine nicht abnehmen, einfach weil sie nichts zu verlieren hat.
+
+Beim Vertrauen ist es dasselbe. Verantwortung lässt sich nun mal nicht an etwas abgeben, das selbst nicht haftet. Am Ende steht immer ein Mensch mit seinem Namen für die Sache ein, und alle Beteiligten wissen das. So gesehen kann eine Maschine Bedeutung durchaus vorschlagen. Nur besitzen kann sie sie nicht.
+
+## Menschen verstehen ist die eigentliche Arbeit
+
+Wenn der Wert also nach oben wandert, dann landet er bei einer Fähigkeit, die fast schon altmodisch wirkt: andere Menschen verstehen. Zu wissen, was ihnen wichtig ist, worüber sie hinweglesen, wo sie zögern und wann sie zugreifen.
+
+Denk an eine Besprechung, in der am Ende alle nicken und die Sache trotzdem nicht rund ist. Ein Meeting-Bot hält heute sauber fest, was gesagt wurde, und schreibt dir die Beschlüsse mit. Aber dass die halbe Runde innerlich schon ausgestiegen ist und es nur keiner ausspricht, merkt nur, wer die Menschen im Raum liest. Das ist ein Urteil über Menschen, gefällt von einem Menschen, und dafür gibt es keine Metrik.
+
+Nach außen sieht es genauso aus. Was bringt jemanden dazu, aufmerksam zu werden, dir zu glauben und am Ende tatsächlich zu handeln? Diese Frage steckt hinter jedem Produkt, hinter jedem Verkaufsgespräch und hinter jedem Text, den du schreibst. Sie ist so alt wie der Handel selbst und übersteht jedes neue Modell, weil sie mit dem Modell im Grunde gar nichts zu tun hat. Sie hat mit uns zu tun.
+
+## Was am Ende beim Menschen bleibt
+
+Damit zurück zum Bürgeramt. Das Nützliche geben wir gern ab, und das ist auch völlig in Ordnung so. Die Maschine darf ruhig die Formulare übernehmen, die Termine und den Code, der über Nacht entsteht.
+
+Was bei uns bleibt, ist die Frage, ob am Ende überhaupt das Richtige entsteht und ob es gut ist. Und diese Frage bekommt erst dann Gewicht, wenn ein Mensch mit seinem Urteil und seinem Namen dahintersteht.
+
+Je mehr die Maschine uns das Nützliche also abnimmt, desto deutlicher wird, worauf es bei uns eigentlich ankommt: auf das Urteil, dass eine Sache die Mühe wert war. Das bleibt menschlich. Und ehrlich gesagt ist das eine ziemlich gute Nachricht.
