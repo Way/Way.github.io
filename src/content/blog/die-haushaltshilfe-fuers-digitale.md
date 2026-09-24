@@ -41,10 +41,6 @@ Dass sich die drei so ähneln, hat einen Grund, und der heißt [OpenClaw](https:
 
 Wenn die Architektur offen ist und alle vom selben Bauplan abschreiben, entscheidet sich der Wettbewerb woanders: bei Vertrauen, Verbreitung und Integrationen. Google hat Gmail, Meta hat WhatsApp.
 
-Beruflich nutze ich Agents vor allem fürs Coding, klassisches Agentic Coding, und mit [Harmony](https://gethmy.com) baue ich mir eine eigene Harness, um Agents kontrolliert und sichtbar im Team arbeiten zu lassen. Die Cards dort werden nicht getrackt, sondern orchestriert: erschaffen, geplant, umgesetzt, verifiziert, geliefert. Der gesamte [SDLC](https://academy.claude.com/courses/ai-native-sdlc-playbook/introduction), mit klaren Kontrollmechanismen und Strukturen, damit Agents den Prozess zielgerichtet übernehmen können. Grok Bot bringt einen Teil dieser Idee jetzt für jeden Schreibtisch mit, der kein Engineering-Team ist.
-
-Muse ist das Persönlichere, der Assistent für den Alltag. Und ich glaube, genau dort gewöhnen sich die meisten zuerst ans Delegieren.
-
 ## Delegieren wird Gewohnheit
 
 Ich sehe eine Tendenz, und sie hat weniger mit Technik zu tun als mit Gewöhnung. Menschen werden sich immer mehr daran gewöhnen, lästige Themen und Prozesse von sich weg zu delegieren.
