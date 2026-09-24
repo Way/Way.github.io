@@ -2,7 +2,6 @@
 title: 'Die Haushaltshilfe fürs Digitale'
 language: de
 description: 'Grok Bot und Meta Muse geben ihren Assistenten einen eigenen Computer, ein Gedächtnis und die Erlaubnis, weiterzuarbeiten, während du weg bist. Über die Gewöhnung ans Delegieren, wer sich diesen Komfort leisten kann und was mit Software passiert, die bisher darauf gewartet hat, dass jemand klickt.'
-draft: true
 pubDate: '2026-09-23'
 ressort: 'maerkte-modelle'
 kicker: 'Agenten im Alltag'
