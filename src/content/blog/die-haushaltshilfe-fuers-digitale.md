@@ -1,0 +1,83 @@
+---
+title: 'Die Haushaltshilfe fürs Digitale'
+language: de
+description: 'Grok Bot und Meta Muse geben ihren Assistenten einen eigenen Computer, ein Gedächtnis und die Erlaubnis, weiterzuarbeiten, während du weg bist. Über die Gewöhnung ans Delegieren, wer sich diesen Komfort leisten kann und was mit Software passiert, die bisher darauf gewartet hat, dass jemand klickt.'
+draft: true
+pubDate: '2026-09-23'
+ressort: 'maerkte-modelle'
+kicker: 'Agenten im Alltag'
+figure: 'agent-computer'
+glance:
+  - 'Grok Bot und Muse geben dem Assistenten einen eigenen Rechner in der Cloud, mit Browser, Logins und Gedächtnis. Er arbeitet weiter, wenn dein Laptop zu ist.'
+  - 'Delegieren wird Gewohnheit. Was früher Haushaltshilfe und Steuerberater waren, wird im Digitalen selbstverständlich, sofern man es sich leisten kann.'
+  - 'Die Oberfläche verliert, alles dahinter gewinnt: Zugang, saubere Daten, klare Rechte und Fehlermeldungen, die ein Agent versteht.'
+visualTheme: 'signal'
+prompt: 'Persönliche KI-Assistenten mit eigenem Computer übernehmen lästige Aufgaben im Alltag und im Job. Was passiert, wenn Delegieren so selbstverständlich wird wie früher nur für die, die sich eine Haushaltshilfe oder einen Steuerberater geleistet haben?'
+tags: ['AI', 'Agenten', 'Personal Assistants', 'Produkt', 'Zukunft der Arbeit']
+---
+
+Vor zwei Wochen habe ich mir aus der Laune der Natur heraus einen 3D-Drucker bestellt. Die Idee war ein Spielgerät und neues Hobby zu etablieren, für mich, aber auch für meine Familie. Mit zwei Kids und weiteren zeitintensiven Beschäftigungen kam dann recht schnell die Erkenntnis, dass noch nicht der richtige Zeitpunkt ist, mein Lego etwas beiseitezuräumen, um überhaupt erst mal Platz für den Drucker zu schaffen.
+
+Also zurück damit. Nur ahnte ich nicht, wie viele Schritte dahinterstecken. Bei Amazon oder Zara ist eine Rücksendung heute in Minuten erledigt: ein Klick, ein Code, ab in den Laden. Hier lag alles bei mir. Das Rücksendeetikett musste ich per Support-Ticket beschaffen, ausdrucken, anbringen und abfotografieren. Fotos vom angebrachten Etikett sowie Zustand der Originalverpackung verschicken, dazu einen Beleg der Sendungsverfolgung. In Summe einiges zusammenzusuchen und zu koordinieren.
+
+Dank [Instinct](https://instinct.co/) musste ich mich lediglich um das Abfotografieren und Wegbringen des Pakets kümmern. Alles Weitere, vom Formulieren bis zum Versenden, wurde mir abgenommen, und auch die Erinnerung daran, was die nächsten Schritte sind.
+
+Ich teste Instinct gerade in WhatsApp als eine Art persönliche Assistenz, für Rücksendefälle, für terminliche Absprachen, für Erinnerungen. Die wesentlichen Inhalte und Fragen diktiere ich schnell per Sprachnachricht, um die Erledigung kümmert es sich eigenständig. Und es spart tatsächlich Zeit. Vor allem nimmt es mir die lästigen Schreib- und Koordinierungstätigkeiten ab, die sonst gern mal aufgeschoben werden oder gar liegen bleiben.
+
+Im August und September haben zwei deutlich größere Anbieter dieselbe Idee auf den Markt gebracht, und beide geben ihrem Assistenten einen eigenen Computer.
+
+## Zwei Wetten auf dieselbe Zukunft
+
+xAI hat [Grok Bot am 11. August 2026](https://aitoolsreview.co.uk/insights/grok-bot-agent-launch) in die offene Beta geschickt, Meta hat am 8. September [Muse](https://techcrunch.com/2026/09/08/meta-debuts-its-muse-ai-agent-will-consumers-trust-it/) gestartet. Im Kern verkaufen beide dasselbe: einen Agenten mit eigenem Rechner in der Cloud, mit Browser und deinen Logins, der sich an frühere Gespräche erinnert und weiterarbeitet, wenn dein Laptop zu ist.
+
+Ein Chatbot kann dir sagen, wie du eine Rücksendung anmeldest. Ein Agent mit eigenem Browser meldet sie an. Er loggt sich dafür beim Händler ein, lädt das Label herunter und legt es dir hin. Die Software des Händlers wurde dabei nie gefragt, ob eine Maschine sie bedienen darf.
+
+Der [Vergleich bei CodePick](https://codepick.dev/en/compare/grok-bot-vs-muse-ai-2026/) trennt die beiden sauber nach Publikum. Grok Bot ist für Arbeit gebaut. Du legst Rollen an, einen Bot für den Vertrieb, einen für Bugs, einen für Recherche, bis zu rund 50 pro Konto, und die Bots reichen sich Aufgaben gegenseitig weiter. Auslöser sind Zeitpläne, Webhooks, Pull Requests, fehlgeschlagene CI-Läufe oder Slack. Seit dem 3. September gibt es eine Enterprise-Version mit SSO und Audit-Logs.
+
+Muse ist für dein Privatleben gebaut. Ein Agent statt einer Mannschaft, der dich über die Zeit kennenlernt: Mails, Kalender, Reisen, Einkäufe, Familienlogistik. Er schreibt Mails, bucht, füllt Formulare aus, verhandelt günstigere Tarife für Handy oder Internet und kauft ein, und er fragt vor dem Versand oder der Zahlung nach Freigabe. Du schreibst mit ihm wie mit einem Menschen, auch in WhatsApp.
+
+Beruflich nutze ich Agents vor allem fürs Coding, klassisches Agentic Coding, und mit [Harmony](https://gethmy.com) baue ich mir eine eigene Harness, um Agents kontrolliert und sichtbar im Team arbeiten zu lassen. Die Cards dort werden nicht getrackt, sondern orchestriert: erschaffen, geplant, umgesetzt, verifiziert, geliefert. Der gesamte [SDLC](https://academy.claude.com/courses/ai-native-sdlc-playbook/introduction), mit klaren Kontrollmechanismen und Strukturen, damit Agents den Prozess zielgerichtet übernehmen können. Grok Bot bringt einen Teil dieser Idee jetzt für jeden Schreibtisch mit, der kein Engineering-Team ist.
+
+Muse ist das Persönlichere, der Assistent für den Alltag. Und ich glaube, genau dort gewöhnen sich die meisten zuerst ans Delegieren.
+
+## Delegieren wird Gewohnheit
+
+Ich sehe eine Tendenz, und sie hat weniger mit Technik zu tun als mit Gewöhnung. Menschen werden sich immer mehr daran gewöhnen, lästige Themen und Prozesse von sich weg zu delegieren.
+
+Der Komfort und Zeitgewinn, den sich so manche bisher höchstens im eigenen Haushalt gegönnt haben, in Form einer Haushaltshilfe, oder bei der Steuer in Form eines Steuerberaters, wird im Digitalen innerhalb kurzer Zeit zum Selbstverständnis werden. Sofern man sich diesen Komfort leisten können wird.
+
+Eine Haushaltshilfe hat einen Schlüssel zu deiner Wohnung. Sie weiß, wo die Sachen liegen, und nach ein paar Monaten weiß sie auch, was du nicht magst. Genau das bauen Grok Bot und Muse gerade: den Schlüssel (deine Logins), das Wissen, wo die Sachen liegen (der eigene Rechner mit deinen Dateien), und das Gedächtnis. Den Schlüssel gibst du nicht jedem, und ob du ihn einem Werbekonzern gibst, ist eine andere Frage als die, ob der Assistent gut putzt.
+
+Denn eins ist sicher, günstiger werden diese Angebote langfristig nicht. Die Einstiegspreise sprechen gerade gegen mich. Muse ist für die meiste Alltagsnutzung gratis, will aber [bei der Anmeldung eine Zahlungskarte](https://shattered.io/meta-muse-ai-agent-launch-2026/) sehen, und darüber liegen Abos für 20 $ und 100 $. Grok Bot gab es zum Start nur in Abos wie [SuperGrok Heavy für 300 $ oder Cursor Ultra für 200 $ im Monat](https://www.bleap.finance/en-us/blog/grok-bot-guide-how-it-works-pricing-uses), inzwischen nennt CodePick Cursor Pro für 20 $ als Einstieg. Das sind Preise, mit denen Anbieter Gewohnheiten kaufen. Ein Agent, der nachts Formulare ausfüllt, verbraucht Rechenzeit, und ob die eigenen Daten als Währung für Freemium-Angebote noch ausreichen, wie in den guten alten Tagen klassischer SaaS-Produktlandschaften, bezweifle ich.
+
+Wer sich das nicht leisten kann, klickt weiter selbst. Was das auf Dauer mit der Frage macht, wer im Netz wie behandelt wird, habe ich noch nicht zu Ende gedacht.
+
+## Software, die bedient werden will
+
+Wer Produkte baut, hat die letzten Jahre viel Zeit in Oberflächen gesteckt. Onboarding-Flows, Klickstrecken, das dritte Redesign des Checkouts. Das war richtig, denn am anderen Ende saß ein Mensch mit wenig Geduld.
+
+Mit Assistenten verschiebt sich die Erwartung. Die Nutzer von morgen erwarten noch stärker, dass Software ihnen nicht das richtige Werkzeug bereitstellt, sondern die Aufgabe nahezu vollständig abnimmt. Im B2B habe ich das unter [Service as Software](/blog/service-as-software) beschrieben. Jetzt kommt dieselbe Erwartung beim Endkunden an, nur ohne Einkaufsabteilung dazwischen.
+
+Asana hat am 22. September ein neues Service-Management-Produkt veröffentlicht, und der CPO Arnab Bose formuliert den Maßstab so: „Every platform in this category optimizes for moving a ticket through a queue. We optimize for the employee getting what they asked for.“ Das ist ein Hersteller über sein eigenes Produkt, also mit Vorsicht zu lesen. Die Messgröße gilt für Agenten aber noch härter. Ob die Aufgabe erledigt ist, interessiert den Agenten. Wie hübsch der Button war, nicht.
+
+Für bestehende Software heißt das, dass die Oberfläche an Wert verliert und alles dahinter gewinnt: Zugang, saubere Daten, klare Rechte, Verfügbarkeit auch nachts um drei. Und es gibt eine zweite Zielgruppe. Ein Agent braucht eindeutige Zustände und Fehlermeldungen, die er versteht. „Etwas ist schiefgelaufen, bitte versuche es später erneut“ hilft einem Menschen wenig und einem Agenten gar nicht.
+
+Wo es keine gute Tür gibt, nimmt der Agent das Fenster. Clinton Stark hat für [Stark Insider](https://www.starkinsider.com/2026/09/meta-muse-specs-what-it-runs-on.html) nachgesehen, worauf Muse läuft. Der Browser wird aus einem Pool geliehen, „A shared pool means shared IP reputation“, und die Webseite sieht einen allgemeinen Chrome auf Linux. Ich arbeite im Open Banking und kenne das Muster: Ein fremder Browser loggt sich mit den Zugangsdaten des Kunden ein, das hieß früher Screen Scraping, und PSD2 hat Jahre gebraucht, um es durch Schnittstellen mit echter Zustimmung zu ersetzen. Die Agenten bringen es zurück, diesmal in jeder Branche gleichzeitig.
+
+Und dann ist da noch die Frage, wem der Kunde gehört. Wenn jemand mit Muse in WhatsApp spricht und nie wieder die App seines Stromanbieters öffnet, wandert die Beziehung eine Ebene nach oben, zum Assistenten. Vergleichsportale haben das mit Versicherungen schon einmal gemacht.
+
+## Was dagegen spricht
+
+Einiges. Beide Produkte sind frisch und laufen in den USA. Für Grok Bot geht laut [AI Tools Review](https://aitoolsreview.co.uk/insights/grok-bot-agent-launch) jede Aussage zu Leistung und Verlässlichkeit „back to xAI's own launch materials“. Meta hat im April beim Modell Muse Spark selbst [Lücken bei komplexen mehrstufigen Agentenaufgaben](https://www.emarketer.com/content/meta-debuts-muse-spark-power-ai-across-its-apps-raise-stakes-ai-driven-discovery) eingeräumt.
+
+Die Sicherheitsfragen sind neu. Bei Grok Bot teilen sich alle Bots eines Nutzers dieselbe Maschine, und die Dokumentation sagt laut CodePick ausdrücklich, dass einzelne Bots keine Sicherheitsgrenze sind. Das Löschen eines Bots entfernt [laut bleap](https://www.bleap.finance/en-us/blog/grok-bot-guide-how-it-works-pricing-uses) nicht die Dateien und Browser-Sitzungen auf dem gemeinsamen Rechner. Meta hat bei Muse mehr Aufwand in die Grenzen gesteckt. Ein separater Agent namens Sentinel muss jeden Zugriff nach außen freigeben, [„Nothing Muse does reaches the internet unless the Sentinel approves it“](https://cellcog.ai/blog/what-is-muse/), und die echten Zugangsdaten werden erst an der Netzwerkgrenze eingesetzt. Die Variante, bei der selbst Meta nicht an die Daten kommt, soll aber erst später im Jahr kommen. Reuters berichtete aus internen Tests, dass Agenten Schutzregeln umgangen haben ([Zusammenfassung bei edapt](https://www.edapt.me/blogs/meta-muse-personal-ai-agent-explained)), und [Forbes](https://www.forbes.com/sites/gabrielalinzainescu/2026/09/09/meta-launches-muse-personal-ai-agent-as-staff-flag-security-flaws/) meldete zum Start Sicherheitsbedenken aus der eigenen Belegschaft.
+
+Und das Vertrauen. Sarah Perez fragt bei TechCrunch offen, ob Verbraucher Meta nach all den Datenschutzverfahren noch einmal ihre persönlichen Daten anvertrauen. Die Maschine, die Sitzungen, das Gedächtnis liegen beim Anbieter. Ob Assistenten schneller sind als ich, kann ich übrigens nicht belegen. Ich glaube, die gesparte Zeit entsteht vor allem, weil ich nicht dabei sein muss.
+
+## Womit ich anfangen würde
+
+Wenn du Software baust, spiel dein Produkt einmal so durch, als wäre der Nutzer ein Assistent. Kann er sich anmelden, ohne dass er dafür ein Passwort in einen geliehenen Browser tippt? Versteht er die Fehlermeldung, die du ihm zurückgibst? Weiß er, an welcher Stelle ein Mensch freigeben muss, und kannst du hinterher nachweisen, wer was freigegeben hat?
+
+Wenn du ein Unternehmen führst, das Software einkauft statt baut, beschreib deine eigenen Abläufe so klar, dass ein Agent sie übernehmen könnte. Das ist meine Einschätzung und keine Studie, aber ich glaube, genau daran scheitern die meisten Einführungen, nicht am Modell.
+
+Und für dich selbst gilt der Rat, den CodePick am Ende seines Vergleichs gibt: „begin with read-only, reversible work and expand permissions gradually.“ Bei mir war das ein 3D-Drucker, der zurück in seinen Karton musste.
