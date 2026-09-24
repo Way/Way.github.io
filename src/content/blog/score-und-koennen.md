@@ -4,6 +4,12 @@ language: de
 description: 'Benchmarks haben Modelle vergleichbar gemacht, mit Scores und Leaderboards für alles, was sich sauber zählen lässt. Aber ob ein Modell im echten Einsatz taugt, entscheidet sich an den Dingen, die keine Zahl einfängt, genau wie bei der Bewertung von Menschen. Über das, was der Benchmark misst, das, was er übersieht, und warum am Ende wieder jemand hinschauen und urteilen muss.'
 draft: true
 pubDate: '2026-07-10'
+ressort: 'maerkte-modelle'
+kicker: 'Modelle & Messen'
+glance:
+  - 'Sobald ein Maß zum Ziel wird, taugt es nicht mehr als Maß.'
+  - 'Auf dem frischen GSM1k fielen manche Modelle um bis zu 8 Prozentpunkte ab.'
+  - 'Ein Benchmark misst die Karte. Ob ein Ergebnis rausgehen darf, entscheidet ein Mensch.'
 visualTheme: 'cockpit'
 prompt: 'Benchmarks messen Modelle über Scores und KPIs. Aber das Entscheidende an einem Modell oder Agenten lässt sich oft genauso wenig in Zahlen fassen wie die Leistung eines Menschen. Was misst der Benchmark, und was übersieht er?'
 tags:

@@ -3,6 +3,7 @@ title: 'Kultur des Wachstums'
 language: de
 description: 'In diesem nachdenklichen Beitrag reflektiere ich über die Kernwerte und kulturellen Prinzipien, die die organisatorische DNA meines Unternehmens ausmachen. Mit Betonung auf Eigenverantwortung, intrinsischer Motivation und der Bedeutung menschlicher Verbindungen skizziere ich wichtige Gewohnheiten, die Wachstum, Innovation und Teamarbeit fördern. Letztendlich unterstreicht die Botschaft die Überzeugung, dass wahrer Erfolg und Differenzierung von Menschen, ihrer Denkweise und ihrem Potenzial ausgehen – und nicht allein von Technologie oder KI.'
 pubDate: '2025-05-19'
+ressort: 'fuehrung-kultur'
 visualTheme: 'growth'
 prompt: 'Ich bin besonders neugierig, wie ihr bei fino diese „kollaborative und spaßige" Kultur fördert – es ist immer großartig zu hören, was bei jemandem funktioniert, der mittendrin steckt. Gibt es Gewohnheiten oder Rituale, auf die euer Team schwört?'
 tags: ['Kultur', 'Wachstum', 'Teamarbeit']

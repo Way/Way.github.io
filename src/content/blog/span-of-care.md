@@ -3,6 +3,7 @@ title: 'Span of Care'
 language: de
 description: 'Gute Führung scheitert selten an Strategie, sondern daran, dass die Span of Care überstrapaziert ist. Warum echte Beziehungstiefe der unterschätzte Engpass in Organisationen ist.'
 pubDate: '2026-03-21'
+ressort: 'fuehrung-kultur'
 draft: false
 visualTheme: 'roundtable'
 prompt: 'Wie gehst du damit um, wenn dein Team wächst und du merkst, dass du nicht mehr für alle wirklich präsent sein kannst?'

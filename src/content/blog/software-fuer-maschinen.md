@@ -4,6 +4,7 @@ title: 'Software für Maschinen'
 language: de
 description: 'Wenn Agenten die Hauptnutzer werden, verliert die Oberfläche ihren Wert. Über das Ende des App Stores, per-outcome Pricing und Software, die niemand sieht.'
 pubDate: '2026-03-29'
+ressort: 'maerkte-modelle'
 visualTheme: 'blueprint'
 prompt: 'Was passiert mit SaaS-Produkten, wenn nicht mehr Menschen klicken, sondern Agenten Aufgaben ausführen?'
 tags: ['software-engineering', 'ai', 'saas', 'business-models']

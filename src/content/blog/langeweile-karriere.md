@@ -3,6 +3,7 @@ title: 'Der Umgang mit Langeweile ist entscheidend für deine Karriere'
 language: de
 description: 'Die meisten Entwickler scheitern nicht an der Schwierigkeit, sondern an der Eintönigkeit. Warum Frustrationstoleranz und Konsequenz in der AI-Ära wichtiger sind als Talent und Leidenschaft.'
 pubDate: '2026-03-31'
+ressort: 'arbeit-karriere'
 draft: true
 visualTheme: 'growth'
 prompt: 'Was trennt die Entwickler, die wirklich durchkommen, von denen, die trotz Talent und Ambition immer wieder stecken bleiben?'

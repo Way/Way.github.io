@@ -3,6 +3,7 @@ title: 'Ein Agent, eine Aufgabe'
 language: de
 description: 'Der Allzweck-Chatbot im Unternehmen liefert mäßige Ergebnisse. Was funktioniert: spezialisierte KI-Agenten für klar definierte Aufgaben, saubere Governance und Mitarbeitende, die verstehen, was sie da nutzen.'
 pubDate: '2026-04-02'
+ressort: 'agenten-engineering'
 draft: true
 visualTheme: 'vertical-stack'
 prompt: 'Was unterscheidet Unternehmen, die mit KI echten Mehrwert schaffen, von denen, die nach dem Hype frustriert aufgeben?'

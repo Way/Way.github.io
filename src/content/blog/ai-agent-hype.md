@@ -2,6 +2,7 @@
 title: 'AI Agents: Hype, Realität und Potenzial'
 description: 'Warum ist der aktuelle Hype um AI Agents so gigantisch? Was versprechen wir uns alle davon, wenn in Zukunft Agents auch komplexe und zusammenhängende Tätigkeiten übernehmen? Welche Rolle spielt das menschliche Handeln und Zutun in dieser realitätsnahen Zukunft?'
 pubDate: '2025-04-17'
+ressort: 'maerkte-modelle'
 visualTheme: 'neural-network'
 prompt: 'Warum ist der aktuelle Hype um AI Agents so gigantisch? Was versprechen wir uns alle davon, wenn in Zukunft Agents auch komplexe und zusammenhängende Tätigkeiten übernehmen? Welche Rolle spielt das menschliche Handeln und Zutun in dieser realitätsnahen Zukunft?'
 ---

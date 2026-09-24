@@ -3,6 +3,7 @@ title: 'Service as Software'
 language: de
 description: 'Sequoia und Y Combinator nennen es 2026 die Consensus-Wette: AI-native Firmen verkaufen nicht Software, sondern direkt die Arbeit. Über die Mathematik, die in den VC-Texten fehlt, und die drei Workflows, die einen Anbieter von "Agentur mit AI-Features" zu "Service as Software" machen.'
 pubDate: '2026-05-13'
+ressort: 'maerkte-modelle'
 visualTheme: 'swarm'
 prompt: 'Wenn AI-Agenten komplexe Wissensarbeit übernehmen können, verkaufen die spannendsten Firmen nicht mehr Software, sondern direkt die Arbeit. Was bedeutet diese Verschiebung für SaaS, für Servicefirmen und für die Frage, wer am Ende die Verantwortung trägt?'
 tags:

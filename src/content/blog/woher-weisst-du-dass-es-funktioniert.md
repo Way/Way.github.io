@@ -3,6 +3,12 @@ title: 'Woher weißt du, dass es funktioniert?'
 language: de
 description: 'Die meisten Teams shippen AI nach Bauchgefühl. Du änderst einen Prompt, der Output fühlt sich besser an, und keiner kann sagen, ob er es wirklich ist. Evals sind die Disziplin, die das misst. Über Error Analysis, LLM-as-Judge und den einen Teil, der menschlich bleibt: zu definieren, was gut heißt.'
 pubDate: '2026-06-22'
+ressort: 'agenten-engineering'
+kicker: 'Evals'
+glance:
+  - 'Vibe-Shipping ist der Normalzustand: drei Testfragen, nicken, deployen.'
+  - 'Eine Eval beginnt mit Error Analysis: fünfzig Traces öffnen, lesen, sortieren.'
+  - 'Evals nehmen dir das Probieren ab. Das Definieren von „gut“ nicht.'
 visualTheme: 'signal'
 prompt: 'Was ist eine Eval wirklich, warum shippen so viele Teams AI stattdessen nach Bauchgefühl, und welcher Teil der Bewertung lässt sich nicht an eine Maschine delegieren?'
 tags:

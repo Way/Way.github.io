@@ -3,6 +3,7 @@ title: 'Agentic Development: Agents sitzen mit am Tisch'
 language: de
 description: 'AI-Agenten erledigen Aufgaben in Minuten, doch der neue Engpass ist die Kommunikation. Wie sieht ein Entwicklungsprozess aus, in dem Menschen und Agenten als Partner am gleichen Tisch sitzen – und Agenten gleichzeitig als Integration Layer über Code, Logs, Infra und Tickets agieren?'
 pubDate: '2026-02-01'
+ressort: 'agenten-engineering'
 visualTheme: 'roundtable'
 prompt: 'Wie verändert Agentic Coding die Rolle von Entwickler und die Kommunikation in Softwareteams – gerade jetzt, wo LLMs nicht nur Code schreiben, sondern den gesamten Entwicklungszyklus vertikal integrieren? Welche neuen Prozesse und Tools brauchen wir, wenn Agenten als gleichberechtigte Akteure im Entwicklungsprozess auftreten und als Integration Layer über Logs, Code, Infra und Tickets hinweg agieren?'
 tags:

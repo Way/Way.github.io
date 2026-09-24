@@ -3,6 +3,7 @@ title: 'Acht Köche, ein Küchenchef: die Orchestration Tax'
 language: de
 description: 'Acht Agenten produzieren achtmal so viel Code, aber jede Änderung läuft am Ende über einen einzigen Reviewer: dich. Addy Osmani nennt das die Orchestration Tax. Die Frage dahinter ist, woraus diese Steuer wirklich besteht und wie viel davon dein Urteil verlangt.'
 pubDate: '2026-06-09'
+ressort: 'agenten-engineering'
 visualTheme: 'cockpit'
 prompt: 'Woraus besteht die Orchestration Tax beim Betrieb vieler AI-Agenten wirklich, und welcher Teil davon ist echtes menschliches Urteil gegenüber reinem Tooling-Overhead?'
 tags:

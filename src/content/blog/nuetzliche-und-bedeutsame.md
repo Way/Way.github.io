@@ -3,6 +3,13 @@ title: 'Das Nützliche und das Bedeutsame'
 language: de
 description: 'Agenten werden richtig gut im Nützlichen: Code schreiben, Tests laufen lassen, den Pull Request aufmachen. Je billiger dieses Nützliche wird, desto wertvoller wird das, was darüber liegt: Urteil, Geschmack und Vertrauen. Warum dieser Teil auch dann noch uns gehört, wenn die Modelle alles andere übernehmen.'
 pubDate: '2026-07-10'
+ressort: 'arbeit-karriere'
+kicker: 'Zukunft der Arbeit'
+figure: 'useful-meaningful'
+glance:
+  - 'Agenten übernehmen das Nützliche: Code, Tests, den fertigen Pull Request und tausend kleine Aufgaben, die einen Betrieb am Laufen halten.'
+  - 'Je billiger das Nützliche wird, desto wertvoller wird, was darüber liegt: Urteil, Geschmack und Vertrauen.'
+  - 'Die Maschine arbeitet auf der Karte, das Gute lebt im Gebiet. Und Verantwortung lässt sich nicht an etwas abgeben, das nicht haftet.'
 visualTheme: 'vertical-stack'
 prompt: 'Wenn Maschinen das Nützliche übernehmen, wohin verschiebt sich der Wert, den ein Mensch beiträgt, und warum bleibt dieser Teil menschlich?'
 tags:

@@ -4,6 +4,7 @@ language: de
 description: 'Das Schreiben eines Features kostet kaum noch etwas. Was teuer geblieben ist, sind Entscheiden, Prüfen und Messen. Eine Skizze, wie die Engineering-Loop sich darauf umbauen lässt.'
 draft: false
 pubDate: '2026-05-28'
+ressort: 'agenten-engineering'
 visualTheme: 'scaffold'
 prompt: 'Wenn das Schreiben billig ist, sind Entscheiden, Prüfen und Messen die teuren Schritte. Wie sieht eine Engineering-Loop aus, die genau das umbaut?'
 tags:

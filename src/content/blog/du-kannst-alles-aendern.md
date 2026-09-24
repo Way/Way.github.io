@@ -3,6 +3,7 @@ title: 'Du kannst alles ändern. Aber nicht alles auf einmal.'
 language: de
 description: 'Warum weniger Ziele zu mehr Ergebnissen führen, Subtraktion der bessere Hebel ist, und dein echtes Leben nicht irgendwann später anfängt.'
 pubDate: '2026-03-06'
+ressort: 'fuehrung-kultur'
 visualTheme: 'growth'
 prompt: 'Welche eine Veränderung in deinem Leben wäre so wichtig, dass du bereit wärst, alles andere dafür radikal zu streichen? Nicht irgendwann, sondern ab heute?'
 tags:

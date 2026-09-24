@@ -3,6 +3,7 @@ title: 'Code ist billig geworden. Was jetzt zählt.'
 language: de
 description: 'AI macht Codezeilen praktisch gratis. Das verschiebt den Engpass von der Implementierung hin zu Problemverständnis, Testing und Ownership. Große Teams werden schrumpfen, kleine Teams werden Konzerne überholen. Die Frage ist nicht, ob das passiert, sondern ob du auf der richtigen Seite stehst.'
 pubDate: '2026-03-01'
+ressort: 'agenten-engineering'
 visualTheme: 'towers'
 prompt: 'Wie verändert die radikale Verbilligung von Code durch AI die Struktur von Engineering-Teams, die Rolle von Entwicklern und den Wettbewerb zwischen großen Konzernen und kleinen, fokussierten Teams?'
 tags:

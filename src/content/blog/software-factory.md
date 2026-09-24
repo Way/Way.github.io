@@ -4,6 +4,7 @@ title: 'Die Software-Fabrik'
 language: de
 description: 'Anthropic, OpenAI, Stripe und StrongDM bauen unabhängig voneinander dasselbe: Fabriken, in denen Agents Software produzieren, prüfen und ausliefern. Was das für Engineering bedeutet.'
 pubDate: '2026-04-05'
+ressort: 'agenten-engineering'
 visualTheme: 'towers'
 prompt: 'Was bedeutet es, wenn Software nicht mehr von Teams, sondern von Agenten-Fabriken gebaut wird?'
 tags: ['software-engineering', 'ai', 'agents']

@@ -3,6 +3,7 @@ title: 'Wenn aus dem Interview eine Audition wird'
 language: de
 description: 'Klassische Coding-Tests messen, was KI längst beherrscht. Tech-Interviews verschieben sich. Weg von algorithmischen Whiteboard-Aufgaben, hin zur Simulation echter Arbeit mit KI als selbstverständlichem Werkzeug. Was zählt: Urteilsvermögen, Kommunikation, Systemdenken.'
 pubDate: '2026-05-21'
+ressort: 'arbeit-karriere'
 draft: true
 visualTheme: 'constellation'
 prompt: 'Wie verändert KI die Art, wie wir Entwickler einstellen und worauf es im technischen Interview ankommt?'

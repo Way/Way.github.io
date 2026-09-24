@@ -3,6 +3,11 @@ title: 'Die teuerste Abkürzung'
 language: de
 description: 'Zwei Drittel der Unternehmen, die Personal zugunsten von AI abgebaut haben, stellen dieselben Rollen wieder ein. Die radikale Strategie, Menschen durch AI zu ersetzen, scheitert wirtschaftlich, technisch und organisatorisch.'
 pubDate: '2026-04-02'
+ressort: 'arbeit-karriere'
+stat:
+  value: 'Zwei Drittel'
+  text: 'der Unternehmen, die Personal zugunsten von AI abgebaut haben, stellen dieselben Rollen wieder ein.'
+  parts: [2, 3]
 draft: false
 visualTheme: 'towers'
 prompt: 'Was passiert, wenn Unternehmen versuchen, Menschen komplett durch AI zu ersetzen, und warum stellen so viele genau diese Rollen wieder ein?'
