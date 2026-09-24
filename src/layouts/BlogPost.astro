@@ -43,7 +43,17 @@ const hasGlance = !page && ((glance && glance.length > 0) || Boolean(prompt));
 
 <html lang="de">
   <head>
-    <BaseHead title={title} description={description} image={image} />
+    <BaseHead
+      title={title}
+      description={description}
+      image={image}
+      imageAlt={image && kickerText ? `${kickerText}: ${title}` : undefined}
+      article={
+        !page && pubDate && ressortName
+          ? { publishedTime: pubDate, modifiedTime: updatedDate, section: ressortName, tags, readingMinutes }
+          : undefined
+      }
+    />
   </head>
   <body>
     <div class="page">

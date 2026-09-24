@@ -20,7 +20,6 @@ const related = relatedPosts(post, await getPublishedPosts());
 
 <BlogPost
 	{...post.data}
-	image={`/og/default.png`}
 	readingMinutes={readingMinutes(post)}
 	related={related}
 >
