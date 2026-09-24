@@ -1,0 +1,35 @@
+---
+interface Props {
+  number?: number;
+  title: string;
+  source: string;
+  layout?: 'stack' | 'split';
+}
+
+const { number, title, source, layout = 'stack' } = Astro.props;
+const hasText = Astro.slots.has('text');
+---
+
+<figure class:list={['fig', { 'fig--split': layout === 'split' && hasText }]}>
+  <div class="fig-head">
+    <span class="fig-no">{number ? `Grafik ${number}` : 'Grafik'}</span>
+    <p class="fig-title">{title}</p>
+    {layout === 'split' && hasText && <div class="fig-text"><slot name="text" /></div>}
+  </div>
+  <div class="fig-canvas"><slot /></div>
+  <figcaption class="source">{source}</figcaption>
+</figure>
+
+<style>
+  .fig--split {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: 12px 32px;
+  }
+  .fig--split figcaption { grid-column: 1 / -1; }
+  .fig-text :global(p) { font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
+  .fig-text :global(p + p) { margin-top: 8px; }
+  @media (max-width: 960px) {
+    .fig--split { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
