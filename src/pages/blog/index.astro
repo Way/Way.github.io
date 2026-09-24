@@ -1,147 +1,109 @@
 ---
 import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import HeroVisual from '../../components/HeroVisual.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
-import { getCollection } from 'astro:content';
-import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+import { getPublishedPosts, readingMinutes, ressortLabel } from '../../lib/posts';
 
-const posts = (await getCollection('blog'))
-	.filter((p) => !p.data.draft)
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = await getPublishedPosts();
+const years = [...new Set(posts.map((p) => p.data.pubDate.getFullYear()))];
+const shortDate = (d: Date) =>
+  d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 ---
 
 <!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-				position: relative;
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				color: white;
-				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-				width: 90%;
-				z-index: 1;
-			}
-			ul li .image-container {
-				position: relative;
-				overflow: hidden;
-				border-radius: 12px;
-				margin-bottom: 0.5rem;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				line-height: 1;
-				position: absolute;
-				bottom: 1rem;
-				left: 1rem;
-				right: 1rem;
-				color: white;
-				text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-				font-size: 1.2rem;
-				z-index: 1;
-			}
-			.date {
-				margin: 0.5rem 0 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover .title {
-				color: rgb(var(--accent));
-			}
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul li a:hover .image-container :global(.hero-visual) {
-				box-shadow: var(--box-shadow);
-				transform: scale(1.05);
-				transition: transform 0.3s ease, box-shadow 0.2s ease;
-			}
-			ul li .image-container :global(.hero-visual) {
-				transition: transform 0.3s ease, box-shadow 0.2s ease;
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-				ul li .title {
-					font-size: 1rem;
-					bottom: 0.5rem;
-					left: 0.5rem;
-					right: 0.5rem;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post, index) => (
-							<li class={index === 0 ? 'first-child' : ''}>
-								<a href={`/blog/${post.slug}/`}>
-									<div class="image-container">
-										<HeroVisual
-											title={post.data.title}
-											pubDate={post.data.pubDate}
-											visualTheme={post.data.visualTheme}
-											variant={index === 0 ? 'featured' : 'card'}
-										/>
-										<h4 class="title">{post.data.title}</h4>
-									</div>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
+<html lang="de">
+  <head>
+    <BaseHead title={`Archiv · ${SITE_TITLE}`} description={`Alle ${posts.length} Beiträge von Alex Vey.`} />
+  </head>
+  <body>
+    <div class="page">
+      <Header />
+      <main>
+        <header class="archive-head">
+          <span class="kicker">Archiv</span>
+          <h1>Alle Beiträge</h1>
+          <p class="dek">{posts.length} Essays über AI, Software Engineering und Führung. Immer mit Blick auf den Menschen.</p>
+        </header>
+
+        {
+          years.map((year) => {
+            const yearPosts = posts.filter((p) => p.data.pubDate.getFullYear() === year);
+            return (
+              <section class="year" aria-labelledby={`y${year}`}>
+                <div class="year-head">
+                  <h2 id={`y${year}`}>{year}</h2>
+                  <span class="source">{yearPosts.length} Beiträge</span>
+                </div>
+                <ol>
+                  {yearPosts.map((post) => (
+                    <li>
+                      <time class="source" datetime={post.data.pubDate.toISOString()}>
+                        {shortDate(post.data.pubDate)}
+                      </time>
+                      <span class="ressort">{ressortLabel(post)}</span>
+                      <div class="entry">
+                        <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+                        <p>{post.data.description}</p>
+                      </div>
+                      <span class="source minutes">{readingMinutes(post)} Min.</span>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            );
+          })
+        }
+      </main>
+      <Footer />
+    </div>
+
+    <style>
+      .archive-head { padding-block: 30px 26px; }
+      .archive-head h1 {
+        font-size: clamp(38px, 6vw, 64px);
+        line-height: 1;
+        letter-spacing: -0.022em;
+      }
+      .archive-head .dek { margin-top: 14px; }
+      .year { margin-top: 18px; }
+      .year-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        border-top: 3px solid var(--rule-strong);
+        border-bottom: 1px solid var(--rule-strong);
+        padding-block: 8px 6px;
+      }
+      .year-head h2 { font-size: 28px; font-variant-numeric: tabular-nums; }
+      ol { list-style: none; margin: 0; padding: 0; }
+      li {
+        display: grid;
+        grid-template-columns: 7.5em 13em minmax(0, 1fr) 4em;
+        gap: 4px 16px;
+        align-items: baseline;
+        padding-block: 12px;
+        border-bottom: 1px solid var(--rule);
+      }
+      .ressort { font-family: var(--font-sans); font-size: 12.5px; font-weight: 700; color: var(--kicker); }
+      .entry a { font-size: 19px; font-weight: 600; line-height: 1.25; }
+      .entry p {
+        margin-top: 4px;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--ink-soft);
+        max-width: 70ch;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .minutes { text-align: right; }
+      @media (max-width: 760px) {
+        li { grid-template-columns: auto minmax(0, 1fr); }
+        .entry { grid-column: 1 / -1; }
+        .minutes { display: none; }
+      }
+    </style>
+  </body>
 </html>

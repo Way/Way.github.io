@@ -1,95 +1,42 @@
 ---
-const today = new Date();
+import SvgDefs from './SvgDefs.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const year = new Date().getFullYear();
 ---
 
-<footer>
-  <div class="footer-inner">
-    <div class="copy">
-      <span class="mono">© {today.getFullYear()}</span> Alex Vey
-    </div>
-    <div class="footer-right">
-      <div class="footer-links">
-        <a href="/impressum">Impressum</a>
-        <a href="/datenschutz">Datenschutz</a>
-      </div>
-      <div class="social-links">
-        <a href="https://x.com/dailyway" target="_blank" rel="noopener">
-          <span class="sr-only">Follow Alex Vey on X</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"
-            ><path
-              fill="currentColor"
-              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-            ></path></svg
-          >
-        </a>
-        <a href="https://github.com/way" target="_blank" rel="noopener">
-          <span class="sr-only">Go to Way's GitHub repo</span>
-          <svg viewBox="0 0 16 16" aria-hidden="true" width="18" height="18"
-            ><path
-              fill="currentColor"
-              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-            ></path></svg
-          >
-        </a>
-      </div>
-    </div>
+<footer class="site-foot">
+  <hr class="rule-heavy" />
+  <div class="row">
+    <span>© {year} {SITE_TITLE} · {SITE_DESCRIPTION}</span>
+    <nav aria-label="Rechtliches und Links">
+      <a href="/impressum">Impressum</a>
+      <a href="/datenschutz">Datenschutz</a>
+      <a href="/rss.xml">RSS</a>
+      <a href="https://x.com/dailyway" target="_blank" rel="noopener">X</a>
+      <a href="https://github.com/way" target="_blank" rel="noopener">GitHub</a>
+    </nav>
   </div>
+  <SvgDefs />
 </footer>
+
 <style>
-  footer {
-    margin-top: 6rem;
-    padding: 2rem 1.5rem;
-    border-top: 1px solid var(--border);
-    background: transparent;
-    color: var(--ink-dim);
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-  }
-  .footer-inner {
-    max-width: 1140px;
-    margin: 0 auto;
+  .site-foot { margin-top: 56px; padding-bottom: 48px; }
+  .row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
     flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px 24px;
+    padding-top: 12px;
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    color: var(--muted);
   }
-  .copy .mono {
-    color: var(--ink-faint);
-    margin-right: 0.25rem;
-  }
-  .footer-right {
+  nav {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-  .footer-links {
-    display: flex;
-    gap: 1.25rem;
-  }
-  .footer-links a {
-    color: var(--ink-dim);
-    text-decoration: none;
-  }
-  .footer-links a:hover {
-    color: var(--accent);
-  }
-  .social-links {
-    display: flex;
-    gap: 0.75rem;
-  }
-  .social-links a {
-    color: var(--ink-dim);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-  }
-  .social-links a:hover {
-    color: var(--accent);
-  }
-  @media (max-width: 540px) {
-    .footer-inner { justify-content: center; text-align: center; }
-    .footer-right { justify-content: center; }
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    font-weight: 700;
+    color: var(--ink);
   }
 </style>

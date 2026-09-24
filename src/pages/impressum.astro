@@ -14,10 +14,21 @@ import { SITE_TITLE } from '../consts';
     />
     <style>
       main {
-        width: 960px;
-        margin: auto;
-        padding: 1em;
+        max-width: 760px;
+        padding-block: 2rem;
         line-height: 1.6;
+      }
+      main :global(p),
+      main :global(ul) {
+        margin-bottom: 1em;
+      }
+      main :global(ul) {
+        list-style: disc;
+        padding-left: 1.4rem;
+      }
+      main :global(a) {
+        text-decoration: underline;
+        text-decoration-color: var(--kicker);
       }
       h2,
       h3 {
@@ -30,6 +41,7 @@ import { SITE_TITLE } from '../consts';
     </style>
   </head>
   <body>
+    <div class="page">
     <Header />
     <main>
       <h2>Impressum</h2>
@@ -91,5 +103,6 @@ import { SITE_TITLE } from '../consts';
       </p>
     </main>
     <Footer />
+  </div>
   </body>
 </html>

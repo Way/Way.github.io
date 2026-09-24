@@ -1,0 +1,103 @@
+---
+import SiteNav from './SiteNav.astro';
+import { SITE_DESCRIPTION, SITE_STRAPLINE, SITE_TITLE } from '../consts';
+import { isoWeek } from '../lib/posts';
+
+interface Props {
+  issue: number;
+  focus?: string;
+}
+
+const { issue, focus } = Astro.props;
+const today = new Date();
+const dateLine = today.toLocaleDateString('de-DE', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<header class="masthead-wrap">
+  <div class="metarow">
+    <span>Ausgabe {issue} · KW {isoWeek(today)}</span>
+    <span>{dateLine}</span>
+    <span>{SITE_STRAPLINE}</span>
+  </div>
+  <hr class="rule-heavy" />
+  <div class="masthead">
+    <h1><a href="/">{SITE_TITLE}</a></h1>
+    <p>{SITE_DESCRIPTION}</p>
+  </div>
+  <hr class="rule-thin" />
+  <div class="strip">
+    {focus ? <em><span>Schwerpunkt</span>{focus}</em> : <span />}
+    <SiteNav />
+  </div>
+  <hr class="rule-thin" />
+</header>
+
+<style>
+  .metarow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    align-items: baseline;
+    padding-block: 18px 9px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .metarow > :nth-child(2) { text-align: center; }
+  .metarow > :last-child { text-align: right; }
+  .masthead {
+    text-align: center;
+    padding-block: 14px 10px;
+  }
+  .masthead h1 {
+    font-family: var(--font-masthead);
+    font-weight: 900;
+    font-size: clamp(64px, 13.5vw, 172px);
+    line-height: 0.88;
+    letter-spacing: -0.025em;
+    text-wrap: nowrap;
+  }
+  .masthead h1 a:hover { text-decoration: none; }
+  .masthead p {
+    margin-top: 10px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .strip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 24px;
+    padding-block: 9px;
+  }
+  .strip em {
+    font-size: 17px;
+    font-style: italic;
+  }
+  .strip em span {
+    font-style: normal;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-right: 8px;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 640px) {
+    .metarow { grid-template-columns: 1fr; gap: 2px; padding-block: 14px 8px; }
+    .metarow > * { text-align: left !important; }
+    .masthead p { letter-spacing: 0.22em; font-size: 11px; }
+  }
+</style>

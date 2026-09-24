@@ -1,17 +1,31 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
-import HeroVisual from '../components/HeroVisual.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import Glance from '../components/Glance.astro';
+import Masthead from '../components/Masthead.astro';
+import PostTimeline from '../components/PostTimeline.astro';
+import StatBox from '../components/StatBox.astro';
+import { FIGURES } from '../components/figures';
+import { RESSORTS, SITE_DESCRIPTION, SITE_TITLE, type RessortId } from '../consts';
+import { getPublishedPosts, kickerOf, postsPerMonth, readingMinutes } from '../lib/posts';
 
-const posts = (await getCollection('blog'))
-  .filter((p) => !p.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = await getPublishedPosts();
+const [featured, ...others] = posts;
+const sidePosts = others.slice(0, 2);
+const bandPosts = others.slice(2, 5);
+const archivePosts = others.slice(5);
 
-const [featured, ...rest] = posts;
+const FeaturedFigure = featured?.data.figure ? FIGURES[featured.data.figure] : undefined;
+const statPost = posts.find((p) => p.data.stat);
+const questions = posts.filter((p) => p.data.prompt).slice(0, 3);
+
+const byRessort = (id: RessortId) => archivePosts.filter((p) => p.data.ressort === id);
+const archiveColumns: RessortId[][] = [
+  ['agenten-engineering'],
+  ['maerkte-modelle', 'arbeit-karriere', 'fuehrung-kultur'],
+];
+const url = (id: string) => `/blog/${id}/`;
 ---
 
 <!doctype html>
@@ -20,271 +34,262 @@ const [featured, ...rest] = posts;
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body>
-    <Header />
-    <main>
-      <section class="masthead">
-        <div class="eyebrow">Notizen · Essays · Werkstatt</div>
-        <h1 class="masthead-title">People. Life. <em>Technology.</em></h1>
-        <p class="masthead-lede">
-          Notizen aus dem Engineering-Alltag. AI, Software, Kultur.<br /> Immer mit
-          Blick auf den Menschen.
-        </p>
-      </section>
+    <div class="page">
+      <Masthead issue={posts.length} focus={featured && kickerOf(featured)} />
 
-      {
-        featured && (
-          <a href={`/blog/${featured.id}/`} class="featured">
-            <div class="featured-visual">
-              <HeroVisual
-                title={featured.data.title}
-                pubDate={featured.data.pubDate}
-                visualTheme={featured.data.visualTheme}
-                variant="featured"
-              />
-            </div>
-            <div class="featured-meta">
-              <div class="eyebrow">
-                Aktuell · <FormattedDate date={featured.data.pubDate} />
-              </div>
-              <h2 class="featured-title">{featured.data.title}</h2>
-              <p class="featured-desc">{featured.data.description}</p>
-              <span class="read-link">weiterlesen</span>
-            </div>
-          </a>
-        )
-      }
-
-      <ol class="archive" aria-label="Weitere Beiträge">
+      <main>
         {
-          rest.map((post) => (
-            <li>
-              <a href={`/blog/${post.id}/`}>
-                <div class="archive-thumb">
-                  <HeroVisual
-                    title={post.data.title}
-                    pubDate={post.data.pubDate}
-                    visualTheme={post.data.visualTheme}
-                    variant="card"
-                  />
+          featured && (
+            <section class="grid-12 lead" aria-labelledby="aufmacher">
+              <article class="col-8">
+                <span class="kicker">{kickerOf(featured)}</span>
+                <h2 id="aufmacher">
+                  <a href={url(featured.id)}>{featured.data.title}</a>
+                </h2>
+                <p class="dek">{featured.data.description}</p>
+                <p class="byline source">
+                  Von Alex Vey · <FormattedDate date={featured.data.pubDate} /> · {readingMinutes(featured)} Min. Lesezeit
+                </p>
+                <div class="lead-glance">
+                  <Glance items={featured.data.glance} variant="row" />
                 </div>
-                <div class="archive-text">
-                  <time class="archive-date">
-                    <FormattedDate date={post.data.pubDate} />
-                  </time>
-                  <h3 class="archive-title">{post.data.title}</h3>
-                  <p class="archive-desc">{post.data.description}</p>
-                </div>
-              </a>
-            </li>
-          ))
+                {FeaturedFigure && (
+                  <div class="lead-figure">
+                    <FeaturedFigure />
+                  </div>
+                )}
+                <a class="more" href={url(featured.id)}>Weiterlesen →</a>
+              </article>
+
+              <aside class="col-4 divided side">
+                {sidePosts.map((post) => (
+                  <article class="side-story">
+                    <span class="kicker">{kickerOf(post)}</span>
+                    <h3>
+                      <a href={url(post.id)}>{post.data.title}</a>
+                    </h3>
+                    <p>{post.data.description}</p>
+                    <span class="source">
+                      <FormattedDate date={post.data.pubDate} /> · {readingMinutes(post)} Min.
+                    </span>
+                  </article>
+                ))}
+              </aside>
+            </section>
+          )
         }
-      </ol>
-    </main>
-    <Footer />
+
+        {
+          bandPosts.length > 0 && (
+            <>
+              <hr class="rule-heavy" />
+              <section class="grid-12 band" aria-label="Weitere Aufmacher">
+                {bandPosts.map((post, i) => (
+                  <article class:list={['col-4', { divided: i > 0 }]}>
+                    <span class="kicker">{kickerOf(post)}</span>
+                    <h3>
+                      <a href={url(post.id)}>{post.data.title}</a>
+                    </h3>
+                    {post.data.glance ? (
+                      <div class="band-glance">
+                        <Glance items={post.data.glance} variant="stack" />
+                      </div>
+                    ) : (
+                      <p class="band-dek">{post.data.description}</p>
+                    )}
+                    <span class="source">
+                      <FormattedDate date={post.data.pubDate} />
+                    </span>
+                  </article>
+                ))}
+              </section>
+            </>
+          )
+        }
+
+        <hr class="rule-mid" />
+        <div class="section-head">
+          <h2 id="archiv">Aus dem Archiv</h2>
+          <a class="source" href="/blog/">Alle {posts.length} Beiträge →</a>
+        </div>
+
+        <section class="grid-12 archive" aria-labelledby="archiv">
+          <div class="col-8 archive-cols">
+            {
+              archiveColumns.map((column) => (
+                <div>
+                  {column.map(
+                    (id) =>
+                      byRessort(id).length > 0 && (
+                        <div class="ressort">
+                          <h3>{RESSORTS[id]}</h3>
+                          <ul>
+                            {byRessort(id).map((post) => (
+                              <li>
+                                <a href={url(post.id)}>{post.data.title}</a>
+                                <FormattedDate date={post.data.pubDate} />
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ),
+                  )}
+                </div>
+              ))
+            }
+          </div>
+
+          <aside class="col-4 divided archive-aside">
+            {statPost && <StatBox post={statPost} />}
+            <PostTimeline months={postsPerMonth(posts)} total={posts.length} />
+          </aside>
+        </section>
+
+        {
+          questions.length > 0 && (
+            <section class="leitfragen" aria-labelledby="leitfragen">
+              <header>
+                <h2 id="leitfragen">Leitfragen</h2>
+                <span>Die Frage, mit der jeder Text beginnt</span>
+              </header>
+              <ol>
+                {questions.map((post) => (
+                  <li>
+                    <q>{post.data.prompt}</q>
+                    <a class="source" href={url(post.id)}>
+                      {post.data.title}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )
+        }
+      </main>
+
+      <Footer />
+    </div>
+
     <style>
-      main {
-        width: 100%;
-        max-width: 1140px;
-        margin: 0 auto;
-        padding: 4rem 1.5rem 2rem;
-      }
-      .masthead {
-        max-width: 720px;
-        margin-bottom: 4rem;
-      }
-      .eyebrow {
-        font-family: 'JetBrains Mono', ui-monospace, monospace;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        color: var(--ink-faint);
-        margin-bottom: 1.5rem;
-      }
-      .masthead-title {
-        font-family: 'Newsreader', Georgia, serif;
-        font-weight: 400;
-        font-size: clamp(2.6rem, 6vw, 4.4rem);
+      .lead { padding-block: 26px 30px; }
+      .lead h2 {
+        font-size: clamp(34px, 5.2vw, 60px);
         line-height: 1.02;
-        letter-spacing: -0.02em;
-        margin: 0 0 1.25rem;
+        letter-spacing: -0.018em;
       }
-      .masthead-title em {
-        font-style: italic;
-        color: var(--accent);
-        font-weight: 400;
+      .lead .dek { margin-top: 14px; }
+      .byline { margin-top: 14px; }
+      .lead-glance { margin-top: 22px; }
+      .lead-figure { margin-top: 24px; }
+      .more {
+        display: inline-block;
+        margin-top: 18px;
+        font-family: var(--font-sans);
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--kicker);
       }
-      .masthead-lede {
-        font-family: 'Newsreader', Georgia, serif;
-        font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+
+      .side-story { padding-top: 4px; }
+      .side-story + .side-story {
+        border-top: 1px solid var(--rule);
+        margin-top: 22px;
+        padding-top: 20px;
+      }
+      .side-story h3 { font-size: 26px; line-height: 1.1; letter-spacing: -0.01em; }
+      .side-story p {
+        margin-block: 10px;
+        font-size: 16px;
+        line-height: 1.55;
+        display: -webkit-box;
+        -webkit-line-clamp: 6;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .band { padding-block: 26px 30px; }
+      .band article { display: flex; flex-direction: column; }
+      .band h3 { font-size: 24px; line-height: 1.12; letter-spacing: -0.01em; }
+      .band-glance { margin-top: 16px; }
+      .band-dek {
+        margin-top: 10px;
+        font-size: 16px;
         line-height: 1.5;
-        color: var(--ink-dim);
-        max-width: 620px;
-        margin: 0;
+        color: var(--ink-soft);
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
+      .band .source { margin-top: 12px; }
 
-      /* Featured */
-      .featured {
-        display: grid;
-        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-        gap: 3rem;
-        padding: 2.5rem 0;
-        border-top: 1px solid var(--border-strong);
-        border-bottom: 1px solid var(--border);
-        text-decoration: none;
-        color: inherit;
-        margin-bottom: 4rem;
+      .archive { padding-block: 18px 34px; row-gap: 28px; }
+      .archive-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 32px; }
+      .ressort + .ressort { margin-top: 26px; }
+      .ressort h3 {
+        font-family: var(--font-sans);
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--kicker);
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--rule-strong);
       }
-      .featured-visual {
-        align-self: start;
+      .ressort ul { list-style: none; margin: 0; padding: 0; }
+      .ressort li { padding-block: 10px; border-bottom: 1px solid var(--rule); }
+      .ressort li a { display: block; font-size: 17.5px; line-height: 1.25; font-weight: 600; }
+      .ressort li :global(time) {
+        display: block;
+        margin-top: 3px;
+        font-family: var(--font-sans);
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--muted);
       }
-      .featured-visual :global(.hero-visual) {
-        border-radius: 2px;
-      }
-      .featured-meta {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        padding-top: 0.25rem;
-      }
-      .featured-meta .eyebrow {
-        margin-bottom: 0;
-        color: var(--terracotta);
-      }
-      .featured-title {
-        font-family: 'Newsreader', Georgia, serif;
-        font-weight: 400;
-        font-size: clamp(2rem, 3.5vw, 2.8rem);
-        line-height: 1.08;
-        letter-spacing: -0.01em;
-        margin: 0;
-        color: var(--ink);
-        text-wrap: balance;
-      }
-      .featured-desc {
-        font-size: 1.05rem;
-        line-height: 1.55;
-        color: var(--ink-dim);
-        margin: 0;
-      }
-      .read-link {
-        margin-top: auto;
-        font-family: 'JetBrains Mono', ui-monospace, monospace;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
-        color: var(--accent);
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-      .read-link::after {
-        content: '→';
-        transition: transform 0.2s;
-      }
-      .featured:hover .read-link::after {
-        transform: translateX(4px);
-      }
-      .featured:hover .featured-title {
-        color: var(--accent);
-      }
+      .archive-aside { display: flex; flex-direction: column; gap: 26px; align-self: start; }
 
-      /* Archive list */
-      .archive {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        border-top: 1px solid var(--border);
+      .leitfragen {
+        background: var(--block);
+        color: var(--block-ink);
+        padding: 30px clamp(20px, 3vw, 36px) 34px;
+        margin-top: 6px;
       }
-      .archive li {
-        border-bottom: 1px solid var(--border);
-        margin: 0;
-      }
-      .archive li a {
-        display: grid;
-        grid-template-columns: 200px minmax(0, 1fr);
-        gap: 2rem;
-        padding: 1.75rem 1rem 1.75rem 0;
-        margin: 0 -1rem 0 0;
-        text-decoration: none;
-        color: inherit;
-        transition:
-          background-color 0.2s,
-          padding-left 0.2s;
-        border-left: 2px solid transparent;
-      }
-      .archive li a:hover {
-        background-color: var(--accent-soft);
-        padding-left: 1rem;
-        border-left-color: var(--accent);
-      }
-      .archive-thumb {
-        align-self: start;
-      }
-      .archive-thumb :global(.hero-visual) {
-        border-radius: 2px;
-      }
-      .archive-text {
+      .leitfragen header {
         display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 6px 20px;
+        border-bottom: 1px solid var(--block-rule);
+        padding-bottom: 12px;
       }
-      .archive-date {
-        font-family: 'JetBrains Mono', ui-monospace, monospace;
-        font-size: 0.72rem;
-        text-transform: uppercase;
+      .leitfragen h2 {
+        font-family: var(--font-sans);
+        font-size: 13px;
         letter-spacing: 0.12em;
-        color: var(--ink-faint);
+        text-transform: uppercase;
+        color: var(--block-ink);
       }
-      .archive-title {
-        font-family: 'Newsreader', Georgia, serif;
-        font-weight: 400;
-        font-size: clamp(1.4rem, 2.2vw, 1.8rem);
-        line-height: 1.15;
-        letter-spacing: -0.01em;
-        margin: 0;
-        color: var(--ink);
-        text-wrap: balance;
+      .leitfragen header span { font-family: var(--font-sans); font-size: 12px; color: var(--block-muted); }
+      .leitfragen ol {
+        list-style: none;
+        margin: 20px 0 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px 36px;
       }
-      .archive li a:hover .archive-title {
-        color: var(--accent);
-      }
-      .archive-desc {
-        font-size: 0.98rem;
-        line-height: 1.55;
-        color: var(--ink-dim);
-        margin: 0;
-        max-width: 60ch;
-      }
+      .leitfragen li { display: flex; flex-direction: column; gap: 14px; }
+      .leitfragen q { quotes: none; font-size: 21px; line-height: 1.34; font-weight: 500; text-wrap: pretty; }
+      .leitfragen .source { color: var(--block-ink); font-weight: 700; }
 
-      @media (max-width: 860px) {
-        main {
-          padding: 2.5rem 1rem 1rem;
-        }
-        .masthead {
-          margin-bottom: 2.5rem;
-        }
-        .featured {
-          grid-template-columns: 1fr;
-          gap: 1.5rem;
-          padding: 2rem 0;
-          margin-bottom: 2.5rem;
-        }
-        .archive li a {
-          grid-template-columns: 110px minmax(0, 1fr);
-          gap: 1.25rem;
-          padding: 1.5rem 0;
-        }
-        .archive li a:hover {
-          padding-left: 0;
-          padding-right: 0;
-          margin: 0;
-        }
+      @media (max-width: 960px) {
+        .side { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--rule); }
+        .band article + article { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--rule); }
       }
-      @media (max-width: 520px) {
-        .archive li a {
-          grid-template-columns: 1fr;
-          gap: 0.75rem;
-        }
+      @media (max-width: 640px) {
+        .archive-cols { grid-template-columns: 1fr; }
+        .leitfragen ol { grid-template-columns: 1fr; }
+        .leitfragen li + li { border-top: 1px solid var(--block-rule); padding-top: 20px; }
       }
     </style>
   </body>

@@ -1,0 +1,68 @@
+---
+import Figure from './figures/Figure.astro';
+import type { MonthCount } from '../lib/posts';
+
+interface Props {
+  months: MonthCount[];
+  total: number;
+}
+
+const { months, total } = Astro.props;
+
+const MONTH_INITIALS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+const MONTH_NAMES = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
+const step = 20;
+const width = 20 + months.length * step;
+const baseline = 82;
+const plotHeight = 60;
+const max = Math.max(1, ...months.map((m) => m.count));
+const gridStep = max > 4 ? Math.ceil(max / 2) : max;
+const gridValues = [gridStep, gridStep * 2].filter((v) => v <= max);
+const scale = (v: number) => (v / Math.max(max, gridValues.at(-1) ?? max)) * plotHeight;
+
+const first = months[0];
+const last = months.at(-1);
+const range = first && last ? `${MONTH_NAMES[first.month]} ${first.year} bis ${MONTH_NAMES[last.month]} ${last.year}` : '';
+const yearStarts = months
+  .map((m, i) => ({ ...m, i }))
+  .filter((m, i) => i === 0 || m.month === 0);
+const summary = months
+  .filter((m) => m.count > 0)
+  .map((m) => `${MONTH_NAMES[m.month]} ${m.year}: ${m.count}`)
+  .join(', ');
+---
+
+<Figure title={`Beiträge pro Monat, ${range}`} source={`Quelle: Veröffentlichungsdaten aller ${total} Beiträge. Rasterlinien bei ${gridValues.join(' und ')}.`}>
+  <svg class="grafik" viewBox={`0 0 ${width} 124`} role="img" aria-label={`Balkendiagramm. ${summary}. Die anderen Monate ohne Beitrag.`}>
+    {
+      gridValues.map((v) => (
+        <>
+          <line x1="10" y1={baseline - scale(v)} x2={width - 10} y2={baseline - scale(v)} class="ln-grid" />
+          <text x={width - 10} y={baseline - scale(v) - 4} font-size="10" text-anchor="end" class="t-muted">{v}</text>
+        </>
+      ))
+    }
+    {
+      months.map((m, i) =>
+        m.count > 0 ? (
+          <rect x={14 + i * step} y={baseline - scale(m.count)} width="12" height={scale(m.count)} class="fl-blue" />
+        ) : null,
+      )
+    }
+    <line x1="10" y1={baseline + 0.5} x2={width - 10} y2={baseline + 0.5} class="ln" />
+    {
+      months.map((m, i) => (
+        <text x={20 + i * step} y="96" font-size="10" text-anchor="middle" class="t-muted">{MONTH_INITIALS[m.month]}</text>
+      ))
+    }
+    {
+      yearStarts.map((m) => (
+        <>
+          {m.i > 0 && <line x1={10 + m.i * step} y1="84" x2={10 + m.i * step} y2="116" class="ln" />}
+          <text x={14 + m.i * step + (m.i > 0 ? 2 : 0)} y="114" font-size="10.5" class="t-strong">{m.year}</text>
+        </>
+      ))
+    }
+  </svg>
+</Figure>

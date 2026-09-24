@@ -4,13 +4,41 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import BlogPostIntro from '../components/BlogPostIntro.astro';
-import HeroVisual from '../components/HeroVisual.astro';
-import '../styles/global.css';
+import Glance from '../components/Glance.astro';
+import { FIGURES } from '../components/figures';
+import { RESSORTS } from '../consts';
+import type { Post } from '../lib/posts';
 
-type Props = CollectionEntry<'blog'>['data'] & { image?: string };
+type Props = Partial<CollectionEntry<'blog'>['data']> & {
+  title: string;
+  description: string;
+  image?: string;
+  readingMinutes?: number;
+  related?: Post[];
+  page?: boolean;
+};
 
-const { title, description, pubDate, updatedDate, prompt, visualTheme, image } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  prompt,
+  ressort,
+  kicker,
+  tags = [],
+  glance,
+  figure,
+  image,
+  readingMinutes,
+  related = [],
+  page = false,
+} = Astro.props;
+
+const ressortName = ressort ? RESSORTS[ressort] : undefined;
+const kickerText = kicker ?? ressortName;
+const LeadFigure = figure ? FIGURES[figure] : undefined;
+const hasGlance = !page && ((glance && glance.length > 0) || Boolean(prompt));
 ---
 
 <html lang="de">
@@ -18,138 +46,190 @@ const { title, description, pubDate, updatedDate, prompt, visualTheme, image } =
     <BaseHead title={title} description={description} image={image} />
   </head>
   <body>
-    <Header />
-    <main>
-      <article>
-        <header class="post-header">
-          <div class="post-meta-row">
-            <div class="eyebrow">
-              <span class="dot"></span>
-              <FormattedDate date={pubDate} />
-              {updatedDate && (
-                <span class="updated">
-                  · aktualisiert <FormattedDate date={updatedDate} />
-                </span>
-              )}
+    <div class="page">
+      <Header />
+      <main>
+        <article>
+          <header class:list={['grid-12', 'art-head', { 'art-head--page': page }]}>
+            <div class:list={[hasGlance ? 'col-8' : 'col-12']}>
+              {kickerText && <span class="kicker">{kickerText}</span>}
+              <h1>{title}</h1>
+              {description && !page && <p class="dek">{description}</p>}
+              {
+                !page && pubDate && (
+                  <p class="byline source">
+                    <b>Von Alex Vey</b>
+                    <FormattedDate date={pubDate} />
+                    {updatedDate && (
+                      <span>
+                        aktualisiert <FormattedDate date={updatedDate} />
+                      </span>
+                    )}
+                    {readingMinutes && <span>{readingMinutes} Min. Lesezeit</span>}
+                  </p>
+                )
+              }
             </div>
+            {
+              hasGlance && (
+                <div class="col-4">
+                  <Glance items={glance} question={prompt} variant="full" />
+                </div>
+              )
+            }
+          </header>
+
+          {
+            LeadFigure && (
+              <>
+                <hr class="rule-thin" />
+                <div class="art-fig">
+                  <LeadFigure number={1} layout="split" />
+                </div>
+              </>
+            )
+          }
+
+          <hr class="rule-thin" />
+
+          <div class="grid-12 art-body">
+            <div class="col-8 post-body">
+              <slot />
+            </div>
+            {
+              !page && (
+                <aside class="col-4 rail" aria-label="Zum Beitrag">
+                  <dl class="facts">
+                    {ressortName && (
+                      <div>
+                        <dt>Ressort</dt>
+                        <dd>{ressortName}</dd>
+                      </div>
+                    )}
+                    {pubDate && (
+                      <div>
+                        <dt>Erschienen</dt>
+                        <dd>
+                          <FormattedDate date={pubDate} />
+                        </dd>
+                      </div>
+                    )}
+                    {readingMinutes && (
+                      <div>
+                        <dt>Lesezeit</dt>
+                        <dd>{readingMinutes} Min.</dd>
+                      </div>
+                    )}
+                  </dl>
+                  {tags.length > 0 && (
+                    <div class="tags">
+                      <span class="label">Stichworte</span>
+                      <p>{tags.join(' · ')}</p>
+                    </div>
+                  )}
+                </aside>
+              )
+            }
           </div>
-          <h1 class="post-title">{title}</h1>
-          {description && <p class="post-lede">{description}</p>}
-        </header>
 
-        <div class="post-visual">
-          <HeroVisual
-            title={title}
-            pubDate={pubDate}
-            visualTheme={visualTheme}
-            variant="detail"
-          />
-        </div>
-
-        {prompt && <BlogPostIntro content={prompt} />}
-
-        <div class="post-body prose">
-          <slot />
-        </div>
-      </article>
-      <div id="img-zoom-overlay" class="img-zoom-overlay"></div>
-    </main>
-    <Footer />
+          {
+            related.length > 0 && (
+              <section class="further" aria-labelledby="weiterlesen">
+                <hr class="rule-mid" />
+                <div class="section-head">
+                  <h2 id="weiterlesen">Weiterlesen</h2>
+                </div>
+                <div class="grid-12 further-grid">
+                  {related.map((post, i) => (
+                    <article class:list={['col-4', { divided: i > 0 }]}>
+                      <span class="kicker">{post.data.kicker ?? RESSORTS[post.data.ressort]}</span>
+                      <h3>
+                        <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+                      </h3>
+                      <p>{post.data.description}</p>
+                      <span class="source">
+                        <FormattedDate date={post.data.pubDate} />
+                      </span>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )
+          }
+        </article>
+        <div id="img-zoom-overlay" class="img-zoom-overlay"></div>
+      </main>
+      <Footer />
+    </div>
 
     <style>
-      main {
-        width: 100%;
-        max-width: 760px;
-        margin: 0 auto;
-        padding: 3.5rem 1.5rem 2rem;
+      .art-head { padding-block: 30px 34px; row-gap: 28px; }
+      .art-head--page { padding-bottom: 20px; }
+      h1 {
+        font-size: clamp(38px, 6vw, 74px);
+        line-height: 1;
+        letter-spacing: -0.022em;
       }
-      .post-header {
-        margin-bottom: 2.5rem;
+      .art-head .dek { font-size: clamp(19px, 1.8vw, 22px); margin-top: 18px; }
+      .byline {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 14px;
       }
-      .post-meta-row {
-        margin-bottom: 1.5rem;
+      .byline b { color: var(--ink); }
+
+      .art-fig { padding-block: 16px 30px; }
+
+      .art-body { padding-block: 30px 10px; }
+      .rail {
+        align-self: start;
+        position: sticky;
+        top: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
       }
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        font-family: 'JetBrains Mono', ui-monospace, monospace;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        color: var(--ink-faint);
+      .facts { margin: 0; border-top: 2px solid var(--rule-strong); }
+      .facts div {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding-block: 8px;
+        border-bottom: 1px solid var(--rule);
+        font-family: var(--font-sans);
+        font-size: 13px;
       }
-      .eyebrow .dot {
-        display: inline-block;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--terracotta);
+      .facts dt { color: var(--muted); font-weight: 500; }
+      .facts dd { margin: 0; font-weight: 600; text-align: right; }
+      .tags { border-top: 1px solid var(--rule-strong); padding-top: 10px; }
+      .tags p { margin-top: 6px; font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
+
+      .further { margin-top: 44px; }
+      .further-grid { padding-block: 16px 8px; }
+      .further h3 { font-size: 22px; line-height: 1.15; }
+      .further p {
+        margin-block: 8px 10px;
+        font-size: 15.5px;
+        line-height: 1.5;
+        color: var(--ink-soft);
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
-      .updated {
-        color: var(--ink-faint);
+      .further .source { display: block; }
+
+      @media (max-width: 960px) {
+        .rail { position: static; margin-top: 32px; }
+        .further article + article { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--rule); }
       }
-      .post-title {
-        font-family: 'Newsreader', Georgia, serif;
-        font-weight: 400;
-        font-size: clamp(2.4rem, 5.4vw, 3.8rem);
-        line-height: 1.05;
-        letter-spacing: -0.02em;
-        margin: 0 0 1.25rem;
-        color: var(--ink);
-        text-wrap: balance;
-      }
-      .post-title em {
-        font-style: italic;
-        color: var(--accent);
-      }
-      .post-lede {
-        font-family: 'Newsreader', Georgia, serif;
-        font-size: clamp(1.15rem, 2vw, 1.45rem);
-        line-height: 1.45;
-        color: var(--ink-dim);
-        margin: 0;
-        max-width: 60ch;
-      }
-      .post-visual {
-        margin: 0 0 2.5rem;
-      }
-      .post-visual :global(.hero-visual) {
-        border-radius: 2px;
-        max-height: 320px;
-      }
-      .post-visual :global(.hero-visual__overlay) {
-        background: linear-gradient(
-          to top,
-          rgba(0, 0, 0, 0.25) 0%,
-          transparent 60%
-        );
-      }
-      .post-body {
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
-        font-size: 1.05rem;
-        line-height: 1.7;
-      }
-      .post-body :global(h2),
-      .post-body :global(h3) {
-        position: relative;
-        scroll-margin-top: 2rem;
-      }
-      .post-body :global(h2) {
-        margin-top: 2.5em;
-        margin-bottom: 0.6em;
-      }
-      .post-body :global(h3) {
-        margin-top: 2em;
-      }
+
       .post-body :global(.heading-anchor) {
-        font-family: 'JetBrains Mono', ui-monospace, monospace;
-        font-weight: 400;
+        font-family: var(--font-sans);
+        font-weight: 500;
         font-size: 0.6em;
-        color: var(--ink-faint);
+        color: var(--muted);
         text-decoration: none;
         margin-left: 0.5rem;
         padding: 0 0.25rem;
@@ -164,11 +244,9 @@ const { title, description, pubDate, updatedDate, prompt, visualTheme, image } =
       .post-body :global(.heading-anchor:focus-visible) {
         opacity: 1;
       }
-      .post-body :global(.heading-anchor:hover) {
-        color: var(--accent);
-      }
+      .post-body :global(.heading-anchor:hover) { color: var(--kicker); }
       .post-body :global(.heading-anchor.copied)::after {
-        content: "kopiert";
+        content: 'kopiert';
         position: absolute;
         left: calc(100% + 0.4rem);
         top: 50%;
@@ -176,46 +254,11 @@ const { title, description, pubDate, updatedDate, prompt, visualTheme, image } =
         font-size: 0.65rem;
         letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: var(--moss);
+        color: var(--kicker);
         white-space: nowrap;
       }
-      .post-body :global(p) {
-        margin-bottom: 1.25em;
-      }
-      .post-body :global(ul),
-      .post-body :global(ol) {
-        padding-left: 1.5rem;
-        margin-bottom: 1.5em;
-      }
-      .post-body :global(li) {
-        margin-bottom: 0.5em;
-      }
-      .post-body :global(hr) {
-        margin: 3rem auto;
-        border: none;
-        height: 1px;
-        background: var(--border);
-        max-width: 60%;
-        position: relative;
-      }
 
-      @media (max-width: 720px) {
-        main {
-          padding: 2rem 1rem 1rem;
-        }
-        .post-header {
-          margin-bottom: 2rem;
-        }
-        .post-body {
-          font-size: 1rem;
-        }
-      }
-
-      /* Image zoom */
-      .post-body :global(img) {
-        cursor: zoom-in;
-        transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
-      }
+      .post-body :global(img),
       .post-body :global(figure) {
         cursor: zoom-in;
         transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
@@ -223,7 +266,7 @@ const { title, description, pubDate, updatedDate, prompt, visualTheme, image } =
       .img-zoom-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(20, 21, 28, 0.82);
+        background: rgba(17, 20, 29, 0.82);
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.3s cubic-bezier(0.2, 0, 0.2, 1);
@@ -238,7 +281,7 @@ const { title, description, pubDate, updatedDate, prompt, visualTheme, image } =
         position: relative;
         z-index: 100;
         cursor: zoom-out !important;
-        background: var(--surface);
+        background: var(--paper);
         padding: 1rem;
       }
     </style>
@@ -362,5 +405,5 @@ const { title, description, pubDate, updatedDate, prompt, visualTheme, image } =
       initHeadingAnchors();
       document.addEventListener('astro:after-swap', initHeadingAnchors);
     </script>
-  </body>
+    </body>
 </html>

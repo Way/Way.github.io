@@ -1,0 +1,60 @@
+---
+import FormattedDate from './FormattedDate.astro';
+import type { Post } from '../lib/posts';
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const stat = post.data.stat!;
+const [on, total] = stat.parts ?? [0, 0];
+---
+
+<div class="stat">
+  <span class="label">Die Zahl</span>
+  <span class="value">{stat.value}</span>
+  <p>{stat.text}</p>
+  {
+    total > 0 && (
+      <>
+        <div class="parts" aria-hidden="true" style={`grid-template-columns: repeat(${total}, minmax(0, 1fr))`}>
+          {Array.from({ length: total }, (_, i) => <span class:list={{ on: i < on }} />)}
+        </div>
+        <div class="legend" aria-hidden="true">
+          <span>{on} von {total}</span>
+        </div>
+      </>
+    )
+  }
+  <span class="source">
+    Aus: <a href={`/blog/${post.id}/`}><b>{post.data.title}</b></a>, <FormattedDate date={post.data.pubDate} />
+  </span>
+</div>
+
+<style>
+  .stat {
+    border-top: 3px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+    padding-block: 16px 20px;
+  }
+  .value {
+    display: block;
+    font-weight: 700;
+    font-size: clamp(44px, 4.6vw, 60px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    margin-block: 6px 12px;
+  }
+  p { font-size: 17px; line-height: 1.45; }
+  .parts { display: grid; gap: 4px; margin-top: 14px; }
+  .parts span { height: 12px; border: 1px solid var(--ink); }
+  .parts span.on { background: var(--ink); }
+  .legend {
+    margin-top: 6px;
+    font-family: var(--font-graphic);
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .source { display: block; margin-top: 12px; }
+</style>

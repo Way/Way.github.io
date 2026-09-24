@@ -1,0 +1,40 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname;
+const links = [
+  { href: '/', label: 'Home', active: path === '/' },
+  { href: '/blog/', label: 'Archiv', active: path === '/blog/' || path === '/blog' },
+  { href: '/about/', label: 'About', active: path.startsWith('/about') },
+];
+---
+
+<nav class="site-nav" aria-label="Hauptnavigation">
+  {
+    links.map((l) => (
+      <a href={l.href} aria-current={l.active ? 'page' : undefined}>
+        {l.label}
+      </a>
+    ))
+  }
+  <a href="https://x.com/dailyway" target="_blank" rel="noopener">X</a>
+  <a href="https://github.com/way" target="_blank" rel="noopener">GitHub</a>
+  <ThemeToggle />
+</nav>
+
+<style>
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 18px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+  }
+</style>
