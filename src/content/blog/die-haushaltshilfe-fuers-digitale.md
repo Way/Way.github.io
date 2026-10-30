@@ -47,7 +47,7 @@ Ich sehe eine Tendenz, und sie hat weniger mit Technik zu tun als mit Gewöhnung
 
 Die ersten Zahlen passen dazu. Muse stand knapp zwei Wochen nach dem Start auf Platz 1 der kostenlosen iOS-Apps in den USA, noch vor ChatGPT, mit [2,8 Millionen Installationen weltweit in den ersten zwölf Tagen](https://techcrunch.com/2026/09/21/metas-muse-is-outpacing-chatgpts-early-mobile-launch/). ChatGPT kam 2022 im vergleichbaren Fenster nach seinem eigenen Start auf [3,1 Millionen](https://www.cnbc.com/2026/09/21/meta-muse-personal-ai-agent-downloads.html). Ein Rekord ist das also nicht. Für ein Produkt, das bei der Anmeldung eine Zahlungskarte sehen will, ist es trotzdem viel.
 
-Der Komfort und Zeitgewinn, den sich so manche bisher höchstens im eigenen Haushalt gegönnt haben, in Form einer Haushaltshilfe, oder bei der Steuer in Form eines Steuerberaters, wird im Digitalen innerhalb kurzer Zeit zum Selbstverständnis werden. Sofern man sich diesen Komfort leisten können wird.
+Der Komfort und Zeitgewinn, den sich so manche bisher höchstens im eigenen Haushalt gegönnt haben, in Form einer Haushaltshilfe, oder bei der Steuer in Form eines Steuerberaters, wird im Digitalen innerhalb kurzer Zeit zur Selbstverständlichkeit werden. Sofern man sich diesen Komfort leisten können wird.
 
 Eine Haushaltshilfe hat einen Schlüssel zu deiner Wohnung. Sie weiß, wo die Sachen liegen, und nach ein paar Monaten weiß sie auch, was du nicht magst. Genau das bauen Grok Bot und Muse gerade: den Schlüssel (deine Logins), das Wissen, wo die Sachen liegen (der eigene Rechner mit deinen Dateien), und das Gedächtnis. Den Schlüssel gibst du nicht jedem, und ob du ihn einem Werbekonzern gibst, ist eine andere Frage als die, ob der Assistent gut putzt.
 
