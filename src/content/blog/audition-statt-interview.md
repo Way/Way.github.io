@@ -10,7 +10,7 @@ prompt: 'Wie verändert KI die Art, wie wir Entwickler einstellen und worauf es 
 tags: ['AI', 'Hiring', 'Engineering', 'Interview', 'Zukunft der Arbeit']
 ---
 
-"Implementiere bitte Quicksort an der Tafel." Wer das heute noch fragt, prüft eine Fähigkeit, die in dreißig Sekunden aus jedem Sprachmodell fällt. Der Kandidat mit Handy in der Hosentasche hätte die Aufgabe gelöst, bevor du den Marker in der Hand hast.
+„Implementiere bitte Quicksort an der Tafel.“ Wer das heute noch fragt, prüft eine Fähigkeit, die in dreißig Sekunden aus jedem Sprachmodell fällt. Der Kandidat mit Handy in der Hosentasche hätte die Aufgabe gelöst, bevor du den Marker in der Hand hast.
 
 Trotzdem läuft das klassische Coding-Interview vielerorts genauso weiter. Algorithmus auf dem Whiteboard, Stoppuhr im Hinterkopf, der Interviewer schaut zu wie ein Schiedsrichter. Was misst das eigentlich noch? Auswendig gelerntes Cracking-the-Coding-Interview-Wissen. Performance unter Stress. Eine ziemlich spezielle Fähigkeit, die mit der täglichen Arbeit als Entwickler überraschend wenig zu tun hat.
 
@@ -47,7 +47,7 @@ Kommunikation. Kann jemand erklären, was er gerade tut und warum? Kann er einer
 
 Code lesen und hinterfragen. Du legst ihm einen Pull Request hin, im Idealfall einen mit subtilen Problemen, gerne auch von einer KI generiert. Findet er die Schwächen? Stellt er die richtigen Fragen? Schlägt er Verbesserungen vor, oder winkt er durch?
 
-Problem-Framing. Du gibst eine vage Aufgabe. "Unsere Nutzer beschweren sich über langsame Suchergebnisse." Wie zerlegt jemand das in handhabbare Teile? Wo fragt er nach, wo trifft er eine Annahme, wo benennt er sie offen?
+Problem-Framing. Du gibst eine vage Aufgabe. „Unsere Nutzer beschweren sich über langsame Suchergebnisse.“ Wie zerlegt jemand das in handhabbare Teile? Wo fragt er nach, wo trifft er eine Annahme, wo benennt er sie offen?
 
 All das misst Urteilsvermögen. Und Urteilsvermögen ist genau das, was KI nicht ersetzt. Im Gegenteil: Je mehr KI im Spiel ist, desto wichtiger wird der Mensch, der über den Output urteilt.
 
@@ -85,4 +85,4 @@ Die Entwickler, die uns in den nächsten Jahren wirklich weiterbringen, sind nic
 
 Die ehrlichste Frage, die ein Tech-Interview heute stellen kann, ist nicht: Kannst du das lösen? Sondern: Wie würdest du mit deinem Team und deinen Werkzeugen vorgehen, wenn du das morgen früh auf den Tisch bekommst?
 
-Die Antwort darauf entscheidet, ob jemand in deinem Team funktioniert. Alles andere ist Theater.
+Die Antwort darauf entscheidet, ob jemand in deinem Team funktioniert.
