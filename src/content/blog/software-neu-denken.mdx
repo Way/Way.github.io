@@ -12,7 +12,7 @@ import SdlcToAdlc from '../../components/SdlcToAdlc.astro';
 
 [Todd Saunders](https://x.com/toddsaunders/status/2032067592652013947) hat letzte Woche etwas geschrieben, das mich nicht mehr loslässt: Das Meeting, in dem sein Team über ein Feature diskutiert hat, war teurer als das Feature selbst. Sechs Leute, eine Stunde, Tagessätze zusammengerechnet. Der Agent hat das Feature danach in zwanzig Minuten gebaut.
 
-Das ist kein Einzelfall. Dass Code billig geworden ist, [habe ich hier schon beschrieben](/blog/code-is-cheap). Aber Saunders' Beobachtung trifft einen wunden Punkt. Die Frage ist nicht mehr: Was kostet uns die Implementierung? Die Frage ist: Was kostet uns der ganze Prozess drumherum?
+Das ist kein Einzelfall. Dass Code billig geworden ist, [habe ich hier schon beschrieben](/blog/code-is-cheap). Die Frage ist nicht mehr: Was kostet uns die Implementierung? Die Frage ist: Was kostet uns der ganze Prozess drumherum?
 
 ## Prozesse aus einer anderen Welt
 
@@ -32,7 +32,7 @@ Was gerade entsteht, funktioniert grundlegend anders. Agenten planen, schreiben 
 
 <SdlcToAdlc />
 
-Die Ergebnisse sind messbar. [Rakutens Engineering-Team](https://rakuten.today/blog/rakuten-accelerates-development-with-claude-code%EF%BF%BC.html) hat die Zeit von der Idee bis zum fertigen Feature von 24 Tagen auf 5 reduziert. Nicht durch schnelleres Tippen, sondern weil ihre Engineers vier Agenten parallel arbeiten lassen, während sie selbst die fünfte Aufgabe übernehmen. Bei Google wird inzwischen [rund die Hälfte des neuen Codes](https://www.computerweekly.com/news/366638839/Half-of-Googles-software-development-now-AI-generated) von AI-Agenten generiert. Die Wartezeiten zwischen den Phasen fallen weg. Komplexe Implementierungen, die früher Tage gebraucht haben, entstehen in Stunden.
+Die Ergebnisse sind messbar. [Rakutens Engineering-Team](https://rakuten.today/blog/rakuten-accelerates-development-with-claude-code.html) hat die Zeit von der Idee bis zum fertigen Feature von 24 Tagen auf 5 reduziert. Nicht durch schnelleres Tippen, sondern weil ihre Engineers vier Agenten parallel arbeiten lassen, während sie selbst die fünfte Aufgabe übernehmen. Bei Google wird inzwischen [rund die Hälfte des neuen Codes](https://www.computerweekly.com/news/366638839/Half-of-Googles-software-development-now-AI-generated) von AI-Agenten generiert. Die Wartezeiten zwischen den Phasen fallen weg. Komplexe Implementierungen, die früher Tage gebraucht haben, entstehen in Stunden.
 
 Die Verschiebung passiert auf mehreren Ebenen gleichzeitig: Fixe Pläne werden zu laufend aktualisierten Zielen. Sequenzielle Übergaben werden zu parallelen Arbeitssträngen. Tests nach der Entwicklung werden zu kontinuierlichen Tests während der Entwicklung. Und statt einer Retrospektive am Ende des Projekts gibt es live Feedback, das sofort zurückfließt.
 
@@ -40,7 +40,7 @@ Die Verschiebung passiert auf mehreren Ebenen gleichzeitig: Fixe Pläne werden z
 
 Wie arbeiten Teams, die das begriffen haben? Ich sehe zwei Muster, die auf den ersten Blick gegensätzlich wirken.
 
-**Umgebungen bauen statt Code schreiben.** OpenAI hat kürzlich beschrieben, wie sie ihren Entwicklungsprozess umgebaut haben. Sie nennen es "[Harness Engineering](https://openai.com/index/harness-engineering/)". Die Idee: Engineers schreiben keinen Code mehr. Sie bauen die Umgebung, in der Agenten arbeiten. Konkret heißt das: klare Ziele definieren, automatische Qualitätschecks einrichten, Leitplanken setzen, innerhalb derer Agenten sich frei bewegen dürfen. Statt dem Agenten alles auf einmal zu erklären, bekommt er ein Inhaltsverzeichnis und schlägt selbst nach, was er braucht.
+**Umgebungen bauen statt Code schreiben.** OpenAI hat kürzlich beschrieben, wie sie ihren Entwicklungsprozess umgebaut haben. Sie nennen es „[Harness Engineering](https://openai.com/index/harness-engineering/)“. Die Idee: Engineers schreiben keinen Code mehr. Sie bauen die Umgebung, in der Agenten arbeiten. Konkret heißt das: klare Ziele definieren, automatische Qualitätschecks einrichten, Leitplanken setzen, innerhalb derer Agenten sich frei bewegen dürfen. Statt dem Agenten alles auf einmal zu erklären, bekommt er ein Inhaltsverzeichnis und schlägt selbst nach, was er braucht.
 
 Ein Detail fand ich besonders aufschlussreich: Je mehr Agenten produzieren, desto schneller verfällt eine Codebase, wenn niemand aufräumt. OpenAIs Lösung: unverrückbare Grundprinzipien als Leitplanken, dazu automatisierte Aufräum-Agenten, die den Code ständig gegen diese Prinzipien prüfen. Der Aufwand ist real. Aber er fließt in die richtige Stelle: in die Umgebung, nicht in die Implementierung einzelner Features.
 
@@ -56,13 +56,13 @@ Wer den [Artikel über Agent-Orchestrierung](/blog/agents-at-the-table) gelesen 
 
 Das klingt nach einem Sonderfall. Ein Solo-Entwickler, kein Konzern. Aber das Muster taucht auch auf Unternehmensebene auf.
 
-[Ramp](https://www.youtube.com/watch?v=b2RjmGpCmCo), das am schnellsten wachsende Fintech der USA, hat seine gesamte Organisation um AI herum neu gebaut. Über die Hälfte ihres Codes wird bereits von Agenten geschrieben, Tendenz 80 bis 90 Prozent. Aber der eigentliche Wandel liegt woanders: Ramp hat interne Agenten gebaut, die ganze Arbeitsprozesse übernehmen. Ein "Voice-of-Customer"-Agent analysiert Kundenfeedback und leitet Patterns direkt an die Produktteams weiter. Ein Analyst-Agent erstellt Reports, für die früher ein ganzes Team Tage gebraucht hat. Und ihre Produktmanager? Die bauen inzwischen selbst Features. Nicht weil sie plötzlich programmieren gelernt haben, sondern weil die Grenze zwischen "definieren" und "bauen" verschwimmt, wenn Code fast nichts mehr kostet.
+[Ramp](https://www.youtube.com/watch?v=b2RjmGpCmCo), das am schnellsten wachsende Fintech der USA, hat seine gesamte Organisation um AI herum neu gebaut. Über die Hälfte ihres Codes wird bereits von Agenten geschrieben, Tendenz 80 bis 90 Prozent. Aber der eigentliche Wandel liegt woanders: Ramp hat interne Agenten gebaut, die ganze Arbeitsprozesse übernehmen. Ein „Voice-of-Customer“-Agent analysiert Kundenfeedback und leitet Patterns direkt an die Produktteams weiter. Ein Analyst-Agent erstellt Reports, für die früher ein ganzes Team Tage gebraucht hat. Und ihre Produktmanager? Die bauen inzwischen selbst Features. Nicht weil sie plötzlich programmieren gelernt haben, sondern weil die Grenze zwischen „definieren“ und „bauen“ verschwimmt, wenn Code fast nichts mehr kostet.
 
-Ramps CTO bringt es auf den Punkt: Software, wie wir sie kennen, wird zu "Co-Workern". Nicht Tools, die man bedient, sondern Agenten, die mitarbeiten. Das verändert nicht nur, wie Code entsteht. Es verändert, wer was tut und welche Rollen überhaupt noch Sinn ergeben.
+Ramps CTO bringt es auf den Punkt: Software, wie wir sie kennen, wird zu „Co-Workern“. Nicht Tools, die man bedient, sondern Agenten, die mitarbeiten. Das verändert nicht nur, wie Code entsteht. Es verändert, wer was tut und welche Rollen überhaupt noch Sinn ergeben.
 
-Elvis Sun als Einzelperson, Ramp als Unternehmen. Zwei völlig unterschiedliche Größenordnungen, aber dasselbe Muster: Wer seine Organisation um Agenten herum baut, verändert nicht nur die Geschwindigkeit. Es verschieben sich die Rollen, die Teamstrukturen, die ganze Frage, was "Produktentwicklung" eigentlich bedeutet. Produktmanager, die selbst Features bauen. Agenten, die Kundenresearch übernehmen, die früher Wochen gedauert hat. Strategische Entscheidungen, die auf Live-Daten basieren statt auf Quartalsreviews.
+Elvis Sun als Einzelperson, Ramp als Unternehmen. Zwei völlig unterschiedliche Größenordnungen, aber dasselbe Muster: Wer seine Organisation um Agenten herum baut, verändert nicht nur die Geschwindigkeit. Es verschieben sich die Rollen, die Teamstrukturen, die ganze Frage, was „Produktentwicklung“ eigentlich bedeutet. Produktmanager, die selbst Features bauen. Agenten, die Kundenresearch übernehmen, die früher Wochen gedauert hat. Strategische Entscheidungen, die auf Live-Daten basieren statt auf Quartalsreviews.
 
-Das ist kein inkrementeller Fortschritt. Das ist ein anderes Organisationsmodell.
+Das ist ein anderes Organisationsmodell.
 
 ## Was jetzt zählt
 
@@ -72,4 +72,4 @@ Was wir wissen: Der Vorteil liegt nicht darin, alles vorher perfekt durchzudenke
 
 Schau dir deinen Kalender an. Welche Meetings sind teurer als das, was sie produzieren? Welche Approval-Prozesse sichern Risiken ab, die es nicht mehr gibt? Welche Planungsrunden planen Dinge, die ein Agent in einer Stunde gebaut hätte?
 
-Die Teams, die das am schnellsten begreifen, werden nicht die mit den besten Agents sein. Sondern die, die ihre Prozesse am konsequentesten um die neue Realität herum gebaut haben.
+Die Teams, die das am schnellsten begreifen, sind nicht die mit den besten Agents. Es sind die, die ihre Prozesse am konsequentesten um die neue Realität herum gebaut haben.
