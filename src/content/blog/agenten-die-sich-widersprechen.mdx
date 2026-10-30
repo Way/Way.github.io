@@ -12,11 +12,11 @@ import AdversarialTriad from '../../components/AdversarialTriad.astro';
 import GeneratorEvaluatorLoop from '../../components/GeneratorEvaluatorLoop.astro';
 import RedBlueTeam from '../../components/RedBlueTeam.astro';
 
-Du gibst Claude eine Aufgabe. Er liefert. Die Antwort liest sich aufgeräumt, kommt mit Erklärung, ein paar Bullet Points, am Ende ein freundliches "let me know if you need anything else". Wahrscheinlich ist die Lösung sogar OK. Aber ob sie wirklich gut ist, wirst du so nicht erfahren. Dein Agent wird dir selten ins Gesicht sagen: "Ehrlich gesagt, der Code hier ist Mittelmaß."
+Du gibst Claude eine Aufgabe. Er liefert. Die Antwort liest sich aufgeräumt, kommt mit Erklärung, ein paar Bullet Points, am Ende ein freundliches „let me know if you need anything else“. Wahrscheinlich ist die Lösung sogar OK. Aber ob sie wirklich gut ist, wirst du so nicht erfahren. Dein Agent wird dir selten ins Gesicht sagen: „Ehrlich gesagt, der Code hier ist Mittelmaß.“
 
-Das hat einen Namen. [Sharma et al. (Anthropic, Oktober 2023)](https://arxiv.org/abs/2310.13548) haben die Eigenschaft "Sycophancy" genannt und über alle großen Sprachmodelle hinweg nachgewiesen. Die Modelle ziehen ihre Antwort dorthin, wo der Prompt sie haben will. Fragst du "ist X richtig?", finden sie Argumente für X. Fragst du "ist X falsch?", finden sie Argumente dagegen. Im selben Lauf, mit demselben Faktum.
+Das hat einen Namen. [Sharma et al. (Anthropic, Oktober 2023)](https://arxiv.org/abs/2310.13548) haben die Eigenschaft „Sycophancy“ genannt und über alle großen Sprachmodelle hinweg nachgewiesen. Die Modelle ziehen ihre Antwort dorthin, wo der Prompt sie haben will. Fragst du „ist X richtig?“, finden sie Argumente für X. Fragst du „ist X falsch?“, finden sie Argumente dagegen. Im selben Lauf, mit demselben Faktum.
 
-Der Entwickler [sysls](https://x.com/systematicls/status/2028814227004395561) hat angefangen, genau das auszunutzen. Er gibt mehreren Agenten widersprüchliche Aufträge im gleichen Workflow: der eine baut etwas auf, der zweite reißt es kritisch auseinander, ein dritter wiegt beide Seiten ab und entscheidet. Jeder spielt seine Rolle mit voller Überzeugung. Sagst du einem Agenten "der Code unten ist Müll, finde mir alle Probleme", legt dasselbe Modell, das gerade noch stolz auf seinen Code war, mit echter Begeisterung los.
+Der Entwickler [sysls](https://x.com/systematicls/status/2028814227004395561) hat angefangen, genau das auszunutzen. Er gibt mehreren Agenten widersprüchliche Aufträge im gleichen Workflow: der eine baut etwas auf, der zweite reißt es kritisch auseinander, ein dritter wiegt beide Seiten ab und entscheidet. Jeder spielt seine Rolle mit voller Überzeugung. Sagst du einem Agenten „der Code unten ist Müll, finde mir alle Probleme“, legt dasselbe Modell, das gerade noch stolz auf seinen Code war, mit echter Begeisterung los.
 
 ## Drei Muster, die funktionieren
 
@@ -30,7 +30,7 @@ Das einfachste Setup. Drei Agenten, klar verteilte Rollen. Einer baut. Einer gre
 
 Der Generator schreibt Code oder eine Lösung. Der Adversary sucht gezielt nach den Schwächen, die der Generator übersehen hat. Der Referee bekommt beide Seiten vorgelegt und entscheidet. Niemand hält alle drei Rollen zugleich. Genau diese Trennung kippt das Ergebnis.
 
-Wichtig ist der Prompt für den Adversary. Generische Kritik ("achte auf Qualität") führt zu generischer Kritik. Konkret formuliert sieht das so aus:
+Wichtig ist der Prompt für den Adversary. Generische Kritik („achte auf Qualität“) führt zu generischer Kritik. Konkret formuliert sieht das so aus:
 
 ```text
 Hier ist Code von einem anderen Agenten. Er behauptet, Problem X zu lösen.
@@ -54,7 +54,7 @@ Token-Verbrauch steigt linear mit der Rundenzahl. Für eine schnelle Antwort auf
 
 ### Red Team gegen Blue Team
 
-Das Muster kommt aus der IT-Sicherheit. Ein "Red Team" simuliert gezielte Angriffe: Prompt Injection, manipulierte Eingaben, Randfälle, die der Verteidiger nicht erwartet. Ein "Blue Team" lernt aus den Angriffen und baut Verteidigung. Beide Seiten ziehen sich gegenseitig nach oben.
+Das Muster kommt aus der IT-Sicherheit. Ein „Red Team“ simuliert gezielte Angriffe: Prompt Injection, manipulierte Eingaben, Randfälle, die der Verteidiger nicht erwartet. Ein „Blue Team“ lernt aus den Angriffen und baut Verteidigung. Beide Seiten ziehen sich gegenseitig nach oben.
 
 <RedBlueTeam />
 
@@ -91,7 +91,7 @@ council this: [dein Kontext, so ausführlich wie möglich]
                   genau eine nächste Aktion
 ```
 
-Die Anonymisierung ist wichtiger, als sie aussieht. Wüssten die Reviewer, dass Antwort C vom Contrarian stammt, würden sie sie als "die negative" abhaken. Ohne Label müssen sie das Argument selbst wiegen.
+Die Anonymisierung ist wichtiger, als sie aussieht. Wüssten die Reviewer, dass Antwort C vom Contrarian stammt, würden sie sie als „die negative“ abhaken. Ohne Label müssen sie das Argument selbst wiegen.
 
 Über die Schärfe entscheidet der Advisor-Prompt. Generisch formuliert bekommst du fünf höfliche Varianten derselben Meinung. Der Contrarian zum Beispiel:
 
@@ -153,9 +153,9 @@ Der Command verdrahtet die vier und bricht ab, sobald es hakt:
 
 Den Widerspruch trägt hier die Struktur selbst. Planner und Reviewer prompst du bewusst paranoid, auf Security, Datenintegrität, Performance. Den Coder hältst du klein, er folgt der Spec und erfindet nichts dazu. Der Tester misstraut den glatten Fällen und schreibt absichtlich die Tests, die wehtun. Vier Agenten kontrollieren sich gegenseitig, obwohl keiner das ganze Bild sieht.
 
-Verdrahten musst du das nicht mehr von Hand. Seit Anthropic [Dynamic Workflows in Claude Code](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code) ausgeliefert hat, schreibt Claude die Orchestrierung selbst. Aus einer Beschreibung in natürlicher Sprache entsteht ein Skript, das zig bis hunderte Sub-Agenten in einer Session koordiniert und sich strikt an die Reihenfolge hält. [Cat Wu](https://x.com/_catwu/status/2060054180379689074) zeigt, wie du sogar vorschreiben kannst, wo der Widerspruch hingehört: "Phase 2, zwei Agenten implementieren denselben Code unabhängig. Phase 3, ein Reviewer vergleicht beide." Die Widersprüche sind dann Teil des Plans.
+Verdrahten musst du das nicht mehr von Hand. Seit Anthropic [Dynamic Workflows in Claude Code](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code) ausgeliefert hat, schreibt Claude die Orchestrierung selbst. Aus einer Beschreibung in natürlicher Sprache entsteht ein Skript, das zig bis hunderte Sub-Agenten in einer Session koordiniert und sich strikt an die Reihenfolge hält. [Cat Wu](https://x.com/_catwu/status/2060054180379689074) zeigt, wie du sogar vorschreiben kannst, wo der Widerspruch hingehört: „Phase 2, zwei Agenten implementieren denselben Code unabhängig. Phase 3, ein Reviewer vergleicht beide.“ Die Widersprüche sind dann Teil des Plans.
 
-Das eigentlich Bemerkenswerte: Die adversariale Prüfung steckt im Mechanismus selbst. Eine Gruppe Agenten geht ein Problem aus unabhängigen Winkeln an, eine andere versucht gezielt, ihre Ergebnisse zu widerlegen, und der Lauf iteriert, bis die Antworten konvergieren. Das Muster aus dem Kreislauf weiter oben, jetzt unter der Haube, statt von Hand zusammengesteckt.
+Die adversariale Prüfung steckt im Mechanismus selbst. Eine Gruppe Agenten geht ein Problem aus unabhängigen Winkeln an, eine andere versucht gezielt, ihre Ergebnisse zu widerlegen, und der Lauf iteriert, bis die Antworten konvergieren. Das Muster aus dem Kreislauf weiter oben, jetzt unter der Haube, statt von Hand zusammengesteckt.
 
 Wie weit das trägt, zeigt der Umbau von Bun. Jarred Sumner hat die JavaScript-Runtime von Zig nach Rust portiert, 750.000 Zeilen in elf Tagen. Parallele Agenten schrieben hunderte .rs-Files, und über jede einzelne Datei liefen zwei Reviewer. Adversariales Review als Fließband, über eine komplette Sprachmigration.
 
@@ -171,8 +171,8 @@ Daraus folgt eine Obergrenze, die mit Rechenzeit nichts zu tun hat. Wie viele Ag
 
 Also miss die Flotte an deiner Review-Kapazität. Sechs Pipelines, die du gründlich liest, schlagen zwanzig, die du überfliegst. Isolierbares wie Docs, Logs oder kleine Migrationen laufen halb-autonom, du schaust am Ende auf wenige Artefakte. Die tiefen Architektur- und Produktfragen gehören in einen Council oder zu einem einzelnen Sparringspartner, in deine besten Stunden. Lass dir testbare Artefakte hinlegen, Diffs, Tests, Specs, und block feste Review-Zeit, statt zwischen Threads zu springen. Dein Lock ist zu wertvoll für Arbeit, die eine Maschine prüfen kann.
 
-Zwei Dinge bleiben wichtig. Ohne klare Leitplanken produziert auch ein Multi-Agent-Setup mehr Chaos als Qualität. Wer die Rollen unscharf hält, bekommt drei Agenten, die alle ein bisschen zustimmen, sich höflich gegenseitig korrigieren und am Ende auf "sieht gut aus" einschwenken. Das ist dann teurer als der Single-Agent-Lauf und genauso flach.
+Zwei Dinge bleiben wichtig. Ohne klare Leitplanken produziert auch ein Multi-Agent-Setup mehr Chaos als Qualität. Wer die Rollen unscharf hält, bekommt drei Agenten, die alle ein bisschen zustimmen, sich höflich gegenseitig korrigieren und am Ende auf „sieht gut aus“ einschwenken. Das ist dann teurer als der Single-Agent-Lauf und genauso flach.
 
 Und die finale Entscheidung, ob ein Ergebnis taugt, fällt am Schreibtisch eines Menschen. Agenten können sich gegenseitig herausfordern. Sie können Schwächen freilegen, die einem einzelnen Modell entgehen würden. Was sie nicht können: die Verantwortung tragen. Die liegt bei dir, wenn der Code in Produktion läuft.
 
-Die belastbarsten Ergebnisse habe ich dort gesehen, wo Agenten sich offen widersprechen. Wo einer baut, reißt der andere auseinander. Und niemand nickt höflich. Genau dort fühlt sich das System an wie ein gutes Pair-Programming-Gespräch, bei dem beide Seiten verstanden haben, dass Höflichkeit hier keine Tugend ist.
+Die belastbarsten Ergebnisse habe ich dort gesehen, wo Agenten sich offen widersprechen. Wo einer baut, reißt der andere auseinander. Und niemand nickt höflich.
