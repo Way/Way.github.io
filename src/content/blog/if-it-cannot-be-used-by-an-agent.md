@@ -9,6 +9,9 @@ glance:
   - 'Die Doku für „stripe pay“ ist an den Agent geschrieben, nicht an den Menschen. Patrick Collison dazu: „A2A payments will be more important than P2P payments.“'
   - 'Resends Regel „Everything the dashboard can do should also be available programmatically“ ist die Messlatte. Bei fino: fünf Tools, nur lesend, eine Ausnahme.'
   - 'Der Engpass ist nicht Intelligenz, sondern Autorisierung. Wer hat was erlaubt, und wie weist man das hinterher nach?'
+stat:
+  value: 'Über 30 Prozent'
+  text: 'Umsatzwachstum im Jahr bei SaaS-Firmen, obwohl der Ausverkauf Anfang 2026 fast eine Billion Dollar Börsenwert gekostet hat.'
 visualTheme: 'blueprint'
 prompt: 'Was passiert mit Software und SaaS-Geschäftsmodellen, wenn der Nutzer ein Agent ist? Was heißt es, Agents zu befähigen, unsere Produkte zu benutzen, und warum verkaufen wir dann Lösungen statt Werkzeuge?'
 tags: ['AI', 'Agenten', 'SaaS', 'Geschäftsmodelle', 'Headless', 'Open Banking']
