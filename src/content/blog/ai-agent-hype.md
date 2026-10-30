@@ -13,7 +13,7 @@ In den letzten Monaten hat das Thema AI Agents in der Tech-Community für enorme
 
 AI Agents sind autonome Software-Systeme, die in der Lage sind, Aufgaben eigenständig zu planen, auszuführen und sich dabei an veränderte Umgebungen anzupassen. Im Gegensatz zu klassischen, regelbasierten Bots nutzen moderne AI Agents fortschrittliche Machine-Learning-Modelle, insbesondere Large Language Models (LLMs) wie GPT-4, um komplexe Aufgaben zu verstehen und zu bearbeiten.
 
-### Ein typischer AI Agent besteht aus mehreren Komponenten:
+Ein typischer AI Agent besteht aus mehreren Komponenten:
 
 - Perzeption: Wahrnehmung der Umgebung (z.B. durch APIs, Sensoren, Webscraping)
 - Planung: Zerlegung komplexer Aufgaben in Teilaufgaben, Priorisierung und Sequenzierung
@@ -62,4 +62,4 @@ Trotz aller Hürden gibt es bereits heute sinnvolle Einsatzgebiete:
 
 ### Fazit: Zwischen Hype und Realität
 
-AI Agents sind ein faszinierendes Feld mit enormem Potenzial, aber auch erheblichen Herausforderungen. Die aktuellen Systeme sind beeindruckende Prototypen, aber noch weit von echter Autonomie entfernt. Die nächsten Jahre werden zeigen, ob und wie die technischen und ethischen Probleme gelöst werden können. Bis dahin gilt: Die Möglichkeiten sind groß – aber der Hype sollte kritisch begleitet werden.
+Die aktuellen Systeme sind beeindruckende Prototypen, aber noch weit von echter Autonomie entfernt. Die nächsten Jahre werden zeigen, ob und wie die technischen und ethischen Probleme gelöst werden können. Bis dahin gilt: Die Möglichkeiten sind groß, aber der Hype sollte kritisch begleitet werden.
