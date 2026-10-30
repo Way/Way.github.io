@@ -26,7 +26,7 @@ Ich glaube, in dem Satz steckt eine Regel, die über Zahlungen hinausgeht. **Wen
 
 ## Der SaaSpocalypse blieb aus. Der Nutzer hat sich trotzdem geändert.
 
-Anfang des Jahres sind Software-Aktien eingebrochen, bis Anfang Februar [fast eine Billion Dollar](https://www.stripeeconomics.com/p/the-saaspocalypse-was-more-like-a) Börsenwert. Die Angst dahinter: Agents ersetzen SaaS. Ernie Tedeschi hat im September nachgerechnet, mit dem Zahlungsvolumen von rund 72.000 SaaS-Firmen pro Woche. Der Umsatz wächst mit über 30 Prozent im Jahr, schneller als vor dem Ausverkauf. Die Panik war, wie er schreibt, „almost entirely prospective“.
+Anfang des Jahres sind Software-Aktien eingebrochen, bis Anfang Februar [fast eine Billion Dollar](https://www.stripeeconomics.com/p/the-saaspocalypse-was-more-like-a) Börsenwert. Die Angst dahinter: Agents ersetzen SaaS. Ernie Tedeschi hat im September nachgerechnet, mit dem Zahlungsvolumen von rund 72.000 SaaS-Firmen pro Woche. Der Umsatz wächst mit über 30 Prozent im Jahr, mindestens so schnell wie zuletzt im Sommer 2023. Die Panik war, wie er schreibt, „almost entirely prospective“.
 
 Interessanter als die Summe ist, wer wächst. Firmen, die jünger als ein Jahr sind, ziehen den älteren davon. Und derselbe Datensatz zeigt, welche Firmen von Agents bedient werden: MCP-Anfragen, Aufrufe aus agentischen CLIs, Sandbox-Claims. Anfang 2026 lagen die reifen Firmen bei diesen Signalen noch fünf Punkte vorn. Im April ist das gekippt, jetzt liegen die jungen vier Punkte vorn.
 
