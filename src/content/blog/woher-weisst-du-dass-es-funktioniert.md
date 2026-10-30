@@ -21,7 +21,7 @@ tags:
   ]
 ---
 
-[Hamel Husain](https://hamel.dev/blog/posts/field-guide/) berät seit Jahren Teams, die AI-Produkte bauen. Eine Szene wiederholt sich bei ihm so oft, dass er sie inzwischen erwartet. Er setzt sich zu den Entwicklern, lässt sich das System zeigen, das Wochen gekostet hat, und stellt eine einzige Frage: "Kannst du mir zeigen, wie du misst, ob das hier überhaupt funktioniert?"
+[Hamel Husain](https://hamel.dev/blog/posts/field-guide/) berät seit Jahren Teams, die AI-Produkte bauen. Eine Szene wiederholt sich bei ihm so oft, dass er sie inzwischen erwartet. Er setzt sich zu den Entwicklern, lässt sich das System zeigen, das Wochen gekostet hat, und stellt eine einzige Frage: „Kannst du mir zeigen, wie du misst, ob das hier überhaupt funktioniert?“
 
 Dann wird es still.
 
@@ -31,7 +31,7 @@ Es gibt ein Dashboard mit Latenz und Kosten. Es gibt Logs. Was es nicht gibt, is
 
 So läuft es gerade fast überall. Du schraubst am Prompt, schickst drei Testfragen durch, liest die Antworten, nickst. Fühlt sich besser an. Du deployst. Ob die Antwort auf die vierte Frage, die du nicht getestet hast, jetzt kaputt ist, erfährst du frühestens, wenn ein Nutzer sich beschwert. Meistens beschwert sich keiner. Er geht einfach.
 
-Das Tückische daran: Es fühlt sich nach Arbeit an. Du hast ja was geändert, du hast ja was getestet. Nur misst dein Bauchgefühl bei drei Beispielen nichts, das über drei Beispiele hinausgeht. Greg Brockman, Mitgründer von OpenAI, hat 2023 [einen Satz getwittert](https://x.com/gdb/status/1733553161884127435), der in der Szene seitdem ständig zitiert wird: "evals are surprisingly often all you need." Erstaunlich oft sind Evals alles, was du brauchst. Der Satz ist deshalb so klebrig, weil das Gegenteil der Default ist. Die meisten bauen alles andere zuerst und die Evals nie.
+Das Tückische daran: Es fühlt sich nach Arbeit an. Du hast ja was geändert, du hast ja was getestet. Nur misst dein Bauchgefühl bei drei Beispielen nichts, das über drei Beispiele hinausgeht. Greg Brockman, Mitgründer von OpenAI, hat 2023 [einen Satz getwittert](https://x.com/gdb/status/1733553161884127435), der in der Szene seitdem ständig zitiert wird: „evals are surprisingly often all you need.“ Erstaunlich oft sind Evals alles, was du brauchst. Der Satz ist deshalb so klebrig, weil das Gegenteil der Default ist. Die meisten bauen alles andere zuerst und die Evals nie.
 
 ## Warum du jeden Teller einzeln probierst
 
@@ -41,9 +41,9 @@ Jetzt die unbequeme Frage hinterher: Warum eigentlich liest du jeden einzelnen T
 
 ## Was eine Eval wirklich ist
 
-Bei "Eval" denken viele an Benchmarks und Leaderboards. In der Praxis fängt es viel unspektakulärer an: Du schaust dir deine Daten an.
+Bei „Eval“ denken viele an Benchmarks und Leaderboards. In der Praxis fängt es viel unspektakulärer an: Du schaust dir deine Daten an.
 
-Husain beschreibt einen Kunden, NurtureBoss, der einen Assistenten für Wohnungsbesichtigungen betrieb. Statt zu raten, haben sie angefangen, echte Konversationen zu lesen und die Fehler zu kategorisieren. Das Ergebnis war nüchtern: Der Assistent scheiterte in [66 Prozent der Fälle](https://hamel.dev/blog/posts/field-guide/) an Datumsangaben, sobald jemand etwas sagte wie "lass uns in zwei Wochen einen Termin machen". Und drei Fehlerklassen zusammen machten über 60 Prozent aller Probleme aus. Kein neues Modell, keine größere Pipeline. Sie haben die größte Fehlerklasse zuerst angefasst, das Datums-Handling, und allein dort stieg die Erfolgsquote von 33 auf 95 Prozent.
+Husain beschreibt einen Kunden, NurtureBoss, der einen Assistenten für Wohnungsbesichtigungen betrieb. Statt zu raten, haben sie angefangen, echte Konversationen zu lesen und die Fehler zu kategorisieren. Das Ergebnis war nüchtern: Der Assistent scheiterte in [66 Prozent der Fälle](https://hamel.dev/blog/posts/field-guide/) an Datumsangaben, sobald jemand etwas sagte wie „lass uns in zwei Wochen einen Termin machen“. Und drei Fehlerklassen zusammen machten über 60 Prozent aller Probleme aus. Kein neues Modell, keine größere Pipeline. Sie haben die größte Fehlerklasse zuerst angefasst, das Datums-Handling, und allein dort stieg die Erfolgsquote von 33 auf 95 Prozent.
 
 Das ist Error Analysis, und es ist die unglamouröseste Tätigkeit der ganzen AI-Welt. Fünfzig Traces öffnen, lesen, in Kategorien sortieren. Daraus werden Tests. Manche sind simpler Code: Steht im Output ein gültiges Datum? Dann eine Assertion, fertig, kostet nichts. Husains Beobachtung ist, dass du damit erschreckend weit kommst, bevor du überhaupt etwas Komplizierteres brauchst. Die Teams, die sich so ein einfaches Tool zum Sichten ihrer Daten bauen, [iterieren bei ihm um das Zehnfache schneller](https://hamel.dev/blog/posts/field-guide/) als die ohne. Nicht weil sie klüger sind. Weil sie hinschauen.
 
@@ -53,13 +53,13 @@ Manche Fragen kann kein simpler Code beantworten. War die Antwort höflich? Hat 
 
 Hier kommt LLM-as-Judge ins Spiel. Du nimmst ein Modell und lässt es den Output eines anderen Modells bewerten, gegen Kriterien, die du vorgibst. Klingt nach einem Zirkelschluss, funktioniert aber überraschend gut. Lianmin Zheng und Kollegen haben das 2023 sauber gemessen ([MT-Bench](https://arxiv.org/abs/2306.05685)): Ein starker Judge wie GPT-4 stimmt in über 80 Prozent der Fälle mit menschlichen Bewertern überein. Das ist ungefähr so hoch, wie zwei Menschen bei derselben Aufgabe untereinander übereinstimmen. Gemessen wurde das an allgemeinen Chatbot-Antworten. Ob ein Judge auch bei deiner Domäne so gut trifft, bei Wohnungsbesichtigungen, Faktenfragen, Compliance, musst du für deinen Fall selbst nachmessen. Das Prinzip trägt trotzdem, und der Judge liest tausend Antworten, während du dir einen Kaffee holst.
 
-Jetzt der Haken, und er ist groß. Der Judge ist nur so gut wie das Rubric, das du ihm gibst. Schreibst du "bewerte die Qualität", bekommst du Zufallszahlen mit drei Nachkommastellen. Der Judge braucht dieselbe Behandlung wie das System, das er bewerten soll: Du musst ihn gegen menschliche Urteile kalibrieren, bis seine Bewertungen zu deinen passen. In einem [von Husain dokumentierten Fall](https://hamel.dev/blog/posts/field-guide/) brauchte das drei Runden, bis Mensch und Maschine zu über 90 Prozent zusammenlagen. Bei dir können es mehr sein. Der Richter selbst braucht eine Eval. Wer das überspringt, hat seinen flackernden Output nur durch einen flackernden Messwert ersetzt und merkt es nicht mal.
+Jetzt der Haken, und er ist groß. Der Judge ist nur so gut wie das Rubric, das du ihm gibst. Schreibst du „bewerte die Qualität“, bekommst du Zufallszahlen mit drei Nachkommastellen. Der Judge braucht dieselbe Behandlung wie das System, das er bewerten soll: Du musst ihn gegen menschliche Urteile kalibrieren, bis seine Bewertungen zu deinen passen. In einem [von Husain dokumentierten Fall](https://hamel.dev/blog/posts/field-guide/) brauchte das drei Runden, bis Mensch und Maschine zu über 90 Prozent zusammenlagen. Bei dir können es mehr sein. Der Richter selbst braucht eine Eval. Wer das überspringt, hat seinen flackernden Output nur durch einen flackernden Messwert ersetzt und merkt es nicht mal.
 
 ## Der Teil, der dir bleibt
 
-In der Orchestration-Tax-Logik macht der Küchenchef am Pass zwei verschiedene Dinge: Er probiert, und er entscheidet, was "gut" überhaupt heißt. Evals nehmen dir das Probieren ab. Das Definieren von "gut" nicht.
+In der Orchestration-Tax-Logik macht der Küchenchef am Pass zwei verschiedene Dinge: Er probiert, und er entscheidet, was „gut“ überhaupt heißt. Evals nehmen dir das Probieren ab. Das Definieren von „gut“ nicht.
 
-Genau dort sitzt die Arbeit, die niemand für dich erledigt. Das Rubric ist nichts anderes als dein Urteil, aufgeschrieben, sodass eine Maschine es millionenfach anwenden kann. Was ist eine gute Antwort für unsere Nutzer? Wo ist die Grenze zwischen "hilfreich" und "schwafelt"? Welcher Fehler ist peinlich und welcher ist egal? Diese Fragen kann dir kein Modell abnehmen, weil sie keine technischen Fragen sind. Sie sind das, was du über dein Produkt und deine Nutzer weißt und was sonst niemand weiß.
+Genau dort sitzt die Arbeit, die niemand für dich erledigt. Das Rubric ist nichts anderes als dein Urteil, aufgeschrieben, sodass eine Maschine es millionenfach anwenden kann. Was ist eine gute Antwort für unsere Nutzer? Wo ist die Grenze zwischen „hilfreich“ und „schwafelt“? Welcher Fehler ist peinlich und welcher ist egal? Diese Fragen kann dir kein Modell abnehmen, weil sie keine technischen Fragen sind. Sie sind das, was du über dein Produkt und deine Nutzer weißt und was sonst niemand weiß.
 
 Eine Eval verlagert deine Rolle. Du hörst auf, jeden Teller zu probieren. Du fängst an, die Rezepte zu schreiben, nach denen probiert wird, und kontrollierst Stichproben, ob die Küche sich dran hält. Vom Akkord am Pass zum Maßstab dahinter.
 
