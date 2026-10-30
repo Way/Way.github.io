@@ -65,11 +65,11 @@ Diese Verlagerung ist nicht für jeden bequem. Wer fünfzehn Jahre in einem Spri
 
 Ich behaupte nicht, dass das morgen früh in jedem Konzern läuft. Compliance-Audits brauchen einen nachvollziehbaren Pfad, wer was wann freigegeben hat. Verträge mit Verfügbarkeits-Zusagen lassen sich nicht durch eine Spike-Kultur ersetzen. Performance-Reviews messen oft noch, was sie immer gemessen haben. Diese Hürden sind real und sie haben gute Gründe.
 
-Was sie tun: sie zwingen zum schichtweisen Umbau. Erst da, wo das Risiko begrenzt ist: interne Tools, Prototypen, Innovation-Bereiche. Dann die nächstgrößere Schicht. Irgendwann landet die Idee bei den Kernsystemen, wenn die Erfahrung aus den ersten Schichten mitgewachsen ist. Performance-Reviews, die Story Points abfragen, müssen parallel umgebaut werden, sonst macht es niemand. **Anreize schlagen Methoden, jedes Mal.**
+Was sie tun: Sie zwingen zum schichtweisen Umbau. Erst da, wo das Risiko begrenzt ist: interne Tools, Prototypen, Innovation-Bereiche. Dann die nächstgrößere Schicht. Irgendwann landet die Idee bei den Kernsystemen, wenn die Erfahrung aus den ersten Schichten mitgewachsen ist. Performance-Reviews, die Story Points abfragen, müssen parallel umgebaut werden, sonst macht es niemand. Anreize schlagen Methoden, jedes Mal.
 
 ## Was bleibt
 
-Wenn Entscheiden, Prüfen und Messen die teuersten Schritte sind, sind sie auch die Schritte, die Urteilsvermögen brauchen. Ein Agent kann zwanzig Varianten bauen. Welche davon in den Markt geht, ist eine Frage, die jemand verantworten muss. Tausend Code-Zeilen lassen sich automatisch testen. Welche Schwelle als "gut genug" gilt, sagt das Team. Jede Metrik ist trackbar. Welche der trackbaren Metriken die richtige für diese Geschäftsentscheidung ist, beantwortet ein Mensch.
+Wenn Entscheiden, Prüfen und Messen die teuersten Schritte sind, sind sie auch die Schritte, die Urteilsvermögen brauchen. Ein Agent kann zwanzig Varianten bauen. Welche davon in den Markt geht, ist eine Frage, die jemand verantworten muss. Tausend Code-Zeilen lassen sich automatisch testen. Welche Schwelle als „gut genug“ gilt, sagt das Team. Jede Metrik ist trackbar. Welche der trackbaren Metriken die richtige für diese Geschäftsentscheidung ist, beantwortet ein Mensch.
 
 Das Engineering, das ich in den nächsten Jahren wachsen sehe, ist Loop-Design plus Urteil. Beides lässt sich lernen. Beides ist Arbeit, die ein Mensch tut, mit Agenten als Werkzeug, nicht umgekehrt.
 
