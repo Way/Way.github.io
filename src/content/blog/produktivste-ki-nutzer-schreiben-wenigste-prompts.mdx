@@ -47,7 +47,7 @@ Viele starten jede Session mit einem leeren Prompt und formulieren ihre Anfrage 
 
 Das DRY-Prinzip aus der Softwareentwicklung (Don't Repeat Yourself) gilt hier genauso. Alles, was du öfter als einmal pro Woche machst, verdient einen eigenen Baustein.
 
-In Claude Cowork sind das Scheduled Tasks. Tägliche E-Mail-Zusammenfassungen, wöchentliche Slack-Updates, monatliches Branchen-Monitoring. Claude zieht sich über Connectors die Daten (Gmail, Outlook, Slack) und liefert automatisiert Zusammenfassungen oder Reports. Du legst einmal fest, was du brauchst, und es läuft. In Claude Code sind es Custom Commands: Markdown-Dateien, die einen wiederkehrenden Workflow kapseln und per Keyword abrufbar sind. "Neuen API-Endpoint mit Error-Handling und Typen anlegen" wird zu einem einzigen Befehl statt einem Absatz voller Instruktionen.
+In Claude Cowork sind das Scheduled Tasks. Tägliche E-Mail-Zusammenfassungen, wöchentliche Slack-Updates, monatliches Branchen-Monitoring. Claude zieht sich über Connectors die Daten (Gmail, Outlook, Slack) und liefert automatisiert Zusammenfassungen oder Reports. Du legst einmal fest, was du brauchst, und es läuft. In Claude Code sind es Custom Commands: Markdown-Dateien, die einen wiederkehrenden Workflow kapseln und per Keyword abrufbar sind. „Neuen API-Endpoint mit Error-Handling und Typen anlegen“ wird zu einem einzigen Befehl statt einem Absatz voller Instruktionen.
 
 Die Fortgeschrittenen gehen noch weiter. Sie bauen Skills. Ein Skill ist ein mehrstufiger Workflow, der andere Skills aufrufen kann. Statt einen Monster-Prompt zu schreiben, der zehn Schritte enthält, kapselst du Teilprozesse in eigene Module. Skill A holt YouTube-Transkripte per API. Skill B nimmt das Transkript und erzeugt Timestamps und eine Zusammenfassung. Skill B ruft Skill A auf, statt alles selbst zu erledigen. Modular, wiederverwendbar, an einer Stelle änderbar.
 
@@ -87,7 +87,7 @@ Dazu kommen Validation Loops: automatische Prüfungen nach jeder Änderung. Buil
 
 Auch bei der Modellwahl lohnt sich Nachdenken. Nicht jede Aufgabe braucht das stärkste (und langsamste) Modell. Haiku für schnelle, einfache Jobs. Sonnet als Standard für den Alltag. Opus nur dort, wo echte Reasoning-Tiefe gefragt ist. Manche kombinieren Modelle sogar innerhalb eines Workflows: Haiku für den Rohentwurf, Opus für das Review. So nutzt du deine Limits effizient und bekommst schnellere Antworten, wo Geschwindigkeit wichtiger ist als Tiefgang.
 
-Hier steckt aber eine Einsicht, die über Claude hinausgeht. Prompting zwingt dich, dein Denken zu strukturieren. Wenn du ein Problem nicht klar genug formulieren kannst, dass Claude es versteht, dann verstehst du es selbst noch nicht gut genug. Das ist kein Bug. Das ist ein Feature. Plan Mode macht diesen Effekt systematisch nutzbar. Und diese Fähigkeit, Probleme zu zerlegen und präzise zu beschreiben, macht dich nicht nur produktiver mit Claude. Sie macht dich produktiver in allem.
+Prompting zwingt dich außerdem, dein Denken zu strukturieren. Wenn du ein Problem nicht klar genug formulieren kannst, dass Claude es versteht, dann verstehst du es selbst noch nicht gut genug. Plan Mode macht diesen Effekt systematisch nutzbar. Und diese Fähigkeit, Probleme zu zerlegen und präzise zu beschreiben, macht dich nicht nur produktiver mit Claude. Sie macht dich produktiver in allem.
 
 ## Claude als Akteur, nicht als Textfeld
 
@@ -101,7 +101,7 @@ Das ist der Moment, in dem sich das Bild fundamental verschiebt. Claude wird vom
 
 Wo kein fertiger Connector existiert, gibt es Browser-Steuerung und Computer Use. Claude navigiert durch Web-Interfaces, füllt Formulare aus, liest DOM und Console-Logs. Kein Screenshot in den Chat kopieren. Direkter Zugriff auf das, was auf dem Bildschirm passiert.
 
-Für komplexere Setups kommen Sub-Agents ins Spiel: separate Claude-Instanzen mit eigenem Kontext, eigenen Anweisungen und eigenen Berechtigungen, die parallel arbeiten. Einer räumt Code auf und optimiert. Der nächste generiert Dokumentation. Ein dritter inspiziert das Frontend im Browser und gibt strukturiertes Feedback. Wichtig dabei: Sub-Agents funktionieren am besten als fokussierte Task-Worker, nicht als Rollenspiel. "Räum diesen Code auf" liefert bessere Ergebnisse als "Du bist ein Senior Frontend-Entwickler".
+Für komplexere Setups kommen Sub-Agents ins Spiel: separate Claude-Instanzen mit eigenem Kontext, eigenen Anweisungen und eigenen Berechtigungen, die parallel arbeiten. Einer räumt Code auf und optimiert. Der nächste generiert Dokumentation. Ein dritter inspiziert das Frontend im Browser und gibt strukturiertes Feedback. Sub-Agents funktionieren am besten als fokussierte Task-Worker, nicht als Rollenspiel. „Räum diesen Code auf“ liefert bessere Ergebnisse als „Du bist ein Senior Frontend-Entwickler“.
 
 **Praktischer Einstieg:** Identifiziere den einen externen Dienst, in dem du am meisten Zeit mit Routine verbringst. E-Mail, Slack, Jira, dein CRM. Binde ihn als ersten Connector an. Schon ein einzelner gut integrierter Dienst verändert spürbar, wie sich die Zusammenarbeit mit Claude anfühlt.
 
@@ -114,5 +114,3 @@ Die eigentliche Kompetenz, die hier sichtbar wird, ist nicht besseres Prompting.
 Diese Tools machen sichtbar, was gute Wissensarbeiter schon immer ausgezeichnet hat: Systeme bauen statt Listen abarbeiten. Prozesse hinterfragen statt Routinen hinnehmen. Das eigene Denken strukturieren, bevor man andere mit der Umsetzung beauftragt.
 
 Die produktivsten KI-Nutzer schreiben deshalb die wenigsten Prompts. Nicht weil sie weniger arbeiten. Sondern weil sie einmal nachgedacht, einmal gebaut und einmal konfiguriert haben, wo andere jede Woche denselben Text ins Chatfenster tippen.
-
-Die Werkzeuge sind da. Die Frage ist, ob du sie nutzt, um einzelne Tasks zu beschleunigen. Oder ob du dir die Zeit nimmst, ein System zu bauen, das deine Arbeit grundlegend verändert.
